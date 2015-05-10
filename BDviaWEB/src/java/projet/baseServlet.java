@@ -30,14 +30,27 @@ public class baseServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    public void creerDiv(PrintWriter out)
+    {
+        out.println("<div class=\"test\"> GG les boys </div>");
+    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            creerDiv(out);
             out.println("<!DOCTYPE html>");
             out.println("<html>");
+
             out.println("<head>");
+            out.println("<style>");
+            out.println(".div.test{");
+            out.println("background-color: lightblue; ");
+            out.println("font-color: blue; }");
+            out.println("</style>");
             out.println("<title>Servlet ReseauAdmission</title>");            
             out.println("</head>");
             out.println("<body>");
