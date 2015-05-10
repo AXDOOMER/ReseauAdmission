@@ -31,9 +31,10 @@ public class baseServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     
+    //methode pour creer des div
     public void creerDiv(PrintWriter out)
     {
-        out.println("<div class=\"test\"> GG les boys </div>");
+        out.println("<div> Acceuil </div>");
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -44,13 +45,16 @@ public class baseServlet extends HttpServlet {
             creerDiv(out);
             out.println("<!DOCTYPE html>");
             out.println("<html>");
-
             out.println("<head>");
+            
+            
             out.println("<style>");
-            out.println(".div.test{");
-            out.println("background-color: lightblue; ");
-            out.println("font-color: blue; }");
+            //Style des DIV
+            out.println("div{" + "background-color: lightblue; " + "color:Blue; " + "width=200px" + "position:absolute }");
+            out.println("");
             out.println("</style>");
+            
+            
             out.println("<title>Servlet ReseauAdmission</title>");            
             out.println("</head>");
             out.println("<body>");
