@@ -124,6 +124,11 @@ public class Client extends javax.swing.JFrame {
         BTN_Ajouter_Salle.setText("Ajouter");
 
         BTN_Ajouter_Categorie.setText("Ajouter");
+        BTN_Ajouter_Categorie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_Ajouter_CategorieActionPerformed(evt);
+            }
+        });
 
         BTN_Ajouter_Section.setText("Ajouter");
 
@@ -242,6 +247,12 @@ public class Client extends javax.swing.JFrame {
         AddSpectacle addSpectacle = new AddSpectacle(oracleConnexion);
         addSpectacle.setVisible(true);
     }//GEN-LAST:event_BTN_Ajouter_SpecActionPerformed
+
+    private void BTN_Ajouter_CategorieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_Ajouter_CategorieActionPerformed
+        // Faire afficher le jFrame AddCategorie et lui envoyer la connexion
+        AddCategorie addCategorie = new AddCategorie(oracleConnexion);
+        addCategorie.setVisible(true);
+    }//GEN-LAST:event_BTN_Ajouter_CategorieActionPerformed
 
     /**
      * @param args the command line arguments

@@ -22,9 +22,12 @@ public class AddSpectacle extends javax.swing.JFrame {
     /**
      * Creates new form AddSpectacle
      */
+    // Son constructeur prend en paramêtre la connexion de Client.java
     public AddSpectacle(OracleConnexion oc) {
         initComponents();
         oracleConnexion = oc;
+        // Sa sert a remplir le combo box CBX_Categorie, avec tous 
+        // les Catégories de la BD
         RemplirCBXCategorie();
     }
 
@@ -200,6 +203,8 @@ public class AddSpectacle extends javax.swing.JFrame {
 
     private void BTN_AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_AddActionPerformed
         try {
+            // Ici, c'est le code du prof, que jai adapté.
+            // J'ai rien d'autre à ajouter
             CallableStatement Callins =
             oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AJOUTERSPECTACLE (?,?,?,?,?,?)}");
             Callins.setString(1,CBX_Categorie.getSelectedItem().toString());
@@ -212,6 +217,7 @@ public class AddSpectacle extends javax.swing.JFrame {
             Callins.clearParameters();
             Callins.close();
             System.out.println("insertion DONE");
+            // à chaque foix qu'un spectacle se rajoute, j'update le Jtable dans Client.java
             Client.AfficherSpectacle();
         }
         catch(SQLException ins)
@@ -251,10 +257,10 @@ public class AddSpectacle extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AddSpectacle(oracleConnexion).setVisible(true);
-                RemplirCBXCategorie();
             }
         });
     }
+    // Je rempli ma combo box avec les nom de catégorie
     public static void RemplirCBXCategorie(){
         try {          
             CallableStatement Callist =

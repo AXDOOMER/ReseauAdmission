@@ -5,17 +5,22 @@
  */
 package Paquet_Client;
 
+import static Paquet_Client.AddSpectacle.oracleConnexion;
+import java.sql.CallableStatement;
+import java.sql.SQLException;
+
 /**
  *
  * @author Andy
  */
 public class AddCategorie extends javax.swing.JFrame {
-
+    public static OracleConnexion oracleConnexion;
     /**
      * Creates new form AddCategorie
      */
-    public AddCategorie() {
+    public AddCategorie(OracleConnexion oc) {
         initComponents();
+        oracleConnexion = oc;
     }
 
     /**
@@ -32,13 +37,18 @@ public class AddCategorie extends javax.swing.JFrame {
         TBX_Description = new javax.swing.JTextField();
         BTN_Add = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ajouter une catégorie"));
 
         jLabel1.setText("Description");
 
         BTN_Add.setText("Add");
+        BTN_Add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_AddActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -85,6 +95,23 @@ public class AddCategorie extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void BTN_AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_AddActionPerformed
+                try {
+            // Ici, c'est le code du prof, que jai adapté.
+            CallableStatement Callins =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AJOUTERCATEGORIE (?)}");
+            Callins.setString(1,TBX_Description.getText());
+            Callins.executeUpdate();
+            Callins.clearParameters();
+            Callins.close();
+            System.out.println("insertion DONE");
+        }
+        catch(SQLException ins)
+        {
+            System.out.println(ins.getMessage());
+        }
+    }//GEN-LAST:event_BTN_AddActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -115,7 +142,7 @@ public class AddCategorie extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddCategorie().setVisible(true);
+                new AddCategorie(oracleConnexion).setVisible(true);
             }
         });
     }
