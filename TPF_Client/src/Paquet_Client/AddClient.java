@@ -5,17 +5,26 @@
  */
 package Paquet_Client;
 
+import static Paquet_Client.AddSpectacle.oracleConnexion;
+import java.sql.CallableStatement;
+import java.sql.SQLException;
+
 /**
  *
  * @author Andy
  */
 public class AddClient extends javax.swing.JFrame {
-
+    
+    public static OracleConnexion oracleConnexion;
     /**
      * Creates new form AddClient
      */
-    public AddClient() {
+    // Son constructeur prend en paramêtre la connexion de Client.java
+    public AddClient(OracleConnexion oc) {
         initComponents();
+        oracleConnexion = oc;
+        // Sa sert a limiter le nombre de caractère dans un JTextField
+        TBX_Telephone.setDocument(new JTextFieldCharLimit(10));
     }
 
     /**
@@ -43,7 +52,7 @@ public class AddClient extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ajouter un client"));
@@ -61,8 +70,18 @@ public class AddClient extends javax.swing.JFrame {
         jLabel6.setText("Téléphone");
 
         jButton1.setText("Add");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Clear");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -146,6 +165,38 @@ public class AddClient extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        TBX_Adresse.setText(null);
+        TBX_MotPasse.setText(null);
+        TBX_Nom.setText(null);
+        TBX_Prenom.setText(null);
+        TBX_Pseudo.setText(null);
+        TBX_Telephone.setText(null);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            // Ici, c'est le code du prof, que jai adapté.
+            CallableStatement Callins =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AJOUTERCLIENT (?,?,?,?,?,?)}");
+            Callins.setString(1,TBX_Nom.getText());
+            Callins.setString(2,TBX_Prenom.getText());
+            Callins.setString(3,TBX_Pseudo.getText());
+            Callins.setString(4,TBX_MotPasse.getText());
+            Callins.setString(5,TBX_Adresse.getText());
+            Callins.setString(6,TBX_Telephone.getText());
+            Callins.executeUpdate();
+            Callins.clearParameters();
+            Callins.close();
+            System.out.println("insertion DONE");
+            Client.AfficherSpectacle();
+        }
+        catch(SQLException ins)
+        {
+            System.out.println(ins.getMessage());
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -176,7 +227,7 @@ public class AddClient extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddClient().setVisible(true);
+                new AddClient(oracleConnexion).setVisible(true);
             }
         });
     }

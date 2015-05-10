@@ -16,6 +16,7 @@ import oracle.jdbc.OracleTypes;
  * @author Andy
  */
 public class Client extends javax.swing.JFrame {
+    
     public static OracleConnexion oracleConnexion;
     public static Object[][] data = null;
     /**
@@ -231,11 +232,13 @@ public class Client extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void BTN_Ajouter_ClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_Ajouter_ClientActionPerformed
-        AddBillet addBillet = new AddBillet(oracleConnexion);
-        addBillet.setVisible(true);
+        // Faire afficher le jFrame AddClient et lui envoyer la connexion
+        AddClient addClient = new AddClient(oracleConnexion);
+        addClient.setVisible(true);
     }//GEN-LAST:event_BTN_Ajouter_ClientActionPerformed
 
     private void BTN_Ajouter_SpecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_Ajouter_SpecActionPerformed
+        // Faire afficher le jFrame AddSpectacle et lui envoyer la connexion
         AddSpectacle addSpectacle = new AddSpectacle(oracleConnexion);
         addSpectacle.setVisible(true);
     }//GEN-LAST:event_BTN_Ajouter_SpecActionPerformed
@@ -283,6 +286,7 @@ public class Client extends javax.swing.JFrame {
         oracleConnexion.connecter();
     }
     
+    // Sa l'affiche les spectacles dans un Jtable(TBL_Spectacle)
     public static void AfficherSpectacle()
     {
         try {         
