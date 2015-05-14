@@ -46,7 +46,6 @@ public class AddSection extends javax.swing.JFrame {
         CBX_NomSalle = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ajouter une section"));
 

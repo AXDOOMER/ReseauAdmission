@@ -45,7 +45,6 @@ public class AddRepresentation extends javax.swing.JFrame {
         DATE_Date = new org.jdesktop.swingx.JXDatePicker();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ajouter une représentation"));
 
