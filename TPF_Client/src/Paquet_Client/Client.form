@@ -223,11 +223,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Ajouter"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_Ajouter_RepActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="BTN_Ajouter_Salle">
           <Properties>
             <Property name="text" type="java.lang.String" value="Ajouter"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_Ajouter_SalleActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="BTN_Ajouter_Categorie">
           <Properties>
@@ -241,6 +247,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Ajouter"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_Ajouter_SectionActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>

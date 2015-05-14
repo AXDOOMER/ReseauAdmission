@@ -120,8 +120,18 @@ public class Client extends javax.swing.JFrame {
         jLabel2.setText("Client");
 
         BTN_Ajouter_Rep.setText("Ajouter");
+        BTN_Ajouter_Rep.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_Ajouter_RepActionPerformed(evt);
+            }
+        });
 
         BTN_Ajouter_Salle.setText("Ajouter");
+        BTN_Ajouter_Salle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_Ajouter_SalleActionPerformed(evt);
+            }
+        });
 
         BTN_Ajouter_Categorie.setText("Ajouter");
         BTN_Ajouter_Categorie.addActionListener(new java.awt.event.ActionListener() {
@@ -131,6 +141,11 @@ public class Client extends javax.swing.JFrame {
         });
 
         BTN_Ajouter_Section.setText("Ajouter");
+        BTN_Ajouter_Section.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_Ajouter_SectionActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Représentation");
 
@@ -254,6 +269,21 @@ public class Client extends javax.swing.JFrame {
         addCategorie.setVisible(true);
     }//GEN-LAST:event_BTN_Ajouter_CategorieActionPerformed
 
+    private void BTN_Ajouter_RepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_Ajouter_RepActionPerformed
+        AddRepresentation addRepresentation = new AddRepresentation(oracleConnexion);
+        addRepresentation.setVisible(true);
+    }//GEN-LAST:event_BTN_Ajouter_RepActionPerformed
+
+    private void BTN_Ajouter_SalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_Ajouter_SalleActionPerformed
+        AddSalle addSalle = new AddSalle(oracleConnexion);
+        addSalle.setVisible(true);
+    }//GEN-LAST:event_BTN_Ajouter_SalleActionPerformed
+
+    private void BTN_Ajouter_SectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_Ajouter_SectionActionPerformed
+        AddSection addSection = new AddSection(oracleConnexion);
+        addSection.setVisible(true);
+    }//GEN-LAST:event_BTN_Ajouter_SectionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -314,7 +344,7 @@ public class Client extends javax.swing.JFrame {
             {                              
                 int prix = rstlist.getInt(3);  
                 String artiste = rstlist.getString(4);
-                String nomSpectacle = rstlist.getString(5);
+                String nomSpectacle = rstlist.getString("NOMSpECTACLE");
                 model.addRow(new Object[]{Integer.toString(prix),artiste,nomSpectacle});
                 System.out.println(prix + "-" + artiste + "-" + nomSpectacle);
             }

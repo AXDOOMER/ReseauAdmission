@@ -5,17 +5,25 @@
  */
 package Paquet_Client;
 
+import static Paquet_Client.AddSalle.oracleConnexion;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import oracle.jdbc.OracleTypes;
+
 /**
  *
  * @author Andy
  */
 public class AddSection extends javax.swing.JFrame {
-
+    public static OracleConnexion oracleConnexion;
     /**
      * Creates new form AddSection
      */
-    public AddSection() {
+    public AddSection(OracleConnexion oc) {
         initComponents();
+        oracleConnexion = oc;
+        RemplirCBXNomSalle();
     }
 
     /**
@@ -29,28 +37,38 @@ public class AddSection extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        TBX_CodeSalle = new javax.swing.JTextField();
         TBX_Taille = new javax.swing.JTextField();
         TBX_Prix = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         BTN_Add = new javax.swing.JButton();
         BTN_Clear = new javax.swing.JButton();
+        CBX_NomSalle = new javax.swing.JComboBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ajouter une section"));
 
-        jLabel1.setText("Code Salle");
+        jLabel1.setText("Nom salle");
 
         jLabel2.setText("Taille");
 
         jLabel3.setText("Prix");
 
         BTN_Add.setText("Add");
+        BTN_Add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_AddActionPerformed(evt);
+            }
+        });
 
         BTN_Clear.setText("Clear");
+        BTN_Clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_ClearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -70,9 +88,9 @@ public class AddSection extends javax.swing.JFrame {
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(TBX_CodeSalle, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-                            .addComponent(TBX_Taille)
-                            .addComponent(TBX_Prix))))
+                            .addComponent(TBX_Taille, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                            .addComponent(TBX_Prix)
+                            .addComponent(CBX_NomSalle, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -81,7 +99,7 @@ public class AddSection extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(TBX_CodeSalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CBX_NomSalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TBX_Taille, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -116,6 +134,30 @@ public class AddSection extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void BTN_AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_AddActionPerformed
+        try {
+            CallableStatement Callins =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AJOUTERSECTION (?,?,?)}");
+            Callins.setString(1,CBX_NomSalle.getSelectedItem().toString());
+            Callins.setInt(2, Integer.parseInt(TBX_Taille.getText()));
+            Callins.setInt(3, Integer.parseInt(TBX_Prix.getText()));
+            Callins.executeUpdate();
+            Callins.clearParameters();
+            Callins.close();
+            System.out.println("insertion DONE");
+        }
+        catch(SQLException ins)
+        {
+            System.out.println(ins.getMessage());
+        }
+    }//GEN-LAST:event_BTN_AddActionPerformed
+
+    private void BTN_ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ClearActionPerformed
+        CBX_NomSalle.setSelectedIndex(0);
+        TBX_Taille.setText(null);
+        TBX_Prix.setText(null);
+    }//GEN-LAST:event_BTN_ClearActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -146,15 +188,38 @@ public class AddSection extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddSection().setVisible(true);
+                new AddSection(oracleConnexion).setVisible(true);
             }
         });
     }
-
+        public static void RemplirCBXNomSalle(){
+        try {          
+            CallableStatement Callist =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AFFICHERSALLE(?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+                       
+            while(rstlist.next())
+            {                              
+                String NomSalle = rstlist.getString("NOMSALLE");
+                CBX_NomSalle.addItem(NomSalle);
+                System.out.println(NomSalle);
+            }
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+        }
+        catch(SQLException list)
+        {
+        System.out.println(list.getMessage());
+        }
+     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_Add;
     private javax.swing.JButton BTN_Clear;
-    private javax.swing.JTextField TBX_CodeSalle;
+    private static javax.swing.JComboBox CBX_NomSalle;
     private javax.swing.JTextField TBX_Prix;
     private javax.swing.JTextField TBX_Taille;
     private javax.swing.JLabel jLabel1;

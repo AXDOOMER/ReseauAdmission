@@ -5,17 +5,25 @@
  */
 package Paquet_Client;
 
+import static Paquet_Client.AddSpectacle.oracleConnexion;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import oracle.jdbc.OracleTypes;
+
 /**
  *
  * @author Andy
  */
 public class AddSalle extends javax.swing.JFrame {
-
+    public static OracleConnexion oracleConnexion;
     /**
      * Creates new form AddSalle
      */
-    public AddSalle() {
+    public AddSalle(OracleConnexion oc) {
         initComponents();
+        oracleConnexion = oc;
+        RemplirCBXNomSpectacle();
     }
 
     /**
@@ -29,23 +37,33 @@ public class AddSalle extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        TBX_CodeSpectacle = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         TBX_NomSalle = new javax.swing.JTextField();
         BTN_Add = new javax.swing.JButton();
         BTN_Clear = new javax.swing.JButton();
+        CBX_NomSpectacle = new javax.swing.JComboBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ajouter une salle"));
 
-        jLabel1.setText("Code spectacle");
+        jLabel1.setText("Nom spectacle");
 
         jLabel2.setText("Nom salle");
 
         BTN_Add.setText("Add");
+        BTN_Add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_AddActionPerformed(evt);
+            }
+        });
 
         BTN_Clear.setText("Clear");
+        BTN_Clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_ClearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -61,7 +79,7 @@ public class AddSalle extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(TBX_NomSalle)
-                            .addComponent(TBX_CodeSpectacle)))
+                            .addComponent(CBX_NomSpectacle, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(BTN_Clear)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
@@ -74,7 +92,7 @@ public class AddSalle extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(TBX_CodeSpectacle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CBX_NomSpectacle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -106,6 +124,28 @@ public class AddSalle extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void BTN_ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ClearActionPerformed
+        CBX_NomSpectacle.setSelectedIndex(0);
+        TBX_NomSalle.setText(null);
+    }//GEN-LAST:event_BTN_ClearActionPerformed
+
+    private void BTN_AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_AddActionPerformed
+            try {
+            CallableStatement Callins =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AJOUTERSALLE (?,?)}");
+            Callins.setString(1,CBX_NomSpectacle.getSelectedItem().toString());
+            Callins.setString(2, TBX_NomSalle.getText());
+            Callins.executeUpdate();
+            Callins.clearParameters();
+            Callins.close();
+            System.out.println("insertion DONE");
+        }
+        catch(SQLException ins)
+        {
+            System.out.println(ins.getMessage());
+        }
+    }//GEN-LAST:event_BTN_AddActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -136,15 +176,39 @@ public class AddSalle extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddSalle().setVisible(true);
+                new AddSalle(oracleConnexion).setVisible(true);
             }
         });
+    }
+        public static void RemplirCBXNomSpectacle(){
+        try {          
+            CallableStatement Callist =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.ListeSpectacle(?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+                       
+            while(rstlist.next())
+            {                              
+                String NomSpectacle = rstlist.getString("NOMSPECTACLE");
+                CBX_NomSpectacle.addItem(NomSpectacle);
+                System.out.println(NomSpectacle);
+            }
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+        }
+        catch(SQLException list)
+        {
+        System.out.println(list.getMessage());
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_Add;
     private javax.swing.JButton BTN_Clear;
-    private javax.swing.JTextField TBX_CodeSpectacle;
+    private static javax.swing.JComboBox CBX_NomSpectacle;
     private javax.swing.JTextField TBX_NomSalle;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
