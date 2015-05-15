@@ -5,6 +5,7 @@
  */
 package Paquet_Client;
 
+import java.awt.Point;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -254,33 +255,47 @@ public class Client extends javax.swing.JFrame {
     private void BTN_Ajouter_ClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_Ajouter_ClientActionPerformed
         // Faire afficher le jFrame AddClient et lui envoyer la connexion
         AddClient addClient = new AddClient(oracleConnexion);
+        Point centre = new Point(this.getLocation().x + this.getWidth()/2 - addClient.getWidth()/2,this.getLocation().y +  this.getHeight()/2 - addClient.getHeight()/2);
+        addClient.setLocation(centre);
         addClient.setVisible(true);
     }//GEN-LAST:event_BTN_Ajouter_ClientActionPerformed
 
     private void BTN_Ajouter_SpecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_Ajouter_SpecActionPerformed
         // Faire afficher le jFrame AddSpectacle et lui envoyer la connexion
         AddSpectacle addSpectacle = new AddSpectacle(oracleConnexion);
+        Point centre = new Point(this.getLocation().x + this.getWidth()/2 - addSpectacle.getWidth()/2,this.getLocation().y +  this.getHeight()/2 - addSpectacle.getHeight()/2);
+        addSpectacle.setLocation(centre);
         addSpectacle.setVisible(true);
     }//GEN-LAST:event_BTN_Ajouter_SpecActionPerformed
 
     private void BTN_Ajouter_CategorieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_Ajouter_CategorieActionPerformed
         // Faire afficher le jFrame AddCategorie et lui envoyer la connexion
         AddCategorie addCategorie = new AddCategorie(oracleConnexion);
+        Point centre = new Point(this.getLocation().x + this.getWidth()/2 - addCategorie.getWidth()/2,this.getLocation().y +  this.getHeight()/2 - addCategorie.getHeight()/2);
+        addCategorie.setLocation(centre);
         addCategorie.setVisible(true);
     }//GEN-LAST:event_BTN_Ajouter_CategorieActionPerformed
 
     private void BTN_Ajouter_RepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_Ajouter_RepActionPerformed
         AddRepresentation addRepresentation = new AddRepresentation(oracleConnexion);
+        addRepresentation.setSize(400, 200);       
+        Point centre = new Point(this.getLocation().x + this.getWidth()/2 - addRepresentation.getWidth()/2,this.getLocation().y +  this.getHeight()/2 - addRepresentation.getHeight()/2);
+        addRepresentation.setLocation(centre);
+ 
         addRepresentation.setVisible(true);
     }//GEN-LAST:event_BTN_Ajouter_RepActionPerformed
 
     private void BTN_Ajouter_SalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_Ajouter_SalleActionPerformed
         AddSalle addSalle = new AddSalle(oracleConnexion);
+        Point centre = new Point(this.getLocation().x + this.getWidth()/2 - addSalle.getWidth()/2,this.getLocation().y +  this.getHeight()/2 - addSalle.getHeight()/2);
+        addSalle.setLocation(centre);
         addSalle.setVisible(true);
     }//GEN-LAST:event_BTN_Ajouter_SalleActionPerformed
 
     private void BTN_Ajouter_SectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_Ajouter_SectionActionPerformed
-        AddSection addSection = new AddSection(oracleConnexion);
+        AddSection addSection = new AddSection(oracleConnexion);       
+        Point centre = new Point(this.getLocation().x + this.getWidth()/2 - addSection.getWidth()/2,this.getLocation().y +  this.getHeight()/2 - addSection.getHeight()/2);
+        addSection.setLocation(centre);
         addSection.setVisible(true);
     }//GEN-LAST:event_BTN_Ajouter_SectionActionPerformed
 
