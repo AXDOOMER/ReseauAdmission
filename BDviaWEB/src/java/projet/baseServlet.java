@@ -34,22 +34,33 @@ public class baseServlet extends HttpServlet {
     //methode pour créer les pages webs    
     public void acceuil(PrintWriter out)
     {
-        out.append(
-"      <table width=\"100%\" cellpadding=\"10px\">\n" +
-"      <tr> <td> Voici l'acceuil </td> </tr>" +
-"      <tr> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td> <div> <button>Chercher</button>  </div> </td>\n" +
-"      <tr> <td>Date</td> <td>Date</td> <td>Date</td> <td>Date</td>" +
-"      <tr> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td> Artiste <div> <input type=\"text\"/> <button>Chercher</button>  </div> </td>\n" +
-"      <tr> <td>Date</td> <td>Date</td> <td>Date</td> <td>Date</td>" +
-"      <tr> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td> <div> Salle <div> <select> <option value=\"Salle1\">Salle 1</option> </select> <button>Chercher</button> </div> </td>\n" +
-"      <tr> <td>Date</td> <td>Date</td> <td>Date</td> <td>Date</td>" +
-"      </table>"
+       out.println(
+"        <table width=\"100%\" height=auto cellpadding=\"10px\" border=\"1px\">\n" +
+"             <tr> <td colspan=\"4\"> Voici l'acceuil </td> <td rowspan=\"3\" width=200> Catégorie <br> <input type=\"checkbox\" name\"catégorie\" value=\"humour\"> humour <br>"+
+"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"musique\"> musique <br>" +
+"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"enfant\"> enfant <br>"+
+"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"illusion\"> illusion <br>"+
+"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"danse\"> danse <br>"+
+"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"cirque\"> cirque <br>"+
+"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"conference\"> conference <br>"+
+"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"sport\"> sport <br>"+
+"                                                                                         <button>Chercher</button> </td> </tr>"+   
+"           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>" +
+"           <tr> </tr>"+        
+"           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>  <td rowspan=\"2\"> Salle <select> <option value=\"Salle1\">Salle 1 </option> </select> <br> <button>Chercher</button> </td>" +
+"           <tr> </tr>"+  
+"           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\"> Artiste <div> <input type=\"text\"/> <button>Chercher</button>  </div> </td>"+        
+"           <tr> </tr>"+  
+"        </table>"
        );
     }
     
     public void achatDeBillets(PrintWriter out)
     {
-        
+       out.println(
+"      <table width=\"100%\" cellpadding=\"10px\">\n" +
+"      <tr> <td> Achat de Billets </td> </tr>" +
+"      <div class=\"affichediv\"> ");
     }
     
     public void panier(PrintWriter out)
@@ -80,7 +91,7 @@ public class baseServlet extends HttpServlet {
             out.println("<title>Servlet ReseauAdmission</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<div background-color:red text-align:center> <table border=\"1px\" cellpadding=\"10px\" width=\"100%\"> <tr> <td>Acceuil</td> <td>Achats de billets</td> <td>Panier</td> <td>Inscription</td> <td>"+
+            out.println("<table border=\"1px\" cellpadding=\"10px\" width=\"100%\"> <tr> <td>Acceuil</td> <td>Achats de billets</td> <td>Panier</td> <td>Inscription</td> <td>"+
 "            Utilisateur: <BR/>\n" +
 "            <input type=text name=utilisateur id=utilisateur><BR/>\n" +
 "            Mot de passe: <BR/>\n" +
@@ -88,6 +99,7 @@ public class baseServlet extends HttpServlet {
 "            <button>Login</button>"+
 "            </td> </tr> </table> </div> ");
             acceuil(out);
+            achatDeBillets(out);
             /*out.println("<h1>Bravo! Tu est connecté au servlet. </h1>");
             out.println("<h2>C'est juste une page de test bin simple</h2>");
             out.println("<hr/>");
