@@ -35,7 +35,7 @@ public class baseServlet extends HttpServlet {
     public void acceuil(PrintWriter out)
     {
        out.println(
-"        <table width=\"100%\" height=auto cellpadding=\"10px\" border=\"1px\">\n" +
+"        <table width=\"100%\" height=auto cellpadding=\"10px\" style=\"background-color:lightgrey\">\n" +
 "             <tr> <td colspan=\"4\"> Voici l'acceuil </td> <td rowspan=\"3\" width=200> Catégorie <br> <input type=\"checkbox\" name\"catégorie\" value=\"humour\"> humour <br>"+
 "                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"musique\"> musique <br>" +
 "                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"enfant\"> enfant <br>"+
@@ -47,7 +47,7 @@ public class baseServlet extends HttpServlet {
 "                                                                                         <button>Chercher</button> </td> </tr>"+   
 "           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>" +
 "           <tr> </tr>"+        
-"           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>  <td rowspan=\"2\"> Salle <select> <option value=\"Salle1\">Salle 1 </option> </select> <br> <button>Chercher</button> </td>" +
+"           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>  <td rowspan=\"2\"> Salle <div> <select> <option value=\"Salle1\">Salle 1 </option> </select> <br> <button>Chercher</button> </div> </td>" +
 "           <tr> </tr>"+  
 "           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\"> Artiste <div> <input type=\"text\"/> <button>Chercher</button>  </div> </td>"+        
 "           <tr> </tr>"+  
@@ -84,20 +84,26 @@ public class baseServlet extends HttpServlet {
             
             
             out.println("<style>");
-            
+            out.println(" .titre { table-layout: fixed;"+
+                                 " font-size:20px;  }\n" +
+"                         .acceuil { width:20%; ");
             out.println("</style>");
             
             
             out.println("<title>Servlet ReseauAdmission</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<table border=\"1px\" cellpadding=\"10px\" width=\"100%\"> <tr> <td>Acceuil</td> <td>Achats de billets</td> <td>Panier</td> <td>Inscription</td> <td>"+
-"            Utilisateur: <BR/>\n" +
-"            <input type=text name=utilisateur id=utilisateur><BR/>\n" +
-"            Mot de passe: <BR/>\n" +
-"            <input type=password name=motdepasse id=motdepasse><BR/> "+
-"            <button>Login</button>"+
-"            </td> </tr> </table> </div> ");
+            out.println("<table class=\"titre\" border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:grey; text-align:center\"> <tr> <td class=\"acceuil\">Acceuil</td>"
+                     + " <td class=\"acceuil\">Achats de billets</td>"
+                     + " <td class=\"acceuil\">Panier</td>"
+                     + " <td class=\"acceuil\">Inscription</td>"
+                     + " <td class=\"acceuil\">"+
+"                    Utilisateur: <BR/>\n" +
+"                    <input type=text name=utilisateur id=utilisateur><BR/>\n" +
+"                    Mot de passe: <BR/>\n" +
+"                    <input type=password name=motdepasse id=motdepasse><BR/> "+
+"                    <button>Login</button>"+
+"                    </td> </tr> </table> </div> ");
             acceuil(out);
             achatDeBillets(out);
             /*out.println("<h1>Bravo! Tu est connecté au servlet. </h1>");
