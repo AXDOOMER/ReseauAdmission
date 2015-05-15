@@ -31,10 +31,35 @@ public class baseServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     
-    //methode pour creer des div
-    public void creerDiv(PrintWriter out)
+    //methode pour créer les pages webs    
+    public void acceuil(PrintWriter out)
     {
-        out.println("<div> Acceuil </div>");
+        out.append(
+"      <table width=\"100%\" cellpadding=\"10px\">\n" +
+"      <td> Catégorie </td>\n" +
+"      <tr> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td> <div> Chercher  </div> </td>\n" +
+"      <tr> <td>date</td> <td>Date</td> <td>Date</td> <td>Date</td>" +
+"      <tr> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td> <div> Chercher  </div> </td>\n" +
+"      <tr> <td>date</td> <td>Date</td> <td>Date</td> <td>Date</td>" +
+"      <tr> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td> <div> Chercher </div> </td>\n" +
+"      <tr> <td>date</td> <td>Date</td> <td>Date</td> <td>Date</td>" +
+"      </table>"
+       );
+    }
+    
+    public void achatDeBillets(PrintWriter out)
+    {
+        
+    }
+    
+    public void panier(PrintWriter out)
+    {
+        
+    }
+    
+    public void inscription(PrintWriter out)
+    {
+        
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -42,23 +67,21 @@ public class baseServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            creerDiv(out);
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
             
             
             out.println("<style>");
-            //Style des DIV
-            out.println("div{" + "background-color: lightblue; " + "color:Blue; " + "width=200px" + "position:absolute }");
-            out.println("");
             out.println("</style>");
             
             
             out.println("<title>Servlet ReseauAdmission</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Bravo! Tu est connecté au servlet. </h1>");
+            out.println("<table width=\"100%\"> <tr> <td >Acceuil</td> <td>Achats de billets</td> <td>Panier</td> <td>Inscription</td> <td>Login</td> </tr> </table> ");
+            acceuil(out);
+            /*out.println("<h1>Bravo! Tu est connecté au servlet. </h1>");
             out.println("<h2>C'est juste une page de test bin simple</h2>");
             out.println("<hr/>");
             out.println("Maintenant, loginnez-vous à la base de données: <BR/><BR/>");
@@ -66,7 +89,7 @@ public class baseServlet extends HttpServlet {
             out.println("<input type=text name=utilisateur id=utilisateur><BR/>");
             out.println("Mot de passe: <BR/>");
             out.println("<input type=password name=motdepasse id=motdepasse><BR/>");
-            out.println("<BR/><BUTTON>Essayer de se connecter...</BUTTON>");
+            out.println("<BR/><BUTTON>Essayer de se connecter...</BUTTON>");*/
             out.println("</body>");
             out.println("</html>");
         }
