@@ -36,13 +36,13 @@ public class baseServlet extends HttpServlet {
     {
         out.append(
 "      <table width=\"100%\" cellpadding=\"10px\">\n" +
-"      <td> Catégorie </td>\n" +
-"      <tr> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td> <div> Chercher  </div> </td>\n" +
-"      <tr> <td>date</td> <td>Date</td> <td>Date</td> <td>Date</td>" +
-"      <tr> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td> <div> Chercher  </div> </td>\n" +
-"      <tr> <td>date</td> <td>Date</td> <td>Date</td> <td>Date</td>" +
-"      <tr> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td> <div> Chercher </div> </td>\n" +
-"      <tr> <td>date</td> <td>Date</td> <td>Date</td> <td>Date</td>" +
+"      <tr> <td> Voici l'acceuil </td> </tr>" +
+"      <tr> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td> <div> <button>Chercher</button>  </div> </td>\n" +
+"      <tr> <td>Date</td> <td>Date</td> <td>Date</td> <td>Date</td>" +
+"      <tr> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td> Artiste <div> <input type=\"text\"/> <button>Chercher</button>  </div> </td>\n" +
+"      <tr> <td>Date</td> <td>Date</td> <td>Date</td> <td>Date</td>" +
+"      <tr> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td>Nom du Spectacle</td> <td> <div> Salle <div> <select> <option value=\"Salle1\">Salle 1</option> </select> <button>Chercher</button> </div> </td>\n" +
+"      <tr> <td>Date</td> <td>Date</td> <td>Date</td> <td>Date</td>" +
 "      </table>"
        );
     }
@@ -80,16 +80,19 @@ public class baseServlet extends HttpServlet {
             out.println("<title>Servlet ReseauAdmission</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<table cellpadding=\"10px\" width=\"100%\"> <tr> <td >Acceuil</td> <td>Achats de billets</td> <td>Panier</td> <td>Inscription</td> <td>Login</td> </tr> </table> ");
+            out.println("<div background-color:red text-align:center> <table border=\"1px\" cellpadding=\"10px\" width=\"100%\"> <tr> <td>Acceuil</td> <td>Achats de billets</td> <td>Panier</td> <td>Inscription</td> <td>"+
+"            Utilisateur: <BR/>\n" +
+"            <input type=text name=utilisateur id=utilisateur><BR/>\n" +
+"            Mot de passe: <BR/>\n" +
+"            <input type=password name=motdepasse id=motdepasse><BR/> "+
+"            <button>Login</button>"+
+"            </td> </tr> </table> </div> ");
             acceuil(out);
             /*out.println("<h1>Bravo! Tu est connecté au servlet. </h1>");
             out.println("<h2>C'est juste une page de test bin simple</h2>");
             out.println("<hr/>");
             out.println("Maintenant, loginnez-vous à la base de données: <BR/><BR/>");
-            out.println("Utilsateur: <BR/>");
-            out.println("<input type=text name=utilisateur id=utilisateur><BR/>");
-            out.println("Mot de passe: <BR/>");
-            out.println("<input type=password name=motdepasse id=motdepasse><BR/>");
+
             out.println("<BR/><BUTTON>Essayer de se connecter...</BUTTON>");*/
             out.println("</body>");
             out.println("</html>");
