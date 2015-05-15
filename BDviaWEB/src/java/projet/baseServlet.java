@@ -73,13 +73,14 @@ public class baseServlet extends HttpServlet {
             
             
             out.println("<style>");
+            
             out.println("</style>");
             
             
             out.println("<title>Servlet ReseauAdmission</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<table width=\"100%\"> <tr> <td >Acceuil</td> <td>Achats de billets</td> <td>Panier</td> <td>Inscription</td> <td>Login</td> </tr> </table> ");
+            out.println("<table cellpadding=\"10px\" width=\"100%\"> <tr> <td >Acceuil</td> <td>Achats de billets</td> <td>Panier</td> <td>Inscription</td> <td>Login</td> </tr> </table> ");
             acceuil(out);
             /*out.println("<h1>Bravo! Tu est connecté au servlet. </h1>");
             out.println("<h2>C'est juste une page de test bin simple</h2>");
