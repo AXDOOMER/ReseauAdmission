@@ -8,6 +8,7 @@ package Paquet_Client;
 import static Paquet_Client.AddSpectacle.oracleConnexion;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -96,19 +97,27 @@ public class AddCategorie extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BTN_AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_AddActionPerformed
-                try {
-            // Ici, c'est le code du prof, que jai adapté.
-            CallableStatement Callins =
-            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AJOUTERCATEGORIE (?)}");
-            Callins.setString(1,TBX_Description.getText());
-            Callins.executeUpdate();
-            Callins.clearParameters();
-            Callins.close();
-            System.out.println("insertion DONE");
-        }
-        catch(SQLException ins)
+        // Vérifier si le textbox est vide
+        if(!TBX_Description.getText().equals(""))
         {
-            System.out.println(ins.getMessage());
+            try {
+                // Ici, c'est le code du prof, que jai adapté.
+                CallableStatement Callins =
+                oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AJOUTERCATEGORIE (?)}");
+                Callins.setString(1,TBX_Description.getText());
+                Callins.executeUpdate();
+                Callins.clearParameters();
+                Callins.close();
+                JOptionPane.showMessageDialog(null, "Inséré avec succès", "InfoBox: Insert Catégorie", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch(SQLException ins)
+            {
+                JOptionPane.showMessageDialog(null, "Erreur dans ajouter une catégorie", "InfoBox: Insert catégorie", JOptionPane.INFORMATION_MESSAGE);
+            }            
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "La description ne doit pas être vide!", "InfoBox: Insert catégorie", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_BTN_AddActionPerformed
 

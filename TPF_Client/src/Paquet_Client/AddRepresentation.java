@@ -10,6 +10,7 @@ import static Paquet_Client.AddSection.oracleConnexion;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import oracle.jdbc.OracleTypes;
 
 /**
@@ -43,6 +44,8 @@ public class AddRepresentation extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         CBX_NomSalle = new javax.swing.JComboBox();
         DATE_Date = new org.jdesktop.swingx.JXDatePicker();
+        CBX_NomSpectacle = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -66,6 +69,14 @@ public class AddRepresentation extends javax.swing.JFrame {
             }
         });
 
+        CBX_NomSalle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CBX_NomSalleActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Nom spectacle");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -74,18 +85,24 @@ public class AddRepresentation extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(CBX_NomSalle, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(DATE_Date, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1))))
+                        .addComponent(jButton1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 10, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(CBX_NomSalle, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(CBX_NomSpectacle, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(DATE_Date, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,15 +111,19 @@ public class AddRepresentation extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(CBX_NomSalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(13, 13, 13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(DATE_Date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CBX_NomSpectacle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(DATE_Date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -115,9 +136,10 @@ public class AddRepresentation extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -129,21 +151,58 @@ public class AddRepresentation extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-            try {
-            CallableStatement Callins =
-            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AJOUTEREPRESENTATION (?,?)}");
-            Callins.setString(1,CBX_NomSalle.getSelectedItem().toString());
-            Callins.setDate(2,new java.sql.Date(DATE_Date.getDate().getTime()));
-            Callins.executeUpdate();
-            Callins.clearParameters();
-            Callins.close();
-            System.out.println("insertion DONE");
-        }
-        catch(SQLException ins)
+        // Vérifier si la date est null;
+        if(DATE_Date.getDate() != null)
         {
-            System.out.println(ins.getMessage());
+            try {
+                CallableStatement Callins =
+                oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AJOUTEREPRESENTATION (?,?,?)}");
+                Callins.setString(1,CBX_NomSalle.getSelectedItem().toString());
+                Callins.setString(2,CBX_NomSpectacle.getSelectedItem().toString());
+                Callins.setDate(3,new java.sql.Date(DATE_Date.getDate().getTime()));
+                Callins.executeUpdate();
+                Callins.clearParameters();
+                Callins.close();
+                JOptionPane.showMessageDialog(null, "Inséré avec succès", "InfoBox: Insert Representation", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch(SQLException ins)
+            {
+                JOptionPane.showMessageDialog(null, "Erreur dans ajouter une représentation", "InfoBox: Insert Representation", JOptionPane.INFORMATION_MESSAGE);
+            }            
         }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "La date ne doit être vide", "InfoBox: Insert Representation", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void CBX_NomSalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBX_NomSalleActionPerformed
+            //Vider le combobox NomSpectacle, pour qui évite d'accumuler les spectacles
+            CBX_NomSpectacle.removeAllItems();
+        try {          
+            CallableStatement Callist =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AFFICHERNomSpectacleParSalle(?,?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.setString(2,CBX_NomSalle.getSelectedItem().toString());
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+                       
+            while(rstlist.next())
+            {                              
+                String NomSalle = rstlist.getString(1);
+                CBX_NomSpectacle.addItem(NomSalle);
+            }
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+        }
+        catch(SQLException list)
+        {
+        JOptionPane.showMessageDialog(null, "Erreur dans afficher le nom des spectacles dans le combobox CBX_NomSpectacle", "InfoBox: Afficher Spectacle", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_CBX_NomSalleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -200,16 +259,18 @@ public class AddRepresentation extends javax.swing.JFrame {
         }
         catch(SQLException list)
         {
-        System.out.println(list.getMessage());
+            JOptionPane.showMessageDialog(null, "Erreur dans afficher les salles dans le combobox CBX_NomSalle", "InfoBox: Afficher salle", JOptionPane.INFORMATION_MESSAGE);
         }
      }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JComboBox CBX_NomSalle;
+    private javax.swing.JComboBox CBX_NomSpectacle;
     private org.jdesktop.swingx.JXDatePicker DATE_Date;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

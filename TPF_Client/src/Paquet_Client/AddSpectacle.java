@@ -10,6 +10,7 @@ import static Paquet_Client.Client.oracleConnexion;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import oracle.jdbc.OracleTypes;
 
@@ -202,30 +203,51 @@ public class AddSpectacle extends javax.swing.JFrame {
     }//GEN-LAST:event_BTN_ClearActionPerformed
 
     private void BTN_AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_AddActionPerformed
-        try {
-            // Ici, c'est le code du prof, que jai adapté.
-            // J'ai rien d'autre à ajouter
-            CallableStatement Callins =
-            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AJOUTERSPECTACLE (?,?,?,?,?,?)}");
-            Callins.setString(1,CBX_Categorie.getSelectedItem().toString());
-            Callins.setInt(2, Integer.parseInt(TBX_Prix.getText()));
-            Callins.setString(3, TBX_Artiste.getText());
-            Callins.setString(4,TBX_Spectacle.getText());
-            Callins.setString(5,TBX_Url.getText());
-            Callins.setString(6,TBX_Description.getText());
-            Callins.executeUpdate();
-            Callins.clearParameters();
-            Callins.close();
-            System.out.println("insertion DONE");
-            // à chaque foix qu'un spectacle se rajoute, j'update le Jtable dans Client.java
-            Client.AfficherSpectacle();
-        }
-        catch(SQLException ins)
+        if(!champVide())
         {
-            System.out.println(ins.getMessage());
+            try {
+                // Ici, c'est le code du prof, que jai adapté.
+                // J'ai rien d'autre à ajouter
+                CallableStatement Callins =
+                oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AJOUTERSPECTACLE (?,?,?,?,?,?)}");
+                Callins.setString(1,CBX_Categorie.getSelectedItem().toString());
+                Callins.setInt(2, Integer.parseInt(TBX_Prix.getText()));
+                Callins.setString(3, TBX_Artiste.getText());
+                Callins.setString(4,TBX_Spectacle.getText());
+                Callins.setString(5,TBX_Url.getText());
+                Callins.setString(6,TBX_Description.getText());
+                Callins.executeUpdate();
+                Callins.clearParameters();
+                Callins.close();
+                JOptionPane.showMessageDialog(null, "Inséré avec succès", "InfoBox: Insert spectacle", JOptionPane.INFORMATION_MESSAGE);
+                // à chaque foix qu'un spectacle se rajoute, j'update le Jtable dans Client.java
+                Client.AfficherSpectacle();
+            }
+            catch(SQLException ins)
+            {
+                JOptionPane.showMessageDialog(null, "Erreur dans ajouter un spectacle", "InfoBox: Insert spectacle", JOptionPane.INFORMATION_MESSAGE);
+            }            
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Aucun champ de text doit être vide", "InfoBox: Insert spectacle", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_BTN_AddActionPerformed
-
+    private boolean champVide()
+    {
+        boolean estVide = false;
+        if(TBX_Spectacle.getText().equals(""))
+            estVide = true;
+        else if (TBX_Prix.getText().equals(""))
+            estVide = true;
+        else if (TBX_Artiste.getText().equals(""))
+            estVide = true;
+        else if (TBX_Url.getText().equals(""))
+            estVide = true;
+        else if (TBX_Description.getText().equals(""))
+            estVide = true;
+        return estVide;
+    }
     /**
      * @param args the command line arguments
      */
@@ -282,7 +304,7 @@ public class AddSpectacle extends javax.swing.JFrame {
         }
         catch(SQLException list)
         {
-        System.out.println(list.getMessage());
+            JOptionPane.showMessageDialog(null, "Erreur dans afficher les catégorie dans le combobox CBX_Categorie", "InfoBox: Afficher categorie", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

@@ -8,6 +8,7 @@ package Paquet_Client;
 import static Paquet_Client.AddSpectacle.oracleConnexion;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -175,28 +176,52 @@ public class AddClient extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            // Ici, c'est le code du prof, que jai adapté.
-            CallableStatement Callins =
-            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AJOUTERCLIENT (?,?,?,?,?,?)}");
-            Callins.setString(1,TBX_Nom.getText());
-            Callins.setString(2,TBX_Prenom.getText());
-            Callins.setString(3,TBX_Pseudo.getText());
-            Callins.setString(4,TBX_MotPasse.getText());
-            Callins.setString(5,TBX_Adresse.getText());
-            Callins.setString(6,TBX_Telephone.getText());
-            Callins.executeUpdate();
-            Callins.clearParameters();
-            Callins.close();
-            System.out.println("insertion DONE");
-            Client.AfficherSpectacle();
-        }
-        catch(SQLException ins)
+        if(!ChampVide())
         {
-            System.out.println(ins.getMessage());
+            try {
+                // Ici, c'est le code du prof, que jai adapté.
+                CallableStatement Callins =
+                oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AJOUTERCLIENT (?,?,?,?,?,?)}");
+                Callins.setString(1,TBX_Nom.getText());
+                Callins.setString(2,TBX_Prenom.getText());
+                Callins.setString(3,TBX_Pseudo.getText());
+                Callins.setString(4,TBX_MotPasse.getText());
+                Callins.setString(5,TBX_Adresse.getText());
+                Callins.setString(6,TBX_Telephone.getText());
+                Callins.executeUpdate();
+                Callins.clearParameters();
+                Callins.close();
+                JOptionPane.showMessageDialog(null, "Inséré avec succès", "InfoBox: Insert Client", JOptionPane.INFORMATION_MESSAGE);
+                Client.AfficherSpectacle();
+            }
+            catch(SQLException ins)
+            {
+                JOptionPane.showMessageDialog(null, "Erreur dans ajouter un client", "InfoBox: Insert client", JOptionPane.INFORMATION_MESSAGE);
+            }            
         }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Un champ est vide!", "InfoBox: Insert client", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    private boolean ChampVide()
+    {
+        boolean estVide = false;
+        if(TBX_Adresse.getText().equals(""))
+            estVide = true;
+        else if (TBX_MotPasse.getText().equals(""))
+            estVide = true;
+        else if (TBX_Nom.getText().equals(""))
+            estVide = true;
+        else if (TBX_Prenom.getText().equals(""))
+            estVide = true;
+        else if (TBX_Pseudo.getText().equals(""))
+            estVide = true;
+        else if (TBX_Telephone.getText().equals(""))
+            estVide = true;
+        return estVide;
+    }
     /**
      * @param args the command line arguments
      */
