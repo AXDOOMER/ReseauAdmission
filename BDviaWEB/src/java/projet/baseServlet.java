@@ -39,7 +39,7 @@ public class baseServlet extends HttpServlet {
        out.println(
 "        <table width=\"100%\" height=auto cellpadding=\"10px\" style=\"background-color:lightgrey\">\n" +
 "             <tr> <td colspan=\"4\"> Voici l'acceuil </td> <td rowspan=\"3\" width=200> Catégorie <br> <form>"+
-"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Sport\"> Humour <br>"+
+"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Humour\"> Humour <br>"+
 "                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Musique\"> Musique <br>" +
 "                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Enfant\"> Enfant <br>"+
 "                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Illusion\"> Illusion <br>"+
