@@ -13,6 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.Cookie;
 
 /**
  *
@@ -37,14 +39,14 @@ public class baseServlet extends HttpServlet {
        out.println(
 "        <table width=\"100%\" height=auto cellpadding=\"10px\" style=\"background-color:lightgrey\">\n" +
 "             <tr> <td colspan=\"4\"> Voici l'acceuil </td> <td rowspan=\"3\" width=200> Catégorie <br> <input type=\"checkbox\" name\"catégorie\" value=\"humour\"> humour <br>"+
-"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"musique\"> musique <br>" +
-"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"enfant\"> enfant <br>"+
-"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"illusion\"> illusion <br>"+
-"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"danse\"> danse <br>"+
-"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"cirque\"> cirque <br>"+
-"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"conference\"> conference <br>"+
-"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"sport\"> sport <br>"+
-"                                                                                         <button>Chercher</button> </td> </tr>"+   
+"                                                                                         <form> <input type=\"checkbox\" name\"categorie\" value=\"musique\"> musique <br>" +
+"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"enfant\"> enfant <br>"+
+"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"illusion\"> illusion <br>"+
+"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"danse\"> danse <br>"+
+"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"cirque\"> cirque <br>"+
+"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"conference\"> conference <br>"+
+"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"sport\"> sport <br>"+
+"                                                                                         <input type=\"submit\"> </td> </tr> </form>"+   
 "           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>" +
 "           <tr> </tr>"+        
 "           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>  <td rowspan=\"2\"> Salle <div> <select> <option value=\"Salle1\">Salle 1 </option> </select> <br> <button>Chercher</button> </div> </td>" +
@@ -77,7 +79,9 @@ public class baseServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            
+            String[] categorie;
+            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -106,14 +110,26 @@ public class baseServlet extends HttpServlet {
 "                    </td> </tr> </table> </div> ");
             acceuil(out);
             achatDeBillets(out);
-            /*out.println("<h1>Bravo! Tu est connecté au servlet. </h1>");
-            out.println("<h2>C'est juste une page de test bin simple</h2>");
-            out.println("<hr/>");
-            out.println("Maintenant, loginnez-vous à la base de données: <BR/><BR/>");
-
-            out.println("<BR/><BUTTON>Essayer de se connecter...</BUTTON>");*/
+            /*
+            Cookie test = new Cookie( "test", "Sa marche" );
+            response.addCookie(test);
+            Cookie[] tabCookies;
+            tabCookies = request.getCookies();
+            for (Cookie c : tabCookies) {
+                if (c.getName().equals("test")) 
+                {
+                    out.println("Sa marche tu?" + c.getValue());
+                }
+            }*/
+            
             out.println("</body>");
-            out.println("</html>");
+            out.println("</html>");     
+            
+            // C'est ici que sa marche pas
+            categorie = request.getParameterValues("categorie");
+            for (int i = 0; i < categorie.length; i++) {
+                System.out.println(categorie[i]); 
+            }
         }
     }
 
