@@ -22,6 +22,7 @@ import java.sql.*;
 import oracle.jdbc.OracleDriver;
 import oracle.jdbc.pool.*;
 import java.util.*;
+import oracle.jdbc.OracleTypes;
 
 /**
  *
@@ -197,6 +198,27 @@ public class baseServlet extends HttpServlet {
     {
         Connection oracleConne = seConnecter(); // Oracle s'tune conne
         
+        try
+        {
+            CallableStatement stm2 =oracleConne.prepareCall("{ call TPF_BD_JAVA.GetSpectacleParCat1(?) }",
+                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            stm2.registerOutParameter(1,OracleTypes.CURSOR);
+            stm2.execute(); //execution de la procédure
+            // Caster le paramètre de retour en ResultSet
+            ResultSet rest = (ResultSet) stm2.getObject(1);
+            while (rest.next())
+            {
+                String Categorie = rest.getString("CATEGORIE");
+                String Prix = rest.getString("PRIXDEBASE");
+                String Artiste = rest.getString("ARTISTE");
+                String Nom = rest.getString("NOMSPECTACLE");
+                String Image = rest.getString("AFFICHE");
+                System.out.print(Nom + " par " +Artiste + " de " + Categorie + " pour " + Prix + "$");
+            }
+        }
+        catch (SQLException sqlex) {
+            System.out.println(sqlex.getMessage());
+        }
         
     }
 
