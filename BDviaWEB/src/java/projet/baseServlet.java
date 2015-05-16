@@ -40,12 +40,12 @@ public class baseServlet extends HttpServlet {
 "        <table width=\"100%\" height=auto cellpadding=\"10px\" style=\"background-color:lightgrey\">\n" +
 "             <tr> <td colspan=\"4\"> Voici l'acceuil </td> <td rowspan=\"3\" width=200> Catégorie <br> <input type=\"checkbox\" name\"categorie\" value=\"Humour\"> Humour <br>"+
 "                                                                                         <form> <input type=\"checkbox\" name\"categorie\" value=\"Musique\"> Musique <br>" +
-"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"Enfant\"> Enfant <br>"+
-"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"Illusion\"> Illusion <br>"+
-"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"Danse\"> Danse <br>"+
-"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"Jeux_Video\"> Jeux Vidéo <br>"+
-"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"Sport\"> Sport <br>"+
-"                                                                                         <input type=\"submit\"> </td> </tr> </form>"+   
+"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Enfant\"> Enfant <br>"+
+"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Illusion\"> Illusion <br>"+
+"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Danse\"> Danse <br>"+
+"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Jeux_Video\"> Jeux Vidéo <br>"+
+"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Sport\"> Sport <br>"+
+"                                                                                         <input type=\"submit\" name=\"Recherche\" value=\"SubmitCatSearch\"> </td> </tr> </form>"+   
 "           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>" +
 "           <tr> </tr>"+        
 "           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>  <td rowspan=\"2\"> Salle <div> <select> <option value=\"Salle1\">Salle 1 </option> </select> <br> <button>Chercher</button> </div> </td>" +
@@ -78,13 +78,33 @@ public class baseServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-                        
-                        // C'est ici que sa marche pas
-            String[] categorie = request.getParameterValues("categorie");
-            for (int i = 0; i < categorie.length; i++) {
-                System.out.println(categorie[i]); 
+            
+            // C'est ici que sa marche pas
+            
+            /* AX: Ok, check. Faut faire ça ici en haut sinon les résulats
+            seront effacés lorsqu'on regénérera la page. */
+            String btnRecherche = request.getParameter("Recherche");
+            
+            String[] categorie; /* On va mettre les categories sélectionnées icitte */
+            
+            if (btnRecherche != null) {
+                /*Ici on check si le bouton existe. Dans un autre page que 
+                la page d'accueil, le bouton va être null*/
+                if (btnRecherche.equals("SubmitCatSearch")) {
+                    /* Si le bouton qui a sumbit la page était 'SubmitCatSearch' */
+                    categorie = request.getParameterValues("categorie");
+                    /* On popule la table de strings */
+                    for (int i = 0; i < categorie.length; i++) {
+                        System.out.println(categorie[i]); 
+                    }
+                }
             }
-
+            
+            /* Il reste 2 bugs. 
+            1- Si tu sélectionne pas de checkbox, la page va pas loader 
+            2- Quand la page va reloader, les checkbox devraient rester selectionnés 
+            */
+            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -126,8 +146,8 @@ public class baseServlet extends HttpServlet {
             }*/
             
             out.println("</body>");
-            out.println("</html>");     
-           
+            out.println("</html>");   
+                       
         }
     }
 
