@@ -13,6 +13,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.Cookie;
+
+// JDBC
+import java.sql.DriverManager;
+import java.sql.*;
+import oracle.jdbc.OracleDriver;
+import oracle.jdbc.pool.*;
+import java.util.*;
 
 /**
  *
@@ -31,20 +40,24 @@ public class baseServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     
+    private String urlBD = "jdbc:oracle:thin:@mercure.clg.qc.ca:1521:orcl";
+    private String userName = "Labontel";
+    private String password = "ORACLE2";
+    
     //methode pour créer les pages webs    
     public void acceuil(PrintWriter out)
     {
        out.println(
 "        <table width=\"100%\" height=auto cellpadding=\"10px\" style=\"background-color:lightgrey\">\n" +
-"             <tr> <td colspan=\"4\"> Voici l'acceuil </td> <td rowspan=\"3\" width=200> Catégorie <br> <input type=\"checkbox\" name\"catégorie\" value=\"humour\"> humour <br>"+
-"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"musique\"> musique <br>" +
-"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"enfant\"> enfant <br>"+
-"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"illusion\"> illusion <br>"+
-"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"danse\"> danse <br>"+
-"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"cirque\"> cirque <br>"+
-"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"conference\"> conference <br>"+
-"                                                                                         <input type=\"checkbox\" name\"catégorie\" value=\"sport\"> sport <br>"+
-"                                                                                         <button>Chercher</button> </td> </tr>"+   
+"             <tr> <td colspan=\"4\"> Voici l'acceuil </td> <td rowspan=\"3\" width=200> Catégorie <br> <form>"+
+"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Humour\"> Humour <br>"+
+"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Musique\"> Musique <br>" +
+"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Enfant\"> Enfant <br>"+
+"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Illusion\"> Illusion <br>"+
+"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Danse\"> Danse <br>"+
+"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Jeux_Video\"> Jeux Vidéo <br>"+
+"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Sport\"> Sport <br>"+
+"                                                                                         <input type=\"submit\" name=\"Recherche\" value=\"SubmitCatSearch\"> </td> </tr> </form>"+   
 "           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>" +
 "           <tr> </tr>"+        
 "           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>  <td rowspan=\"2\"> Salle <div> <select> <option value=\"Salle1\">Salle 1 </option> </select> <br> <button>Chercher</button> </div> </td>" +
@@ -77,7 +90,33 @@ public class baseServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            
+            // C'est ici que sa marche pas
+            
+            /* AX: Ok, check. Faut faire ça ici en haut sinon les résulats
+            seront effacés lorsqu'on regénérera la page. */
+            String btnRecherche = request.getParameter("Recherche");
+            
+            String[] categorie; /* On va mettre les categories sélectionnées icitte */
+            
+            if (btnRecherche != null) {
+                /*Ici on check si le bouton existe. Dans un autre page que 
+                la page d'accueil, le bouton va être null*/
+                if (btnRecherche.equals("SubmitCatSearch")) {
+                    /* Si le bouton qui a sumbit la page était 'SubmitCatSearch' */
+                    categorie = request.getParameterValues("categorie");
+                    /* On popule la table de strings */
+                    for (int i = 0; i < categorie.length; i++) {
+                        System.out.println(categorie[i]); 
+                    }
+                }
+            }
+            
+            /* Il reste 2 bugs. 
+            1- Si tu sélectionne pas de checkbox, la page va pas loader 
+            2- Quand la page va reloader, les checkbox devraient rester selectionnés 
+            */
+            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -106,15 +145,59 @@ public class baseServlet extends HttpServlet {
 "                    </td> </tr> </table> </div> ");
             acceuil(out);
             achatDeBillets(out);
-            /*out.println("<h1>Bravo! Tu est connecté au servlet. </h1>");
-            out.println("<h2>C'est juste une page de test bin simple</h2>");
-            out.println("<hr/>");
-            out.println("Maintenant, loginnez-vous à la base de données: <BR/><BR/>");
-
-            out.println("<BR/><BUTTON>Essayer de se connecter...</BUTTON>");*/
+            /*
+            Cookie test = new Cookie( "test", "Sa marche" );
+            response.addCookie(test);
+            Cookie[] tabCookies;
+            tabCookies = request.getCookies();
+            for (Cookie c : tabCookies) {
+                if (c.getName().equals("test")) 
+                {
+                    out.println("Sa marche tu?" + c.getValue());
+                }
+            }*/
+            
             out.println("</body>");
-            out.println("</html>");
+            out.println("</html>");   
+                       
         }
+    }
+    
+    private Connection seConnecter()
+    {
+        Connection conn = null;
+        
+        try {
+            OracleDataSource ods = new OracleDataSource();
+            ods.setURL(urlBD);
+            ods.setUser(userName);
+            ods.setPassword(password);
+            conn = ods.getConnection();
+        } catch (SQLException sqlex) {
+            System.out.println(sqlex.getMessage());
+        }
+        
+         return conn;
+    }
+    
+    private void deconnexion(Connection conne)
+    {
+        // C'est une bitch blonde
+        try {
+            conne.close();
+        } catch (SQLException se) {
+            System.out.println("La conne ne s'est pas fermée");
+            conne = null;
+        }
+    }
+
+
+
+    private void faireTableSpectacles(String[] categories)
+    {
+        Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
