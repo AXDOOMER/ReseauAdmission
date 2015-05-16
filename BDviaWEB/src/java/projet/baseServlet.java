@@ -16,6 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.Cookie;
 
+// JDBC
+import java.sql.DriverManager;
+import java.sql.*;
+import oracle.jdbc.OracleDriver;
+import oracle.jdbc.pool.*;
+import java.util.*;
+
 /**
  *
  * @author alexandre-xavier
@@ -32,6 +39,10 @@ public class baseServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    private String urlBD = "jdbc:oracle:thin:@mercure.clg.qc.ca:1521:orcl";
+    private String userName = "Labontel";
+    private String password = "ORACLE2";
     
     //methode pour créer les pages webs    
     public void acceuil(PrintWriter out)
@@ -150,6 +161,43 @@ public class baseServlet extends HttpServlet {
             out.println("</html>");   
                        
         }
+    }
+    
+    private Connection seConnecter()
+    {
+        Connection conn = null;
+        
+        try {
+            OracleDataSource ods = new OracleDataSource();
+            ods.setURL(urlBD);
+            ods.setUser(userName);
+            ods.setPassword(password);
+            conn = ods.getConnection();
+        } catch (SQLException sqlex) {
+            System.out.println(sqlex.getMessage());
+        }
+        
+         return conn;
+    }
+    
+    private void deconnexion(Connection conne)
+    {
+        // C'est une bitch blonde
+        try {
+            conne.close();
+        } catch (SQLException se) {
+            System.out.println("La conne ne s'est pas fermée");
+            conne = null;
+        }
+    }
+
+
+
+    private void faireTableSpectacles(String[] categories)
+    {
+        Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
