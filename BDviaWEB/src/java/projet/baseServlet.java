@@ -38,14 +38,13 @@ public class baseServlet extends HttpServlet {
     {
        out.println(
 "        <table width=\"100%\" height=auto cellpadding=\"10px\" style=\"background-color:lightgrey\">\n" +
-"             <tr> <td colspan=\"4\"> Voici l'acceuil </td> <td rowspan=\"3\" width=200> Catégorie <br> <input type=\"checkbox\" name\"catégorie\" value=\"humour\"> humour <br>"+
-"                                                                                         <form> <input type=\"checkbox\" name\"categorie\" value=\"musique\"> musique <br>" +
-"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"enfant\"> enfant <br>"+
-"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"illusion\"> illusion <br>"+
-"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"danse\"> danse <br>"+
-"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"cirque\"> cirque <br>"+
-"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"conference\"> conference <br>"+
-"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"sport\"> sport <br>"+
+"             <tr> <td colspan=\"4\"> Voici l'acceuil </td> <td rowspan=\"3\" width=200> Catégorie <br> <input type=\"checkbox\" name\"categorie\" value=\"Humour\"> Humour <br>"+
+"                                                                                         <form> <input type=\"checkbox\" name\"categorie\" value=\"Musique\"> Musique <br>" +
+"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"Enfant\"> Enfant <br>"+
+"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"Illusion\"> Illusion <br>"+
+"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"Danse\"> Danse <br>"+
+"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"Jeux_Video\"> Jeux Vidéo <br>"+
+"                                                                                         <input type=\"checkbox\" name\"categorie\" value=\"Sport\"> Sport <br>"+
 "                                                                                         <input type=\"submit\"> </td> </tr> </form>"+   
 "           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>" +
 "           <tr> </tr>"+        
@@ -79,9 +78,13 @@ public class baseServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            String[] categorie;
-            
+                        
+                        // C'est ici que sa marche pas
+            String[] categorie = request.getParameterValues("categorie");
+            for (int i = 0; i < categorie.length; i++) {
+                System.out.println(categorie[i]); 
+            }
+
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -124,12 +127,7 @@ public class baseServlet extends HttpServlet {
             
             out.println("</body>");
             out.println("</html>");     
-            
-            // C'est ici que sa marche pas
-            categorie = request.getParameterValues("categorie");
-            for (int i = 0; i < categorie.length; i++) {
-                System.out.println(categorie[i]); 
-            }
+           
         }
     }
 
