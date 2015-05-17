@@ -319,15 +319,15 @@ public class Client extends javax.swing.JFrame {
         }
         else if(CBX_Select.getSelectedItem().toString().equals("La table Billet"))
         {
-            System.out.println("La table Billet");
+            AfficherBillet();
         }
         else if(CBX_Select.getSelectedItem().toString().equals("La table Panier"))
         {
-            System.out.println("La table Panier");
+            AfficherPanier();
         }
         else if(CBX_Select.getSelectedItem().toString().equals("La table Sections"))
         {
-            System.out.println("La table Sections");
+            AfficherSections();
         }
         else if(CBX_Select.getSelectedItem().toString().equals("Info sur la livraison des billets"))
         {
@@ -555,17 +555,98 @@ public class Client extends javax.swing.JFrame {
     
     public static void AfficherBillet()
     {
-        
+        try {         
+            DefaultTableModel model = (DefaultTableModel) TBL_Spectacle.getModel();  
+            model.setColumnIdentifiers(new Object[]{"NuméroBillet","DateAchat","Imprimer","CodeReprésentation","CodeSection"});
+            model.setRowCount(0);
+            CallableStatement Callist =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.ListeBillet(?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+                       
+            while(rstlist.next())
+            {             
+                int codeBillet = rstlist.getInt(1);
+                Date dateAchat = rstlist.getDate(2);
+                int imprimer = rstlist.getInt(3);  
+                int codeRep = rstlist.getInt(4);  
+                int codeSection = rstlist.getInt(5); 
+                model.addRow(new Object[]{Integer.toString(codeBillet),dateAchat,Integer.toString(imprimer),Integer.toString(codeRep),Integer.toString(codeSection)});
+            }
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            System.out.println("affichage");
+        }
+        catch(SQLException list)
+        {
+        System.out.println(list.getMessage());
+        }
     }
         
     public static void AfficherPanier()
     {
-        
+        try {         
+            DefaultTableModel model = (DefaultTableModel) TBL_Spectacle.getModel();  
+            model.setColumnIdentifiers(new Object[]{"NuméroBillet","NuméroClient","NuméroFacture"});
+            model.setRowCount(0);
+            CallableStatement Callist =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AfficherPanier(?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+                       
+            while(rstlist.next())
+            {             
+                int NuméroBillet = rstlist.getInt(1);
+                int NuméroClient = rstlist.getInt(2);
+                int NuméroFacture = rstlist.getInt(3);
+                model.addRow(new Object[]{Integer.toString(NuméroBillet),Integer.toString(NuméroClient),Integer.toString(NuméroFacture)});
+            }
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            System.out.println("affichage");
+        }
+        catch(SQLException list)
+        {
+        System.out.println(list.getMessage());
+        }
     }
         
-    public static void Affichersections()
+    public static void AfficherSections()
     {
-        
+        try {         
+            DefaultTableModel model = (DefaultTableModel) TBL_Spectacle.getModel();  
+            model.setColumnIdentifiers(new Object[]{"CodeSection","CodeSalle","TailleSection","Prix"});
+            model.setRowCount(0);
+            CallableStatement Callist =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AfficherSections(?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+                       
+            while(rstlist.next())
+            {             
+                int CodeSection = rstlist.getInt(1);
+                int CodeSalle = rstlist.getInt(2);  
+                int TailleSection = rstlist.getInt(3);
+                int Prix = rstlist.getInt(4);
+                model.addRow(new Object[]{Integer.toString(CodeSection),Integer.toString(CodeSalle),Integer.toString(TailleSection),Integer.toString(Prix)});
+            }
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            System.out.println("affichage");
+        }
+        catch(SQLException list)
+        {
+        System.out.println(list.getMessage());
+        }
     }
         
     public static void AfficherInfoLivraison()
