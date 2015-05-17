@@ -187,16 +187,15 @@ public class baseServlet extends HttpServlet {
             out.println("<title>Servlet ReseauAdmission</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<table class=\"titre\" border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:grey; text-align:center\"> <tr> <td class=\"acceuil\">Acceuil</td>"
-                     + " <td class=\"acceuil\">Achats de billets</td>"
+            out.println("<table class=\"titre\" border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:grey; text-align:center\"> <tr> <td class=\"acceuil\">Accueil</td>"
+                     + " <td class=\"acceuil\" width=\"30%\">Bienvenu sur le site du <B style=\"font-size:150%;\">ReseauAdmission</B><BR><BR>Un site d'achat de billets</td>"
                      + " <td class=\"acceuil\">Panier</td>"
-                     + " <td class=\"acceuil\">Inscription</td>"
                      + " <td class=\"acceuil\">"+
 "                    Utilisateur: <BR/>\n" +
 "                    <input type=text name=utilisateur id=utilisateur><BR/>\n" +
 "                    Mot de passe: <BR/>\n" +
 "                    <input type=password name=motdepasse id=motdepasse><BR/> "+
-"                    <button>Login</button>"+
+"                    <button>Login</button>"+"<button>S'enregistrer</button>"+
 "                    </td> </tr> </table> </div> ");
             acceuil(out, categorie);
             achatDeBillets(out);
