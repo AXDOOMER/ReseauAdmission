@@ -91,9 +91,7 @@ public class baseServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            // C'est ici que sa marche pas
-            
+
             /* AX: Ok, check. Faut faire ça ici en haut sinon les résulats
             seront effacés lorsqu'on regénérera la page. */
             String btnRecherche = request.getParameter("Recherche");
@@ -106,9 +104,11 @@ public class baseServlet extends HttpServlet {
                 if (btnRecherche.equals("SubmitCatSearch")) {
                     /* Si le bouton qui a sumbit la page était 'SubmitCatSearch' */
                     categorie = request.getParameterValues("categorie");
-                    /* On popule la table de strings */
-                    for (int i = 0; i < categorie.length; i++) {
-                        System.out.println(categorie[i]); 
+                    if (categorie != null) {
+                        /* On popule la table de strings */
+                        for (int i = 0; i < categorie.length; i++) {
+                            System.out.println(categorie[i]); 
+                        }
                     }
                 }
             }
