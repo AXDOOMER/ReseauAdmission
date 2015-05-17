@@ -48,7 +48,9 @@ public class baseServlet extends HttpServlet {
     //methode pour créer les pages webs    
     public void acceuil(PrintWriter out, String[] categorie) {
         out.println("<table width=\"100%\" height=auto cellpadding=\"10px\" style=\"background-color:lightgrey\">\n");
-        out.println("<tr> <td colspan=\"4\"> Voici l'acceuil </td> <td rowspan=\"3\" width=200> Catégorie <br> <form>");
+        out.println("<tr> <td> Voici l'acceuil </td> <td></td>     </tr> <tr><td rowspan=4>" );
+                faireTableSpectacles(out, categorie) ;
+                out.println( "</td><td width=200 style=\"vertical-align:top;\"> Catégorie <br> <form>");
 
         out.print("<input type=\"checkbox\" name=\"categorie\" value=\"Humour\"");
         for (int i = 0; categorie != null && i < categorie.length; i++) {
@@ -106,17 +108,24 @@ public class baseServlet extends HttpServlet {
         }
         out.println("> Sport <br>");
 
-        out.println("<input type=\"submit\" name=\"Recherche\" value=\"SubmitCatSearch\"> </td> </tr> </form>");
+        // On fait la grosse cellule
+        
+        out.println("<input type=\"submit\" name=\"Recherche\" value=\"SubmitCatSearch\"> <BR>");
 
+        out.println("<BR><HR><BR>Salle <div> <select> <option value=\"Salle1\">Salle 1 </option> </select> <br> <button>Chercher</button> </div> ");
+        out.println("<BR><HR><BR>Artiste <div> <input type=\"text\"/> <button>Chercher</button>  </div> ");
+        
+        out.println("</td> </tr> </form>");
+        
         out.println(
-                "           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>"
-                + "           <tr> </tr>"
-                + "           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>  <td rowspan=\"2\"> Salle <div> <select> <option value=\"Salle1\">Salle 1 </option> </select> <br> <button>Chercher</button> </div> </td>"
-                + "           <tr> </tr>"
-                + "           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\"> Artiste <div> <input type=\"text\"/> <button>Chercher</button>  </div> </td>"
-                + "           <tr> </tr>"
-                + "        </table>"
+                "</tr>" /*<tr colspan=\"8\"> <td rowspan=\"8\">Nom du Spectacle <br> Date*/
+                + "<tr><td>  </td></tr>"
+                + "<tr><td> </td></tr>"
+                + "</table>"
         );
+        
+        /*Salle <div> <select> <option value=\"Salle1\">Salle 1 </option> </select> <br> <button>Chercher</button> </div> */
+        /*Artiste <div> <input type=\"text\"/> <button>Chercher</button>  </div> */
     }
     
     public void achatDeBillets(PrintWriter out)
@@ -202,9 +211,7 @@ public class baseServlet extends HttpServlet {
                     out.println("Sa marche tu?" + c.getValue());
                 }
             }*/
-            
-            faireTableSpectacles(out, categorie);
-            
+
             out.println("</body>");
             out.println("</html>");   
                        
