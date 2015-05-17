@@ -7,6 +7,7 @@ package Paquet_Client;
 
 import java.awt.Point;
 import java.sql.CallableStatement;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
@@ -39,6 +40,8 @@ public class Client extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         TBL_Spectacle = new javax.swing.JTable();
+        CBX_Select = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         BTN_Ajouter_Spec = new javax.swing.JButton();
         BTN_Ajouter_Client = new javax.swing.JButton();
@@ -61,7 +64,7 @@ public class Client extends javax.swing.JFrame {
             }
         });
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Spectacle disponible"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Voici certain select venant de la BD"));
 
         TBL_Spectacle.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -81,20 +84,38 @@ public class Client extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(TBL_Spectacle);
 
+        CBX_Select.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "La table Spectacle", "La table Client", "La table Représentation", "La table Salle", "La table Catégorie", "La table Billet", "La table Panier", "La table Sections", "Info sur la livraison des billets", "Habitude des clients", "Liste des clients fidèles", "Liste des spectacles disponibles" }));
+        CBX_Select.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CBX_SelectActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("À afficher dans la table");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CBX_Select, 0, 255, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CBX_Select, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -196,7 +217,7 @@ public class Client extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BTN_Ajouter_Categorie)
                     .addComponent(jLabel5))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -206,18 +227,18 @@ public class Client extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -273,6 +294,59 @@ public class Client extends javax.swing.JFrame {
         addSalle.setVisible(true);
     }//GEN-LAST:event_BTN_Ajouter_SalleActionPerformed
 
+    private void CBX_SelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBX_SelectActionPerformed
+        // Selon l'item sélectionner dans le combobox, on appel la bonne fonction
+        // à afficher dans le jTable
+        if(CBX_Select.getSelectedItem().toString().equals("La table Spectacle"))
+        {
+            AfficherSpectacle();
+        }
+        else if(CBX_Select.getSelectedItem().toString().equals("La table Client"))
+        {
+            AfficherClient();
+        }
+        else if(CBX_Select.getSelectedItem().toString().equals("La table Représentation"))
+        {
+            AfficherRepresentation();
+        }
+        else if(CBX_Select.getSelectedItem().toString().equals("La table Salle"))
+        {
+            AfficherSalle();
+        }
+        else if(CBX_Select.getSelectedItem().toString().equals("La table Catégorie"))
+        {
+            AfficherCategorie();
+        }
+        else if(CBX_Select.getSelectedItem().toString().equals("La table Billet"))
+        {
+            System.out.println("La table Billet");
+        }
+        else if(CBX_Select.getSelectedItem().toString().equals("La table Panier"))
+        {
+            System.out.println("La table Panier");
+        }
+        else if(CBX_Select.getSelectedItem().toString().equals("La table Sections"))
+        {
+            System.out.println("La table Sections");
+        }
+        else if(CBX_Select.getSelectedItem().toString().equals("Info sur la livraison des billets"))
+        {
+            System.out.println("Info sur la livraison des billets");
+        }
+        else if(CBX_Select.getSelectedItem().toString().equals("Habitude des clients"))
+        {
+            System.out.println("Habitude des clients");
+        }
+        else if(CBX_Select.getSelectedItem().toString().equals("Liste des clients fidèles"))
+        {
+            System.out.println("Liste des clients fidèles");
+        }
+        else if(CBX_Select.getSelectedItem().toString().equals("Liste des spectacles disponibles"))
+        {
+            System.out.println("Liste des spectacles disponibles");
+        }
+    }//GEN-LAST:event_CBX_SelectActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -321,6 +395,7 @@ public class Client extends javax.swing.JFrame {
     {
         try {         
             DefaultTableModel model = (DefaultTableModel) TBL_Spectacle.getModel();  
+            model.setColumnIdentifiers(new Object[]{"Code","Catégorie","Prix","Artise","Nom Spectacle"});
             model.setRowCount(0);
             CallableStatement Callist =
             oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.ListeSpectacle(?)}");
@@ -330,11 +405,13 @@ public class Client extends javax.swing.JFrame {
                         
                        
             while(rstlist.next())
-            {                              
+            {             
+                int code = rstlist.getInt(1);
+                String categorie = rstlist.getString(2);
                 int prix = rstlist.getInt(3);  
                 String artiste = rstlist.getString(4);
                 String nomSpectacle = rstlist.getString("NOMSpECTACLE");
-                model.addRow(new Object[]{Integer.toString(prix),artiste,nomSpectacle});
+                model.addRow(new Object[]{Integer.toString(code),categorie,Integer.toString(prix),artiste,nomSpectacle});
                 System.out.println(prix + "-" + artiste + "-" + nomSpectacle);
             }
             Callist.clearParameters();
@@ -347,6 +424,169 @@ public class Client extends javax.swing.JFrame {
         System.out.println(list.getMessage());
         }
     }
+    // Sa l'affiche les Salles dans un Jtable(TBL_Spectacle)
+    public static void AfficherSalle()
+    {
+        try {         
+            DefaultTableModel model = (DefaultTableModel) TBL_Spectacle.getModel();  
+            model.setColumnIdentifiers(new Object[]{"CodeSalle","CodeSpectacle","NomSalle"});
+            model.setRowCount(0);
+            CallableStatement Callist =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AfficherSalle(?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+                       
+            while(rstlist.next())
+            {             
+                int codeSalle = rstlist.getInt(1);
+                int codeSpectacle = rstlist.getInt(2);  
+                String nomSalle = rstlist.getString(3);
+                model.addRow(new Object[]{Integer.toString(codeSalle),Integer.toString(codeSpectacle),nomSalle});
+            }
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            System.out.println("affichage");
+        }
+        catch(SQLException list)
+        {
+        System.out.println(list.getMessage());
+        }
+    }
+    
+    public static void AfficherClient()
+    {
+                try {         
+            DefaultTableModel model = (DefaultTableModel) TBL_Spectacle.getModel();  
+            model.setColumnIdentifiers(new Object[]{"NumClient","Nom","Prenom","Pseudo","Password","Adresse","Telephone"});
+            model.setRowCount(0);
+            CallableStatement Callist =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AfficherClient(?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+                       
+            while(rstlist.next())
+            {             
+                int NumClient = rstlist.getInt(1);
+                String Nom = rstlist.getString(2);
+                String Prenom = rstlist.getString(3);  
+                String Pseudo = rstlist.getString(4);  
+                String PassWord = rstlist.getString(5);  
+                String Adresse = rstlist.getString(6);   
+                String Telephone = rstlist.getString(7);  
+                
+                model.addRow(new Object[]{Integer.toString(NumClient),Nom,Prenom,Pseudo,PassWord,Adresse,Telephone});
+            }
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            System.out.println("affichage");
+        }
+        catch(SQLException list)
+        {
+        System.out.println(list.getMessage());
+        }
+    }
+        
+    public static void AfficherRepresentation()
+    {
+                try {         
+            DefaultTableModel model = (DefaultTableModel) TBL_Spectacle.getModel();  
+            model.setColumnIdentifiers(new Object[]{"CodeRepresentation","CodeSalle","Début"});
+            model.setRowCount(0);
+            CallableStatement Callist =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AfficherRepresentation(?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+                       
+            while(rstlist.next())
+            {             
+                int CodeRepresentation = rstlist.getInt(1);
+                int CodeSalle = rstlist.getInt(2);  
+                Date Début = rstlist.getDate(3);
+                model.addRow(new Object[]{Integer.toString(CodeRepresentation),Integer.toString(CodeSalle),Début});
+            }
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            System.out.println("affichage");
+        }
+        catch(SQLException list)
+        {
+        System.out.println(list.getMessage());
+        }
+    }
+            
+    public static void AfficherCategorie()
+    {
+        try {         
+            DefaultTableModel model = (DefaultTableModel) TBL_Spectacle.getModel();  
+            model.setColumnIdentifiers(new Object[]{"CodeCatégorie","NomCatégorie"});
+            model.setRowCount(0);
+            CallableStatement Callist =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AfficherCategorie(?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+                       
+            while(rstlist.next())
+            {             
+                int codeCategorie = rstlist.getInt(1);
+                String Nomcategorie = rstlist.getString(2);
+                model.addRow(new Object[]{Integer.toString(codeCategorie),Nomcategorie});
+            }
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            System.out.println("affichage");
+        }
+        catch(SQLException list)
+        {
+        System.out.println(list.getMessage());
+        }
+    }
+    
+    public static void AfficherBillet()
+    {
+        
+    }
+        
+    public static void AfficherPanier()
+    {
+        
+    }
+        
+    public static void Affichersections()
+    {
+        
+    }
+        
+    public static void AfficherInfoLivraison()
+    {
+        
+    }
+    
+    public static void AfficherHabitudeClient()
+    {
+        
+    }
+    
+    public static void AfficherClientFidèle()
+    {
+        
+    }
+    
+    public static void AfficherSpectacleDisponible()
+    {
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_Ajouter_Categorie;
@@ -354,12 +594,14 @@ public class Client extends javax.swing.JFrame {
     private javax.swing.JButton BTN_Ajouter_Rep;
     private javax.swing.JButton BTN_Ajouter_Salle;
     private javax.swing.JButton BTN_Ajouter_Spec;
+    private javax.swing.JComboBox CBX_Select;
     public static javax.swing.JTable TBL_Spectacle;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
