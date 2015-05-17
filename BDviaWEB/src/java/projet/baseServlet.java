@@ -203,6 +203,8 @@ public class baseServlet extends HttpServlet {
                 }
             }*/
             
+            faireTableSpectacles(out, categorie);
+            
             out.println("</body>");
             out.println("</html>");   
                        
@@ -239,30 +241,51 @@ public class baseServlet extends HttpServlet {
 
 
 
-    private void faireTableSpectacles(String[] categories)
+    private void faireTableSpectacles(PrintWriter out, String[] categories)
     {
         Connection oracleConne = seConnecter(); // Oracle s'tune conne
         
         try
         {
-            CallableStatement stm2 =oracleConne.prepareCall("{ call TPF_BD_JAVA.GetSpectacleParCat1(?) }",
-                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            CallableStatement stm2 =oracleConne.prepareCall("{ call TPF_BD_JAVA.GetSpectacleParCat(?)}",
+            ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             stm2.registerOutParameter(1,OracleTypes.CURSOR);
-            stm2.execute(); //execution de la procédure
+             //execution de la procédure
             // Caster le paramètre de retour en ResultSet
-            ResultSet rest = (ResultSet) stm2.getObject(1);
+                      /*  ResultSet rest = stm2.executeQuery();   */
+            stm2.execute();
+            ResultSet rest = (ResultSet)stm2.getObject(1);
+            out.println("<table>");
+            int i = 0;
             while (rest.next())
             {
+                if (i == 0)
+                {
+                    out.println("<tr>");
+                }
+                
+                out.println("<td>");
                 String Categorie = rest.getString("CATEGORIE");
                 String Prix = rest.getString("PRIXDEBASE");
                 String Artiste = rest.getString("ARTISTE");
                 String Nom = rest.getString("NOMSPECTACLE");
                 String Image = rest.getString("AFFICHE");
                 System.out.print(Nom + " par " +Artiste + " de " + Categorie + " pour " + Prix + "$");
+                out.println("<img src=\"" + Image +  "\">");
+                out.println("</td>");
+                
+                if (i == 4)
+                {
+                    out.println("</tr>");
+                }
             }
+            stm2.clearParameters();
+            stm2.close();
+            rest.close();
+            out.println("</table>");
         }
         catch (SQLException sqlex) {
-            System.out.println(sqlex.getMessage());
+            out.println(sqlex.getMessage());
         }
         
     }
