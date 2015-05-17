@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+    <html style="height:100%;">
+        <head>
+			<style>
+				.titre {
+					table-layout: fixed
+					font-size:22px;
+					height:20%;
+					}
+				.acceuil { width:20%; font-size:22px;)
+			</style>
+            
+            
+            <title>Servlet ReseauAdmission</title>            
+            </head>
+				<body style="height:100%;">
+				<table class="titre" border="1px" cellpadding="10px" width="100%" style="background-color:orange; text-align:center; font-weight:bold"> 
+					<tr>
+						<td class="acceuil"> Acceuil </td>
+						<td class="acceuil">Achats de billets</td>
+						<td class="acceuil">Panier</td>
+						<td class="acceuil">Inscription</td>
+						<td class="acceuil" style="font-size:20px">
+						Utilisateur: <BR/>
+						<input type=text name=utilisateur id=utilisateur> <BR/>
+						Mot de passe: <BR/>
+						<input type=password name=motdepasse id=motdepasse> <BR/>
+						<button>Login</button>
+						</td> 
+					</tr>
+				</table> 
+			<!-- Sa commence ici -->
+			<table border="1px" cellpadding="10px" width="100%" style="background-color:lightblue; height:80%">
+				<tr> <td rowspan="3" colspan="13" style="text-align:center"> Achats de Billets  </tr>
+				<tr> </tr>
+				<tr> </tr>
+				<tr> <td rowspan="8" colspan="5" width="50%"> Affiche </td> <td> Catégorie <label>LABEL</label> </td> 
+					<td rowspan="8" colspan="13" style="text-align:center;" width="20%"> Nb de billet voulu:  <input type="textbox" name="billetvoulu"> <br> Total: <input type="textbox" name="total"> <br> <button> Ajouter au Panier </button> </td></tr>
+				<tr> <td> Artiste <label>LABEL</label> </td> </tr> 
+				<tr> <td> Nom Spectacle <label>LABEL</label> </td> </tr>
+				<tr> <td> Prix de base <label>LABEL</label> </td> </tr>
+				<tr> <td> Section <select> <option value="section">section</option> </select> </td> </tr>
+				<tr> <td> Prix: Prix de base + Prix de section <label>LABEL</label> </td> </tr>
+				<tr> <td> Nombre de billet restant pour la section: <label>LABEL</label>  </td> </tr>
+				<tr> <td> Nb de billet restant total <label>LABEL</label> </td> </tr>
+				<tr>  </tr>
+			</table>
+		</body>
+	</html>

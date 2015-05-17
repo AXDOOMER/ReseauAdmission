@@ -247,9 +247,10 @@ public class baseServlet extends HttpServlet {
         
         try
         {
-            CallableStatement stm2 =oracleConne.prepareCall("{ call TPF_BD_JAVA.GetSpectacleParCat(?)}",
+            CallableStatement stm2 =oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat(?)}",
             ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             stm2.registerOutParameter(1,OracleTypes.CURSOR);
+            stm2.registerOutParameter(2,OracleTypes.CURSOR);
              //execution de la procédure
             // Caster le paramètre de retour en ResultSet
                       /*  ResultSet rest = stm2.executeQuery();   */
@@ -271,12 +272,15 @@ public class baseServlet extends HttpServlet {
                 String Nom = rest.getString("NOMSPECTACLE");
                 String Image = rest.getString("AFFICHE");
                 System.out.print(Nom + " par " +Artiste + " de " + Categorie + " pour " + Prix + "$");
-                out.println("<img src=\"" + Image +  "\">");
+                out.println("<img src=\"affiches/" + Image +  "\">");
                 out.println("</td>");
+                
+                i++;
                 
                 if (i == 4)
                 {
                     out.println("</tr>");
+                    i = 0;
                 }
             }
             stm2.clearParameters();
