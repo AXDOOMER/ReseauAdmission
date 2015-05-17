@@ -46,27 +46,77 @@ public class baseServlet extends HttpServlet {
     private String password = "ORACLE2";
     
     //methode pour créer les pages webs    
-    public void acceuil(PrintWriter out)
-    {
-       out.println(
-"        <table width=\"100%\" height=auto cellpadding=\"10px\" style=\"background-color:lightgrey\">\n" +
-"             <tr> <td colspan=\"4\"> Voici l'acceuil </td> <td rowspan=\"3\" width=200> Catégorie <br> <form>"+
-"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Humour\"> Humour <br>"+
-"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Musique\"> Musique <br>" +
-"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Enfant\"> Enfant <br>"+
-"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Illusion\"> Illusion <br>"+
-"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Danse\"> Danse <br>"+
-"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Jeux_Video\"> Jeux Vidéo <br>"+
-"                                                                                         <input type=\"checkbox\" name=\"categorie\" value=\"Sport\"> Sport <br>"+
-"                                                                                         <input type=\"submit\" name=\"Recherche\" value=\"SubmitCatSearch\"> </td> </tr> </form>"+   
-"           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>" +
-"           <tr> </tr>"+        
-"           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>  <td rowspan=\"2\"> Salle <div> <select> <option value=\"Salle1\">Salle 1 </option> </select> <br> <button>Chercher</button> </div> </td>" +
-"           <tr> </tr>"+  
-"           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\"> Artiste <div> <input type=\"text\"/> <button>Chercher</button>  </div> </td>"+        
-"           <tr> </tr>"+  
-"        </table>"
-       );
+    public void acceuil(PrintWriter out, String[] categorie) {
+        out.println("<table width=\"100%\" height=auto cellpadding=\"10px\" style=\"background-color:lightgrey\">\n");
+        out.println("<tr> <td colspan=\"4\"> Voici l'acceuil </td> <td rowspan=\"3\" width=200> Catégorie <br> <form>");
+
+        out.print("<input type=\"checkbox\" name=\"categorie\" value=\"Humour\"");
+        for (int i = 0; categorie != null && i < categorie.length; i++) {
+            if (categorie[i].equals("Humour")) {
+                out.print(" Checked");
+            }
+        }
+        out.println("> Humour <br>");
+
+        out.print("<input type=\"checkbox\" name=\"categorie\" value=\"Musique\"");
+        for (int i = 0; categorie != null && i < categorie.length; i++) {
+            if (categorie[i].equals("Musique")) {
+                out.print(" Checked");
+            }
+        }
+        out.println("> Musique <br>");
+
+        out.print("<input type=\"checkbox\" name=\"categorie\" value=\"Enfant\"");
+        for (int i = 0; categorie != null && i < categorie.length; i++) {
+            if (categorie[i].equals("Enfant")) {
+                out.print(" Checked");
+            }
+        }
+        out.println("> Enfant <br>");
+
+        out.print("<input type=\"checkbox\" name=\"categorie\" value=\"Illusion\"");
+        for (int i = 0; categorie != null && i < categorie.length; i++) {
+            if (categorie[i].equals("Illusion")) {
+                out.print(" Checked");
+            }
+        }
+        out.println("> Illusion <br>");
+
+        out.print("<input type=\"checkbox\" name=\"categorie\" value=\"Danse\"");
+        for (int i = 0; categorie != null && i < categorie.length; i++) {
+            if (categorie[i].equals("Danse")) {
+                out.print(" Checked");
+            }
+        }
+        out.println("> Danse <br>");
+
+        out.print("<input type=\"checkbox\" name=\"categorie\" value=\"Jeux_Video\"");
+        for (int i = 0; categorie != null && i < categorie.length; i++) {
+            if (categorie[i].equals("Jeux_Video")) {
+                out.print(" Checked");
+            }
+        }
+        out.println("> Jeux Vidéo <br>");
+
+        out.print("<input type=\"checkbox\" name=\"categorie\" value=\"Sport\"");
+        for (int i = 0; categorie != null && i < categorie.length; i++) {
+            if (categorie[i].equals("Sport")) {
+                out.print(" Checked");
+            }
+        }
+        out.println("> Sport <br>");
+
+        out.println("<input type=\"submit\" name=\"Recherche\" value=\"SubmitCatSearch\"> </td> </tr> </form>");
+
+        out.println(
+                "           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>"
+                + "           <tr> </tr>"
+                + "           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td>  <td rowspan=\"2\"> Salle <div> <select> <option value=\"Salle1\">Salle 1 </option> </select> <br> <button>Chercher</button> </div> </td>"
+                + "           <tr> </tr>"
+                + "           <tr> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\">Nom du Spectacle <br> Date </td> <td rowspan=\"2\"> Artiste <div> <input type=\"text\"/> <button>Chercher</button>  </div> </td>"
+                + "           <tr> </tr>"
+                + "        </table>"
+        );
     }
     
     public void achatDeBillets(PrintWriter out)
@@ -96,7 +146,7 @@ public class baseServlet extends HttpServlet {
             seront effacés lorsqu'on regénérera la page. */
             String btnRecherche = request.getParameter("Recherche");
             
-            String[] categorie; /* On va mettre les categories sélectionnées icitte */
+            String[] categorie = null; /* On va mettre les categories sélectionnées icitte */
             
             if (btnRecherche != null) {
                 /*Ici on check si le bouton existe. Dans un autre page que 
@@ -112,11 +162,6 @@ public class baseServlet extends HttpServlet {
                     }
                 }
             }
-            
-            /* Il reste 2 bugs. 
-            1- Si tu sélectionne pas de checkbox, la page va pas loader 
-            2- Quand la page va reloader, les checkbox devraient rester selectionnés 
-            */
             
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -144,7 +189,7 @@ public class baseServlet extends HttpServlet {
 "                    <input type=password name=motdepasse id=motdepasse><BR/> "+
 "                    <button>Login</button>"+
 "                    </td> </tr> </table> </div> ");
-            acceuil(out);
+            acceuil(out, categorie);
             achatDeBillets(out);
             /*
             Cookie test = new Cookie( "test", "Sa marche" );
