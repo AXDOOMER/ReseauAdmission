@@ -278,7 +278,39 @@ public class baseServlet extends HttpServlet {
                 String Nom = rest.getString("NOMSPECTACLE");
                 String Image = rest.getString("AFFICHE");
                 System.out.print(Nom + " par " +Artiste + " de " + Categorie + " pour " + Prix + "$");
-                out.println("<img src=\"affiches/" + Image + "\" width=\"180px\" height=\"200px\" " + ">");
+                out.println("<CENTER><img src=\"affiches/" + Image + "\" width=\"180px\" height=\"200px\" " + ">");
+                out.println("<BR/>" + Nom);
+                out.println("<BR/>Donné par: " + Artiste);
+                
+                switch( Integer.parseInt(Categorie))
+                {
+                    case 1:
+                        out.println("<BR/>Humour");
+                        break;
+                    case 2:
+                        out.println("<BR/>Musique");
+                        break;
+                    case 3:
+                        out.println("<BR/>Enfant");
+                        break;
+                    case 4:
+                        out.println("<BR/>Illusion");
+                        break;
+                    case 5:
+                        out.println("<BR/>Dance");
+                        break;
+                    case 6:
+                        out.println("<BR/>Jeux Vidéo");
+                        break;
+                    case 7:
+                        out.println("<BR/>Sport");
+                        break;
+                    default:
+                        out.println("<BR/>Inconnu");
+                        break;
+                }
+                
+                out.println("<BR/>Prix de base: " + Prix + "$");
                 out.println("</td>");
                 
                 i++;
