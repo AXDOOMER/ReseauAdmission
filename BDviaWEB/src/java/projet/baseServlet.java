@@ -272,12 +272,12 @@ public class baseServlet extends HttpServlet {
                 String Nom = rest.getString("NOMSPECTACLE");
                 String Image = rest.getString("AFFICHE");
                 System.out.print(Nom + " par " +Artiste + " de " + Categorie + " pour " + Prix + "$");
-                out.println("<img src=\"affiches/" + Image +  "\">");
+                out.println("<img src=\"affiches/" + Image + "\" width=\"180px\" height=\"200px\" " + ">");
                 out.println("</td>");
                 
                 i++;
                 
-                if (i == 4)
+                if (i == 5)
                 {
                     out.println("</tr>");
                     i = 0;
