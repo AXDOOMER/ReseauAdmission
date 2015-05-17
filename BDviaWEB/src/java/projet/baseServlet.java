@@ -180,15 +180,15 @@ public class baseServlet extends HttpServlet {
             out.println("<style>");
             out.println(" .titre { table-layout: fixed;"+
                                  " font-size:20px;  }\n" +
-"                         .acceuil { width:20%; ");
+"                         .acceuil { width:20%; color:white;");
             out.println("</style>");
             
             
-            out.println("<title>Servlet ReseauAdmission</title>");            
+            out.println("<title>RéseauAdmission</title>");            
             out.println("</head>");
             out.println("<body>");
             out.println("<table class=\"titre\" border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:grey; text-align:center\"> <tr> <td class=\"acceuil\">Accueil</td>"
-                     + " <td class=\"acceuil\" width=\"30%\">Bienvenu sur le site du <B style=\"font-size:150%;\">ReseauAdmission</B><BR><BR>Un site d'achat de billets</td>"
+                     + " <td class=\"acceuil\" width=\"30%\">Bienvenue sur le site de <br><br> <B style=\"font-size:175%; color:white;\">RéseauAdmission</B><BR><BR>Un site d'achat de billets</td>"
                      + " <td class=\"acceuil\">Panier</td>"
                      + " <td class=\"acceuil\">"+
 "                    Utilisateur: <BR/>\n" +
