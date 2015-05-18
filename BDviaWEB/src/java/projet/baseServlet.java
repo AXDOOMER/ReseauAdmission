@@ -197,6 +197,32 @@ public class baseServlet extends HttpServlet {
                 }
             }
             
+            //Phil: on mets les biscuits dans le four... sa va etre pret dans +-30min
+            int unMois = 30 * 24 * 60 * 60;
+            String cookiecatrecu = "";
+            String catselec = "";
+            if(categorie != null)
+            {
+            for(String s: categorie )
+                {
+                    catselec = catselec + s + ",";
+                }
+            }
+            Cookie catcookie = new Cookie( "categorie", catselec);
+            catcookie.setMaxAge(unMois);
+            response.addCookie(catcookie);
+            Cookie[] tabcookies = request.getCookies();
+            for(Cookie c : tabcookies)
+            {
+                if(c.getName().equals("categorie"))
+                {
+                    cookiecatrecu = c.getValue();
+                }
+            }
+            out.println(cookiecatrecu);
+            
+            
+            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -257,7 +283,7 @@ public class baseServlet extends HttpServlet {
             achatDeBillets(out);
             panier(out);
             inscription(out);
-            /*
+            
             Cookie test = new Cookie( "test", "Sa marche" );
             response.addCookie(test);
             Cookie[] tabCookies;
@@ -267,7 +293,7 @@ public class baseServlet extends HttpServlet {
                 {
                     out.println("Sa marche tu?" + c.getValue());
                 }
-            }*/
+            }
 
             out.println("</body>");
             out.println("</html>");   
