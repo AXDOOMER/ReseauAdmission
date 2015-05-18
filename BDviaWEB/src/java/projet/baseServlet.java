@@ -177,7 +177,26 @@ public class baseServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             String[] categorie = null; /* On va mettre les categories sélectionnées icitte */
+            //Phil: on mets les biscuits dans le four... sa va etre pret dans +-30min
+            int unMois = 30 * 24 * 60 * 60;
+            String cookiecatrecu = "";
+            String catselec = "";
 
+            Cookie[] tabcookies = request.getCookies();
+            for(Cookie c : tabcookies)
+            {
+                if(c.getName().equals("categorie"))
+                {
+                    cookiecatrecu = c.getValue();
+                }
+            }
+            out.println(cookiecatrecu);
+            
+            if(!cookiecatrecu.equals(""))
+            {
+                categorie = cookiecatrecu.split(",");
+            }
+            
             /* AX: Ok, check. Faut faire ça ici en haut sinon les résulats
             seront effacés lorsqu'on regénérera la page. */
             String btnRecherche = request.getParameter("Recherche");
@@ -198,9 +217,6 @@ public class baseServlet extends HttpServlet {
             }
             
             //Phil: on mets les biscuits dans le four... sa va etre pret dans +-30min
-            int unMois = 30 * 24 * 60 * 60;
-            String cookiecatrecu = "";
-            String catselec = "";
             if(categorie != null)
             {
                 for(String s: categorie )
@@ -208,23 +224,11 @@ public class baseServlet extends HttpServlet {
                         catselec = catselec + s + ",";
                 }
             }
+            
             Cookie catcookie = new Cookie( "categorie", catselec);
             catcookie.setMaxAge(unMois);
             response.addCookie(catcookie);
-            Cookie[] tabcookies = request.getCookies();
-            for(Cookie c : tabcookies)
-            {
-                if(c.getName().equals("categorie"))
-                {
-                    cookiecatrecu = c.getValue();
-                }
-            }
-            out.println(cookiecatrecu);
             
-            if(!cookiecatrecu.equals(""))
-            {
-                categorie = cookiecatrecu.split(",");
-            }
             
             
             out.println("<!DOCTYPE html>");
