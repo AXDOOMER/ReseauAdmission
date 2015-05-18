@@ -294,17 +294,6 @@ public class baseServlet extends HttpServlet {
             achatDeBillets(out);
             panier(out);
             inscription(out);
-            
-            Cookie test = new Cookie( "test", "Sa marche" );
-            response.addCookie(test);
-            Cookie[] tabCookies;
-            tabCookies = request.getCookies();
-            for (Cookie c : tabCookies) {
-                if (c.getName().equals("test")) 
-                {
-                    out.println("Sa marche tu?" + c.getValue());
-                }
-            }
 
             out.println("</body>");
             out.println("</html>");   
