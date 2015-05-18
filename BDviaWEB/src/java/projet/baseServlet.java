@@ -47,10 +47,10 @@ public class baseServlet extends HttpServlet {
     
     //methode pour créer les pages webs    
     public void acceuil(PrintWriter out, String[] categorie) {
-        out.println("<table width=\"100%\" height=auto cellpadding=\"10px\" style=\"background-color:lightgrey\">\n");
-        out.println("<tr> <td> Voici l'acceuil </td> <td></td>     </tr> <tr><td rowspan=4>" );
+        out.println("<table class=\"acceuil\" width=\"100%\" height=auto cellpadding=\"15px\" style=\"background-color:rgb(175,175,175)\">\n");
+        out.println("<tr> <td colspan=\"2\" style=\"text-align:center; background-color:grey; border-radius:10px; border:1px white solid; font-size:17px;\"> Vous êtes à l'acceuil </td></tr> <tr><td rowspan=4>" );
                 faireTableSpectacles(out, categorie) ;
-                out.println( "</td><td width=200 style=\"vertical-align:top;\"> Catégorie <br> <form>");
+                out.println( "</td><td style=\"vertical-align:top; border:1px white solid; border-radius:10px; height:150px; width:200px;\"> Catégorie <br> <form>");
 
         out.print("<input type=\"checkbox\" name=\"categorie\" value=\"Humour\"");
         for (int i = 0; categorie != null && i < categorie.length; i++) {
@@ -112,7 +112,7 @@ public class baseServlet extends HttpServlet {
         
         out.println("<input type=\"submit\" name=\"Recherche\" value=\"SubmitCatSearch\"> <BR>");
 
-        out.println("<BR><HR><BR>Salle <div> <select> <option value=\"Salle1\">Salle 1 </option> </select> <br> <button>Chercher</button> </div> ");
+        out.println("<BR><HR><BR>Salle <div> <select> <option value=\"Salle1\">Salle 1 </option> </select> <br><br> <button>Chercher</button> </div> ");
         out.println("<BR><HR><BR>Artiste <div> <input type=\"text\"/> <button>Chercher</button>  </div> ");
         
         out.println("</td> </tr> </form>");
@@ -130,20 +130,45 @@ public class baseServlet extends HttpServlet {
     
     public void achatDeBillets(PrintWriter out)
     {
-       out.println(
-"      <table width=\"100%\" cellpadding=\"10px\">\n" +
-"      <tr> <td> Achat de Billets </td> </tr>" +
-"      <div class=\"affichediv\"> ");
+       out.println("<table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\">"+
+			" <tr> <td rowspan=\"3\" colspan=\"13\" style=\"text-align:center; border-radius:10px; border:1px white solid; background-color:grey;\"> Achats de Billets  </tr> "+
+                        " <tr> </tr> "+
+                        " <tr> </tr> "+
+			" <tr> <td rowspan=\"8\" colspan=\"5\" width=\"50%\"> Affiche </td> <td> Catégorie <label>LABEL</label> </td> "+ 
+			" <td rowspan=\"8\" colspan=\"13\" style=\"text-align:center;\" width=\"20%\"> Nb de billet voulu:  <input type=\"textbox\" name=\"billetvoulu\"> <br> Total: <input type=\"textbox\" name=\"total\"> <br> <button> Ajouter au Panier </button> </td></tr>"+
+			" <tr> <td> Artiste <label>LABEL</label> </td> </tr>"+ 
+			" <tr> <td> Nom Spectacle <label>LABEL</label> </td> </tr>"+
+			" <tr> <td> Prix de base <label>LABEL</label> </td> </tr>"+
+			" <tr> <td> Section <select> <option value=\"section\">section</option> </select> </td> </tr>"+
+			" <tr> <td> Prix: Prix de base + Prix de section <label>LABEL</label> </td> </tr>"+
+			" <tr> <td> Nombre de billet restant pour la section: <label>LABEL</label>  </td> </tr>"+
+			" <tr> <td> Nb de billet restant total <label>LABEL</label> </td> </tr>"+
+			" <tr>  </tr>"+
+                   "</table>");
     }
     
     public void panier(PrintWriter out)
     {
-        
+        out.println("<table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
+"				<tr style=\"text-align:center\"> <td colspan=\"2\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> Mon Panier </td> </tr>\n" +
+"				<tr style=\"text-align:center\"> <td width=\"75%\" style=\"border:none;\"> <label>LABEL</label> <button>Modifier les achats</button> </td> <td rowspan=\"2\" style=\"border:none;\"> <button>Confirmer l'achat</button> <br> Prix total de l'achat: <label>LABEL</label> </td> </tr>\n" +
+"			</table>");
     }
     
     public void inscription(PrintWriter out)
     {
-        
+        out.println("<table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\"> " +
+"                               <tr> <td style=\"text-align:center; background-color:grey; border:1px white solid; border-radius:10px;\"colspan=\"2\"> Veuillez remplir les champs suivants </td> </tr> "+
+"				<tr> <td class=\"inputtext\" style=\"height:20%; text-align:right;\"> Nom: </td> <td> <input type=\"textbox\"> </td> </tr>" +
+"                               <tr> <td class=\"inputtext\" style=\"height:20%; text-align:right;\"> Prénom: </td> <td> <input type=\"textbox\"> </td> </tr>" +
+"				<tr> <td class=\"inputtext\" style=\" text-align:right;\"> Nom d'utilisateur: </td> <td> <input type=\"textbox\"> </td> </tr>" +
+"				<tr> <td class=\"inputtext\" style=\" text-align:right;\"> Mot de passe: </td> <td> <input type=\"textbox:\"> </td> </tr>" +
+"				<tr> <td class=\"inputtext\" style=\" text-align:right;\"> Téléphone: </td> <td> <input type=\"textbox:\"> </td> </tr>" +
+"				<tr> <td class=\"inputtext\" style=\" text-align:right;\"> Adresse: </td> <td> <input type=\"textbox:\"> </td> </tr> \n" +
+"                               <tr> <td class=\"inputtext\" style=\"text-align:right;\"> <button>S'inscrire...</button>"
+                + "</table>" +
+"		       	</div>" +
+"                   </div>");
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -179,17 +204,48 @@ public class baseServlet extends HttpServlet {
             
             out.println("<style>");
             out.println(" .titre { table-layout: fixed;"+
-                                 " font-size:20px;  }\n" +
-"                         .acceuil { width:20%; color:white;");
+                        " font-size:20px;  }"
+                       + ".acceuil { "
+                       + " color:white;"
+                       + " border-radius:10px;"
+                       + " border:1px white solid;");
+            out.println(".Inscription" +
+"                        {"+
+"                           width:100%;" +
+"                           height:80%;" +
+"                           text-align:center;" +
+"                           font-size:15px;" +
+"                           top:20%;" +
+"                           left:20px;n" +
+"                           background-color:rgb(211,211,198);" +
+"			}" +
+"			.information" +
+"			{" +
+"                           top:35%;" +
+"                           position:absolute;" +
+"                           left:35%;" +
+"                           height:500px;" +
+"                           width:30%;" +
+"                           background-color:rgb(175,174,147);" +
+"                           padding:35px;" +
+"                           text-align:center;" +
+"			}" +
+"			.input" +
+"			{" +
+"                           width:100%;" +
+"                           text-align:center;" +
+"                           height:100px;" +
+"			}" +
+"                       .inputtext{ text-align:right; width:50%;}");                    
             out.println("</style>");
             
             
             out.println("<title>RéseauAdmission</title>");            
             out.println("</head>");
-            out.println("<body>");
-            out.println("<table class=\"titre\" border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:grey; text-align:center\"> <tr> <td class=\"acceuil\">Accueil</td>"
-                     + " <td class=\"acceuil\" width=\"30%\">Bienvenue sur le site de <br><br> <B style=\"font-size:175%; color:white;\">RéseauAdmission</B><BR><BR>Un site d'achat de billets</td>"
-                     + " <td class=\"acceuil\">Panier</td>"
+            out.println("<body style=\"background-color:grey;\">");
+            out.println("<table class=\"titre\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:grey; text-align:center\"> <tr> <td class=\"acceuil\"> <button name=\"acceuil\" style=\"width:100%; height:100%; background-color:grey; border:none; color:white; font-size:20px;\">Allez à l'accueil</button></td>"
+                     + " <td class=\"acceuil\" width=\"30%\">Bienvenue sur le site de <br><br> <B style=\"font-size:175%; color:white;\">RéseauAdmission</B><BR>Un site d'achat de billets</td>"
+                     + " <td class=\"acceuil\"> <button name=\"panier\" style=\"width:100%; height:100%; background-color:grey; border:none; color:white; font-size:20px;\"> Mon Panier </button> </td>"
                      + " <td class=\"acceuil\">"+
 "                    Utilisateur: <BR/>\n" +
 "                    <input type=text name=utilisateur id=utilisateur><BR/>\n" +
@@ -199,6 +255,8 @@ public class baseServlet extends HttpServlet {
 "                    </td> </tr> </table> </div> ");
             acceuil(out, categorie);
             achatDeBillets(out);
+            panier(out);
+            inscription(out);
             /*
             Cookie test = new Cookie( "test", "Sa marche" );
             response.addCookie(test);
