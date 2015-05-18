@@ -159,18 +159,19 @@ public class baseServlet extends HttpServlet {
     
     public void inscription(PrintWriter out)
     {
-        out.println("<table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\"> " +
-"                               <tr> <td style=\"text-align:center; background-color:grey; border:1px white solid; border-radius:10px;\"colspan=\"2\"> Veuillez remplir les champs suivants </td> </tr> "+
-"				<tr> <td class=\"inputtext\" name=\"nom\" style=\"height:20%; text-align:right;\"> Nom: </td> <td> <input type=\"textbox\"> </td> </tr>" +
-"                               <tr> <td class=\"inputtext\" name=\"prenom\" style=\"height:20%; text-align:right;\"> Prénom: </td> <td> <input type=\"textbox\"> </td> </tr>" +
-"				<tr> <td class=\"inputtext\" name=\"username\" style=\" text-align:right;\"> Nom d'utilisateur: </td> <td> <input type=\"textbox\"> </td> </tr>" +
-"				<tr> <td class=\"inputtext\" name=\"motpasse\" style=\" text-align:right;\"> Mot de passe: </td> <td> <input type=\"textbox:\"> </td> </tr>" +
-"				<tr> <td class=\"inputtext\" name=\"telephone\" style=\" text-align:right;\"> Téléphone: </td> <td> <input type=\"textbox:\"> </td> </tr>" +
-"				<tr> <td class=\"inputtext\" name=\"adresse\" style=\" text-align:right;\"> Adresse: </td> <td> <input type=\"textbox:\"> </td> </tr> \n" +
-"                               <tr> <td class=\"inputtext\" style=\"text-align:right;\"> <button>S'inscrire...</button>"
-                + "</table>" +
-"		       	</div>" +
-"                   </div>");
+        out.println("<form><table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\"> "
+                + "<tr> <td style=\"text-align:center; background-color:grey; border:1px white solid; border-radius:10px;\"colspan=\"2\"> Veuillez remplir les champs suivants </td> </tr> "
+                + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"nom\" style=\"height:20%; text-align:right;\"> Nom: </td> <td> <input type=\"textbox\"> </td> </tr>"
+                + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"prenom\" style=\"height:20%; text-align:right;\"> Prénom: </td> <td> <input type=\"textbox\"> </td> </tr>"
+                + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"username\" style=\" text-align:right;\"> Nom d'utilisateur: </td> <td> <input type=\"textbox\"> </td> </tr>"
+                + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"motpasse\" style=\" text-align:right;\"> Mot de passe: </td> <td> <input type=\"textbox:\"> </td> </tr>"
+                + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"telephone\" style=\" text-align:right;\"> Téléphone: </td> <td> <input type=\"textbox:\"> </td> </tr>"
+                + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"adresse\" style=\" text-align:right;\"> Adresse: </td> <td> <input type=\"textbox:\"> </td> </tr> \n"
+                + "<tr> <td></td> <td> " /*<button>S'inscrire...</button>*/
+                + "<input class=\"inputtext\" type=\"submit\" name=\"inscription\" value=\"S'inscrire...\"></td>"
+                + "</table></form>"
+                + "</div>"
+                + "</div>");
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
