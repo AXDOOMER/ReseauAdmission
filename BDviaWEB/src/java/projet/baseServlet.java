@@ -175,16 +175,13 @@ public class baseServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-String[] categorie = null; /* On va mettre les categories sélectionnées icitte */
- 
             
-            
+            String[] categorie = null; /* On va mettre les categories sélectionnées icitte */
+
             /* AX: Ok, check. Faut faire ça ici en haut sinon les résulats
             seront effacés lorsqu'on regénérera la page. */
             String btnRecherche = request.getParameter("Recherche");
-            
-            
-            
+
             if (btnRecherche != null) {
                 /*Ici on check si le bouton existe. Dans un autre page que 
                 la page d'accueil, le bouton va être null*/
@@ -200,7 +197,7 @@ String[] categorie = null; /* On va mettre les categories sélectionnées icitte
                 }
             }
             
-                       //Phil: on mets les biscuits dans le four... sa va etre pret dans +-30min
+            //Phil: on mets les biscuits dans le four... sa va etre pret dans +-30min
             int unMois = 30 * 24 * 60 * 60;
             String cookiecatrecu = "";
             String catselec = "";
@@ -277,7 +274,7 @@ String[] categorie = null; /* On va mettre les categories sélectionnées icitte
             out.println("</head>");
             out.println("<body style=\"background-color:grey;\">");
             out.println("<table class=\"titre\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:grey; text-align:center\"> <tr> <td class=\"acceuil\"> <button name=\"acceuil\" style=\"width:100%; height:100%; background-color:grey; border:none; color:white; font-size:20px;\">Allez à l'accueil</button></td>"
-                     + " <td class=\"acceuil\" width=\"30%\">Bienvenue sur le site de <br><br> <B style=\"font-size:175%; color:white;\">RéseauAdmission</B><BR>Un site d'achat de billets</td>"
+                     + " <td class=\"acceuil\" width=\"30%\">Bienvenu sur le site de <br/> <B style=\"font-size:175%; color:white;\">RéseauAdmission</B><BR/>Un site d'achat de billets</td>"
                      + " <td class=\"acceuil\"> <button name=\"panier\" style=\"width:100%; height:100%; background-color:grey; border:none; color:white; font-size:20px;\"> Mon Panier </button> </td>"
                      + " <td class=\"acceuil\">"+
 "                    Utilisateur: <BR/>\n" +
