@@ -161,12 +161,12 @@ public class baseServlet extends HttpServlet {
     {
         out.println("<table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\"> " +
 "                               <tr> <td style=\"text-align:center; background-color:grey; border:1px white solid; border-radius:10px;\"colspan=\"2\"> Veuillez remplir les champs suivants </td> </tr> "+
-"				<tr> <td class=\"inputtext\" style=\"height:20%; text-align:right;\"> Nom: </td> <td> <input type=\"textbox\"> </td> </tr>" +
-"                               <tr> <td class=\"inputtext\" style=\"height:20%; text-align:right;\"> Prénom: </td> <td> <input type=\"textbox\"> </td> </tr>" +
-"				<tr> <td class=\"inputtext\" style=\" text-align:right;\"> Nom d'utilisateur: </td> <td> <input type=\"textbox\"> </td> </tr>" +
-"				<tr> <td class=\"inputtext\" style=\" text-align:right;\"> Mot de passe: </td> <td> <input type=\"textbox:\"> </td> </tr>" +
-"				<tr> <td class=\"inputtext\" style=\" text-align:right;\"> Téléphone: </td> <td> <input type=\"textbox:\"> </td> </tr>" +
-"				<tr> <td class=\"inputtext\" style=\" text-align:right;\"> Adresse: </td> <td> <input type=\"textbox:\"> </td> </tr> \n" +
+"				<tr> <td class=\"inputtext\" name=\"nom\" style=\"height:20%; text-align:right;\"> Nom: </td> <td> <input type=\"textbox\"> </td> </tr>" +
+"                               <tr> <td class=\"inputtext\" name=\"prenom\" style=\"height:20%; text-align:right;\"> Prénom: </td> <td> <input type=\"textbox\"> </td> </tr>" +
+"				<tr> <td class=\"inputtext\" name=\"username\" style=\" text-align:right;\"> Nom d'utilisateur: </td> <td> <input type=\"textbox\"> </td> </tr>" +
+"				<tr> <td class=\"inputtext\" name=\"motpasse\" style=\" text-align:right;\"> Mot de passe: </td> <td> <input type=\"textbox:\"> </td> </tr>" +
+"				<tr> <td class=\"inputtext\" name=\"telephone\" style=\" text-align:right;\"> Téléphone: </td> <td> <input type=\"textbox:\"> </td> </tr>" +
+"				<tr> <td class=\"inputtext\" name=\"adresse\" style=\" text-align:right;\"> Adresse: </td> <td> <input type=\"textbox:\"> </td> </tr> \n" +
 "                               <tr> <td class=\"inputtext\" style=\"text-align:right;\"> <button>S'inscrire...</button>"
                 + "</table>" +
 "		       	</div>" +
@@ -179,7 +179,26 @@ public class baseServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             String[] categorie = null; /* On va mettre les categories sélectionnées icitte */
+            //Phil: on mets les biscuits dans le four... sa va etre pret dans +-30min
+            int unMois = 30 * 24 * 60 * 60;
+            String cookiecatrecu = "";
+            String catselec = "";
 
+            Cookie[] tabcookies = request.getCookies();
+            for(Cookie c : tabcookies)
+            {
+                if(c.getName().equals("categorie"))
+                {
+                    cookiecatrecu = c.getValue();
+                }
+            }
+            out.println(cookiecatrecu);
+            
+            if(!cookiecatrecu.equals(""))
+            {
+                categorie = cookiecatrecu.split(",");
+            }
+            
             /* AX: Ok, check. Faut faire ça ici en haut sinon les résulats
             seront effacés lorsqu'on regénérera la page. */
             String btnRecherche = request.getParameter("Recherche");
@@ -200,9 +219,6 @@ public class baseServlet extends HttpServlet {
             }
             
             //Phil: on mets les biscuits dans le four... sa va etre pret dans +-30min
-            int unMois = 30 * 24 * 60 * 60;
-            String cookiecatrecu = "";
-            String catselec = "";
             if(categorie != null)
             {
                 for(String s: categorie )
@@ -210,23 +226,11 @@ public class baseServlet extends HttpServlet {
                         catselec = catselec + s + ",";
                 }
             }
+            
             Cookie catcookie = new Cookie( "categorie", catselec);
             catcookie.setMaxAge(unMois);
             response.addCookie(catcookie);
-            Cookie[] tabcookies = request.getCookies();
-            for(Cookie c : tabcookies)
-            {
-                if(c.getName().equals("categorie"))
-                {
-                    cookiecatrecu = c.getValue();
-                }
-            }
-            out.println(cookiecatrecu);
             
-            if(!cookiecatrecu.equals(""))
-            {
-                categorie = cookiecatrecu.split(",");
-            }
             
             
             out.println("<!DOCTYPE html>");
@@ -547,7 +551,7 @@ public class baseServlet extends HttpServlet {
                 System.out.print(Nom + " par " +Artiste + " de " + Categorie + " pour " + Prix + "$");
                 out.println("<CENTER><img src=\"affiches/" + Image + "\" width=\"180px\" height=\"200px\" " + ">");
                 out.println("<BR/>" + Nom);
-                out.println("<BR/>Donné par: " + Artiste);
+                out.println("<BR/>" + Artiste);
                 
                 switch( Integer.parseInt(Categorie))
                 {
