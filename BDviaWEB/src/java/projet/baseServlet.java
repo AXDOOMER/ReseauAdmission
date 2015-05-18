@@ -139,6 +139,8 @@ public class baseServlet extends HttpServlet {
 			" <tr> <td> Artiste <label>LABEL</label> </td> </tr>"+ 
 			" <tr> <td> Nom Spectacle <label>LABEL</label> </td> </tr>"+
 			" <tr> <td> Prix de base <label>LABEL</label> </td> </tr>"+
+                        " <tr> <td> Representation <select> <option value=\"representation\">representation</option> </select> </td> </tr>"+              
+                        " <tr> <td> Salle <select> <option value=\"salle\">salle</option> </select> </td> </tr>"+
 			" <tr> <td> Section <select> <option value=\"section\">section</option> </select> </td> </tr>"+
 			" <tr> <td> Prix: Prix de base + Prix de section <label>LABEL</label> </td> </tr>"+
 			" <tr> <td> Nombre de billet restant pour la section: <label>LABEL</label>  </td> </tr>"+
