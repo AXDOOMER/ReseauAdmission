@@ -331,11 +331,11 @@ public class Client extends javax.swing.JFrame {
         }
         else if(CBX_Select.getSelectedItem().toString().equals("Info sur la livraison des billets"))
         {
-            System.out.println("Info sur la livraison des billets");
+            AfficherInfoLivraison();
         }
         else if(CBX_Select.getSelectedItem().toString().equals("Habitude des clients"))
         {
-            System.out.println("Habitude des clients");
+            AfficherHabitudeClient();
         }
         else if(CBX_Select.getSelectedItem().toString().equals("Liste des clients fidèles"))
         {
@@ -560,7 +560,7 @@ public class Client extends javax.swing.JFrame {
             model.setColumnIdentifiers(new Object[]{"NuméroBillet","DateAchat","Imprimer","CodeReprésentation","CodeSection"});
             model.setRowCount(0);
             CallableStatement Callist =
-            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.ListeBillet(?)}");
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AfficherBillet(?)}");
             Callist.registerOutParameter(1,OracleTypes.CURSOR);
             Callist.execute();
             ResultSet rstlist = (ResultSet)Callist.getObject(1);
@@ -651,12 +651,69 @@ public class Client extends javax.swing.JFrame {
         
     public static void AfficherInfoLivraison()
     {
-        
+        try {         
+            DefaultTableModel model = (DefaultTableModel) TBL_Spectacle.getModel();  
+            model.setColumnIdentifiers(new Object[]{"NuméroBillet","NuméroClient","PrénomClient","NomClient","AdresseClient","NuméroFacture"});
+            model.setRowCount(0);
+            CallableStatement Callist =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.AFFICHERLIVRASONBILLETS(?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+                       
+            while(rstlist.next())
+            {             
+                int NuméroBillet = rstlist.getInt(1);
+                int NuméroClient = rstlist.getInt(2);  
+                String PrénomClient = rstlist.getString(3);
+                String NomClient = rstlist.getString(4);
+                String AdresseClient = rstlist.getString(5);
+                int NuméroFacture = rstlist.getInt(6);
+                model.addRow(new Object[]{Integer.toString(NuméroBillet),Integer.toString(NuméroClient),PrénomClient,NomClient,AdresseClient,Integer.toString(NuméroFacture)});
+            }
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            System.out.println("affichage");
+        }
+        catch(SQLException list)
+        {
+        System.out.println(list.getMessage());
+        }  
     }
     
     public static void AfficherHabitudeClient()
     {
-        
+        try {         
+            DefaultTableModel model = (DefaultTableModel) TBL_Spectacle.getModel();  
+            model.setColumnIdentifiers(new Object[]{"Prénom","Nom","NuméroBillet","NomSpectacle","Catégorie"});
+            model.setRowCount(0);
+            CallableStatement Callist =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.HABITUDECLIENT(?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+                       
+            while(rstlist.next())
+            {             
+                String Prénom = rstlist.getString(1);
+                String Nom = rstlist.getString(2);
+                int NuméroBillet = rstlist.getInt(3);                
+                String NomSpectacle = rstlist.getString(4);
+                String Catégorie = rstlist.getString(5);
+                model.addRow(new Object[]{Prénom,Nom,Integer.toString(NuméroBillet),NomSpectacle,Catégorie});
+            }
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            System.out.println("affichage");
+        }
+        catch(SQLException list)
+        {
+        System.out.println(list.getMessage());
+        }  
     }
     
     public static void AfficherClientFidèle()
