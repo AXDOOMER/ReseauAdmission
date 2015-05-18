@@ -175,12 +175,15 @@ public class baseServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-
+String[] categorie = null; /* On va mettre les categories sélectionnées icitte */
+ 
+            
+            
             /* AX: Ok, check. Faut faire ça ici en haut sinon les résulats
             seront effacés lorsqu'on regénérera la page. */
             String btnRecherche = request.getParameter("Recherche");
             
-            String[] categorie = null; /* On va mettre les categories sélectionnées icitte */
+            
             
             if (btnRecherche != null) {
                 /*Ici on check si le bouton existe. Dans un autre page que 
@@ -197,15 +200,15 @@ public class baseServlet extends HttpServlet {
                 }
             }
             
-            //Phil: on mets les biscuits dans le four... sa va etre pret dans +-30min
+                       //Phil: on mets les biscuits dans le four... sa va etre pret dans +-30min
             int unMois = 30 * 24 * 60 * 60;
             String cookiecatrecu = "";
             String catselec = "";
             if(categorie != null)
             {
-            for(String s: categorie )
+                for(String s: categorie )
                 {
-                    catselec = catselec + s + ",";
+                        catselec = catselec + s + ",";
                 }
             }
             Cookie catcookie = new Cookie( "categorie", catselec);
@@ -221,6 +224,10 @@ public class baseServlet extends HttpServlet {
             }
             out.println(cookiecatrecu);
             
+            if(!cookiecatrecu.equals(""))
+            {
+                categorie = cookiecatrecu.split(",");
+            }
             
             
             out.println("<!DOCTYPE html>");
