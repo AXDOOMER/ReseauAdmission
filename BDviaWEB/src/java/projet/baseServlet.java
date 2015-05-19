@@ -517,7 +517,7 @@ public class baseServlet extends HttpServlet {
             out.println("<title>RéseauAdmission</title>");            
             out.println("</head>");
             out.println("<body style=\"background-color:grey;\">");
-            out.println("<table class=\"titre\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:grey; text-align:center\"> <tr> <td class=\"acceuil\"> <form style=\"height:100%\"> <input type=\"submit\" name=\"acceuil\" value=\"Acceuil\" style=\"width:100%; height:100%; background-color:grey; border:none; color:white; font-size:20px;\"> </form></td>"
+            out.println("<form><table class=\"titre\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:grey; text-align:center\"> <tr> <td class=\"acceuil\"> <form style=\"height:100%\"> <input type=\"submit\" name=\"acceuil\" value=\"Acceuil\" style=\"width:100%; height:100%; background-color:grey; border:none; color:white; font-size:20px;\"> </form></td>"
                      + " <td class=\"acceuil\" width=\"30%\">Bienvenu sur le site de <br/> <B style=\"font-size:175%; color:white;\">RéseauAdmission</B><BR/>Un site d'achat de billets</td>"
                      + " <td class=\"acceuil\"> <form> <input type=\"submit\" name=\"acceuil\" value=\"Panier\" style=\"width:100%; height:100%; background-color:grey; border:none; color:white; font-size:20px;\"> </form> </td>"
                      + " <td class=\"acceuil\">"+
@@ -525,7 +525,7 @@ public class baseServlet extends HttpServlet {
 "                    <input type=text name=utilisateur id=utilisateur><BR/>\n" +
 "                    Mot de passe: <BR/>\n" +
 "                    <input type=password name=motdepasse id=motdepasse><BR/> "+
-"                    <button>Login</button>"+"<form> <input type=\"submit\" name=\"acceuil\" value=\"S'inscrire\"></form>"+
+"                    <input type=\"submit\" name=\"acceuil\" value=\"Login\"></form>"+"<form> <input type=\"submit\" name=\"acceuil\" value=\"S'inscrire\"></form>"+
 "                    </td> </tr> </table> </div> ");
 
             String parametreQuiDitOuOnEst = request.getParameter("acceuil");
@@ -550,6 +550,49 @@ public class baseServlet extends HttpServlet {
                         break;
                     case "S'inscrire":
                         inscription(out);
+                        affacc = false;
+                        break;
+                    case "Login":
+                        boolean seLogin = false;
+                        String Username = "";
+                        
+                        try {
+                            Connection oracleConn = seConnecter(); 
+                            CallableStatement stmCheckUser = oracleConn.prepareCall("{? = call TPF_BD_JAVA.Login(?,?)}",
+                                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                            stmCheckUser.registerOutParameter(1, OracleTypes.CURSOR);
+                            stmCheckUser.registerOutParameter(2, OracleTypes.VARCHAR);  //username
+                            stmCheckUser.registerOutParameter(3, OracleTypes.VARCHAR);  //password
+                            //execution de la procédure
+                            // Caster le paramètre de retour en ResultSet
+                            /*  ResultSet rest = stm2.executeQuery();   */
+                            stmCheckUser.execute();
+                            ResultSet rest = (ResultSet) stmCheckUser.getObject(1);
+                            
+                            if (rest.next())
+                            {
+                                Username = rest.getString("pseudo");
+                           
+                                // Si y'a de quoi dedans
+                                seLogin = true; // il est là
+                            }
+
+                            deconnexion(oracleConn);
+                            
+                        } catch (SQLException list) {
+                            System.out.println(list.getMessage());
+                        }
+                        
+                        if (seLogin)
+                        {
+                            // C'est bin la place pour mettre des cookies icitte
+                            acceuil(out, categorie, nomSalle, nomArtiste, "Bienvenu " + Username);
+                        }
+                        else
+                        {
+                            acceuil(out, categorie, nomSalle, nomArtiste, "Erreur. Vous ne vous êtres pas login.");
+                        }
+                        
                         affacc = false;
                         break;
                     case "Enregistrer":
