@@ -110,7 +110,7 @@ public class baseServlet extends HttpServlet {
 
         // On fait la grosse cellule
         
-        out.println("<input type=\"submit\" name=\"Recherche\" value=\"SubmitCatSearch\"> <BR>");
+        out.println("<input type=\"submit\" name=\"Recherche\" value=\"SubmitCatSearch\"> </form><BR>");
 
         // Combo box pour les salles de spectacle
         try 
@@ -126,12 +126,20 @@ public class baseServlet extends HttpServlet {
             stmCombo.execute();
 
             rest = (ResultSet) stmCombo.getObject(1);
+            out.println("<BR><HR><BR>Salle <div> <form><select>");
+
+            while (rest.next()) {
+                String SonNom = rest.getString("NOMSALLE"); // on poigne le nom de la salle
+                
+                out.println("<option value=\""+ SonNom + "\">" + SonNom + " </option>");
+            }
+
         } catch (SQLException sqlex) {
             System.out.println(sqlex.getMessage());
         }
         
-        out.println("<BR><HR><BR>Salle <div> <select> <option value=\"Salle1\">Salle 1 </option> </select> <br><br> <button>Chercher</button> </div> ");
-        out.println("<BR><HR><BR>Artiste <div> <input type=\"text\"/> <button>Chercher</button>  </div> ");
+         out.println(" </select> <br><br> <button>Chercher</button> <form></div> ");
+        out.println("<BR><HR><BR>Artiste <div> <form><input type=\"text\"/> <button>Chercher</button>  </div> ");
         
         out.println("</td> </tr> </form>");
         
