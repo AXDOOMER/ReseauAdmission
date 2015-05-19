@@ -46,10 +46,10 @@ public class baseServlet extends HttpServlet {
     private String password = "ORACLE2";
     
     //methode pour créer les pages webs    
-    public void acceuil(PrintWriter out, String[] categorie, String NomSalle) {
+    public void acceuil(PrintWriter out, String[] categorie, String NomSalle, String NomArtiste) {
         out.println("<table class=\"acceuil\" width=\"100%\" height=auto cellpadding=\"15px\" style=\"background-color:rgb(175,175,175)\">\n");
         out.println("<tr> <td colspan=\"2\" style=\"text-align:center; background-color:grey; border-radius:10px; border:1px white solid; font-size:17px;\"> Vous êtes à l'acceuil </td></tr> <tr><td rowspan=4>" );
-                faireTableSpectacles(out, categorie, NomSalle) ;
+                faireTableSpectacles(out, categorie, NomSalle, NomArtiste) ;
                 out.println( "</td><td style=\"vertical-align:top; border:1px white solid; border-radius:10px; height:150px; width:200px;\"> Catégorie <br> <form>");
 
         out.print("<input type=\"checkbox\" name=\"categorie\" value=\"Humour\"");
@@ -385,9 +385,12 @@ public class baseServlet extends HttpServlet {
             // @PHIL: Va chercher le nom de la salle dans le URL
             String nomSalle = "NOM SALLE QUI VIENT DU FORM";
             
+            // @PHIL: Va chercher le nom de l'artiste dans le URL
+            String nomArtiste = "NOM DE L'ARTISTE QUI VIENT DU FORM";
+            
             switch (btnAcceuil) {
                 case "Acceuil":
-                    acceuil(out, categorie, nomSalle);
+                    acceuil(out, categorie, nomSalle, nomArtiste);
                     affacc = false;
                     break;
                 case "Panier":
@@ -436,7 +439,7 @@ public class baseServlet extends HttpServlet {
 
 
 
-    private void faireTableSpectacles(PrintWriter out, String[] categories, String NomSalle)
+    private void faireTableSpectacles(PrintWriter out, String[] categories, String NomSalle, String NomArtiste)
     {
         Connection oracleConne = seConnecter(); // Oracle s'tune conne
         
