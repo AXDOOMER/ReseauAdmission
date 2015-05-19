@@ -353,8 +353,8 @@ public class baseServlet extends HttpServlet {
 "                    </td> </tr> </table> </div> ");
 
             String btnAcceuil = request.getParameter("acceuil");
-            String btnPanier = request.getParameter("panier");
             boolean affacc = true;
+            
             switch (btnAcceuil) {
                 case "Acceuil":
                     acceuil(out, categorie);
@@ -368,12 +368,13 @@ public class baseServlet extends HttpServlet {
                     inscription(out);
                     affacc = false;
                     break;
-
+            }
+                    
             out.println("</body>");
             out.println("</html>");   
-                       
+                    
         }
-    }
+        }
     
     private Connection seConnecter()
     {
