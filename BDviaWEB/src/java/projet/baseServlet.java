@@ -163,16 +163,16 @@ public class baseServlet extends HttpServlet {
         /*Artiste <div> <input type=\"text\"/> <button>Chercher</button>  </div> */
     }
     
-    public void achatDeBillets(PrintWriter out)
+    public void achatDeBillets(PrintWriter out, String nomSpectacle)
     {
-        String RepValues = TrouverRepValues("Match de hokcey");
+        String RepValues = TrouverRepValues(nomSpectacle);
         //String SalleValues = TrouverRepValues("Match de hokcey");
         Connection oracleConne = seConnecter(); // Oracle s'tune conne
         try {          
             CallableStatement Callist =
             oracleConne.prepareCall(" { call TPF_BD_JAVA.AfficherSpectacleParNom(?,?)}");
             Callist.registerOutParameter(1,OracleTypes.CURSOR);
-            Callist.setString(2,"Match de hokcey");
+            Callist.setString(2,nomSpectacle);
             Callist.execute();
             ResultSet rstlist = (ResultSet)Callist.getObject(1);
                         
@@ -230,7 +230,7 @@ public class baseServlet extends HttpServlet {
             CallableStatement Callist =
             oracleConne.prepareCall(" { call TPF_BD_JAVA.AfficherReprParNomSpec(?,?)}");
             Callist.registerOutParameter(1,OracleTypes.CURSOR);
-            Callist.setString(2,"Match de hokcey");
+            Callist.setString(2, nomSpectacle);
             Callist.execute();
             ResultSet rstlist = (ResultSet)Callist.getObject(1);
                         
@@ -297,7 +297,6 @@ public class baseServlet extends HttpServlet {
                     cookiecatrecu = c.getValue();
                 }
             }
-            out.println(cookiecatrecu);
             
             if(!cookiecatrecu.equals(""))
             {
@@ -404,7 +403,9 @@ public class baseServlet extends HttpServlet {
             // @PHIL: Va chercher le nom de l'artiste dans le URL
             String nomArtiste = "NOM DE L'ARTISTE QUI VIENT DU FORM";
             
-            switch (parametreQuiDitOuOnEst) {
+            if(parametreQuiDitOuOnEst != null)
+            {
+                            switch (parametreQuiDitOuOnEst) {
                 case "Acceuil":
                     acceuil(out, categorie, nomSalle, nomArtiste, null);
                     affacc = false;
@@ -421,6 +422,20 @@ public class baseServlet extends HttpServlet {
                     acceuil(out, categorie, nomSalle, nomArtiste, null);  // Ça c'est quand on vient de s'inscrire
                     affacc = false;
                     break;
+            }
+            
+            }
+            else
+            {
+                acceuil(out, categorie, nomSalle, nomArtiste);
+            }
+
+             String btnSpectacle = request.getParameter("spectacle");
+            
+            if(btnSpectacle != null)
+            {
+                achatDeBillets(out, btnSpectacle);
+                out.println("<div> nom:" + btnSpectacle + "</div>");
             }
             
             out.println("</body>");
@@ -670,6 +685,7 @@ public class baseServlet extends HttpServlet {
                 out.println("<CENTER><img src=\"affiches/" + Image + "\" width=\"180px\" height=\"200px\" " + ">");
                 out.println("<BR/>" + Nom);
                 out.println("<BR/>" + Artiste);
+                out.println("<br> <form> <input type=\"submit\" name=\"spectacle\" value=\"" + Nom + "\"> </form>");
                 
                 switch( Integer.parseInt(Categorie))
                 {
