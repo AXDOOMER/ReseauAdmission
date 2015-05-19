@@ -379,7 +379,7 @@ public class baseServlet extends HttpServlet {
 "                    <button>Login</button>"+"<form> <input type=\"submit\" name=\"acceuil\" value=\"S'inscrire\"></form>"+
 "                    </td> </tr> </table> </div> ");
 
-            String btnAcceuil = request.getParameter("acceuil");
+            String parametreQuiDitOuOnEst = request.getParameter("acceuil");
             boolean affacc = true;
             
             // @PHIL: Va chercher le nom de la salle dans le URL
@@ -388,7 +388,7 @@ public class baseServlet extends HttpServlet {
             // @PHIL: Va chercher le nom de l'artiste dans le URL
             String nomArtiste = "NOM DE L'ARTISTE QUI VIENT DU FORM";
             
-            switch (btnAcceuil) {
+            switch (parametreQuiDitOuOnEst) {
                 case "Acceuil":
                     acceuil(out, categorie, nomSalle, nomArtiste);
                     affacc = false;
