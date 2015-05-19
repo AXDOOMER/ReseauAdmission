@@ -395,6 +395,7 @@ public class baseServlet extends HttpServlet {
 "                    </td> </tr> </table> </div> ");
 
             String parametreQuiDitOuOnEst = request.getParameter("acceuil");
+            String btnSpectacle = request.getParameter("spectacle");
             boolean affacc = true;
             
             // @PHIL: Va chercher le nom de la salle dans le URL
@@ -423,18 +424,16 @@ public class baseServlet extends HttpServlet {
                         break;
                 }
 
-            } else {
+            }
+            else if(btnSpectacle != null)
+            {
+                achatDeBillets(out, btnSpectacle);
+            }
+            else
+            {
                 acceuil(out, categorie, nomSalle, nomArtiste, null);
             }
 
-             String btnSpectacle = request.getParameter("spectacle");
-            
-            if(btnSpectacle != null)
-            {
-                achatDeBillets(out, btnSpectacle);
-                out.println("<div> nom:" + btnSpectacle + "</div>");
-            }
-            
             out.println("</body>");
             out.println("</html>");   
                     
