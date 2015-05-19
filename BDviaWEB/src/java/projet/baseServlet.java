@@ -146,11 +146,11 @@ public class baseServlet extends HttpServlet {
             System.out.println(sqlex.getMessage());
         }
         
-        out.println(" </select> <br><br> <input type=\"submit\" name=\"Salles\" value=\"Chercher par Salle\"> <form></div> ");
+        out.println(" </select> <br><br> <input type=\"submit\" name=\"Salles\" value=\"Chercher par Salle\"> </form></div> ");
         
-        out.println("<BR><HR><BR>Artiste <div> <form><input type=\"text\"/> <button>Chercher</button>  </div> ");
+        out.println("<BR><HR><BR>Artiste <div> <form><input name=\"Artiste\" type=\"text\"/> <input type=\"submit\" name=\"Artiste\" value=\"Chercher par Artiste\"> </form> </div> ");
         
-        out.println("</td> </tr> </form>");
+        out.println("</td> </tr> ");
         
         out.println(
                 "</tr>" /*<tr colspan=\"8\"> <td rowspan=\"8\">Nom du Spectacle <br> Date*/
