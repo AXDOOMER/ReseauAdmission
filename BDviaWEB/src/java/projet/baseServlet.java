@@ -364,14 +364,14 @@ public class baseServlet extends HttpServlet {
     public void panier(PrintWriter out,int idClient)
     {
         int numClient = idClient;
-        out.println("<table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
+        out.println("<form><<table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
 				"<tr style=\"text-align:center\"> <td colspan=\"6\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> Mon Panier </td> </tr>\n" +
-				"<tr style=\"text-align:center\"> <td > <label>Numéro billet</label></td> <td> <label>Code Rep</label></td> <td > <label>Début</label></td> <td> <label>nom salle</label></td><td > <label>Nom Spectacle</label></td> <td> <label>Section</label></td> <td rowspan=\"2\" style=\"border:none;\"> <button>Confirmer l'achat</button> <br> Prix total de l'achat: <label>LABEL</label> </td> </tr>\n" );
+				"<tr style=\"text-align:center\"> <td > <label>Numéro billet</label></td> <td> <label>Code Rep</label></td> <td > <label>Début</label></td> <td> <label>nom salle</label></td><td > <label>Nom Spectacle</label></td> <td> <label>Section</label></td> <td rowspan=\"2\" style=\"border:none;\"> <input type=\"submit\" name=\"ConfirmerAchat\" value=\"Confirmer l'achat\"> <br> Prix total de l'achat: <label>LABEL</label> </td> </tr>\n" );
                                //<tr style=\"text-align:center\"> <td > <label>LABEL</label></td> </tr>\n"+
         // Sa remplie le panier de billet non acheter ( avec un date d'achat null )
         // par rapport au numClient (idClient)
         RemplirPanier(out,numClient);
-	out.println("</table>");
+	out.println("</table></form>");
     }
     
     public void inscription(PrintWriter out)
@@ -463,6 +463,73 @@ public class baseServlet extends HttpServlet {
             System.out.println(list.getMessage());
         }
     }
+    // Fonction utile pour ConfirmerAchatDesBillets
+    public void IncrementerNumFacture()
+    {
+        Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        try {          
+            CallableStatement Callist =
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.INCREMENTENUMFACTURE(?)}");
+            Callist.setString(1, "Peu importe");
+            Callist.executeUpdate(); 
+            
+            Callist.clearParameters();
+            Callist.close();
+            }
+        catch(SQLException list)
+        {
+            System.out.println(list.getMessage());
+        }
+    }
+    // Fonction utile pour ConfirmerAchatDesBillets
+    public void AcheterBiller(int numBillet)
+    {
+        Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        try {          
+            CallableStatement Callist =
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.CONFIRMERACHATBILLET(?)}");
+            Callist.setInt(1, numBillet);
+            Callist.executeUpdate(); 
+            
+            Callist.clearParameters();
+            Callist.close();
+            }
+        catch(SQLException list)
+        {
+            System.out.println(list.getMessage());
+        }
+    }
+    public void ConfirmerAchatDesBillets(int idClient)
+    {
+        int numClient = idClient;
+        Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        try {          
+            CallableStatement Callist =
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.AFFICHERPANIERPARCLIENT(?,?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.setInt(2, numClient);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                // On execute une procédure qui sert a incrémenter un numéro
+                // unique pour le numéro de facture
+                IncrementerNumFacture();
+                while(rstlist.next())
+                {
+                    // On récupère le numéro des billets
+                    int numBillet = rstlist.getInt(1);
+                    // On modifie la date du billet courrant dans la boucle
+                    // C'est comme sa qu'on sais si le billet est acheter ou non
+                    AcheterBiller(numBillet);
+                }   
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            }
+        catch(SQLException list)
+        {
+            System.out.println(list.getMessage());
+        }
+    }
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String achatBillet = null;
@@ -480,6 +547,16 @@ public class baseServlet extends HttpServlet {
                 {
                     AjouterBilletAvecLaSection(Integer.parseInt(tabAchatBillet[1]),idClient);
                 }
+            }
+        }
+        String confirmerAchat = null;
+        String [] tabConfirmerAchat = null;
+        confirmerAchat = request.getParameter("ConfirmerAchat");
+        if(confirmerAchat != null)
+        {
+            if(confirmerAchat.equals("Confirmer l'achat"))
+            {
+                ConfirmerAchatDesBillets(idClient);
             }
         }
         response.setContentType("text/html;charset=UTF-8");
