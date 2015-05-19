@@ -13,13 +13,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.Cookie;
 
 // JDBC
-import java.sql.DriverManager;
 import java.sql.*;
-import oracle.jdbc.OracleDriver;
+import java.sql.Date;
 import oracle.jdbc.pool.*;
 import java.util.*;
 import oracle.jdbc.OracleTypes;
@@ -291,7 +289,7 @@ public class baseServlet extends HttpServlet {
         
         return salleValues;
     }
-    
+
     public String TrouverSectionValues(String nomSpectacle)
     {
         String sectionValues = "";
@@ -323,6 +321,8 @@ public class baseServlet extends HttpServlet {
         }
         return sectionValues;
     }
+    // Sa remplie le panier de billet non acheter ( avec un date d'achat null )
+    // par rapport au numClient (idClient)
     public void RemplirPanier(PrintWriter out,int numClient)
     {
         Connection oracleConne = seConnecter(); // Oracle s'tune conne
@@ -338,8 +338,17 @@ public class baseServlet extends HttpServlet {
                 while(rstlist.next())
                 {
                     int numBillet = rstlist.getInt(1);
-                    int numClientTemp = rstlist.getInt(2);
-                    out.println("<tr style=\"text-align:center\"> <td > <label>"+numBillet+"</label></td> <td > <label>"+numClientTemp+"</label></td> </tr>\n");
+                    int codeRep = rstlist.getInt(2);
+                    Date debut = rstlist.getDate(3);
+                    String nomSalle = rstlist.getString(4);
+                    String nomSpectacle = rstlist.getString(5);
+                    int codeSection = rstlist.getInt(6);
+                    out.println("<tr style=\"text-align:center\">   <td > <label>"+numBillet+"</label></td>"
+                                                                + "<td > <label>"+codeRep+"</label></td>\n"
+                                                                + "<td > <label>"+debut+"</label></td>\n"
+                                                                + "<td > <label>"+nomSalle+"</label></td>\n"
+                                                                + "<td > <label>"+nomSpectacle+"</label></td>\n"
+                                                                + "<td > <label>"+codeSection+"</label></td>\n");
                 }
                 
                 
@@ -356,9 +365,11 @@ public class baseServlet extends HttpServlet {
     {
         int numClient = idClient;
         out.println("<table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
-				"<tr style=\"text-align:center\"> <td colspan=\"2\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> Mon Panier </td> </tr>\n" +
-				"<tr style=\"text-align:center\"> <td > <label>Numéro billet</label></td> <td> <label>Numéro Client</label></td>  <td rowspan=\"2\" style=\"border:none;\"> <button>Confirmer l'achat</button> <br> Prix total de l'achat: <label>LABEL</label> </td> </tr>\n" );
-                               //<tr style=\"text-align:center\"> <td > <label>LABEL</label></td> </tr>\n"+ 
+				"<tr style=\"text-align:center\"> <td colspan=\"6\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> Mon Panier </td> </tr>\n" +
+				"<tr style=\"text-align:center\"> <td > <label>Numéro billet</label></td> <td> <label>Code Rep</label></td> <td > <label>Début</label></td> <td> <label>nom salle</label></td><td > <label>Nom Spectacle</label></td> <td> <label>Section</label></td> <td rowspan=\"2\" style=\"border:none;\"> <button>Confirmer l'achat</button> <br> Prix total de l'achat: <label>LABEL</label> </td> </tr>\n" );
+                               //<tr style=\"text-align:center\"> <td > <label>LABEL</label></td> </tr>\n"+
+        // Sa remplie le panier de billet non acheter ( avec un date d'achat null )
+        // par rapport au numClient (idClient)
         RemplirPanier(out,numClient);
 	out.println("</table>");
     }
