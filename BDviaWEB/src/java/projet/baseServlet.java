@@ -139,7 +139,7 @@ public class baseServlet extends HttpServlet {
             while (rest.next()) {
                 String SonNom = rest.getString("NOMSALLE"); // on poigne le nom de la salle
                 
-                out.println("<option name=\"Salles\" value=\""+ SonNom + "\">" + SonNom + " </option>");
+                out.println("<option name=\"Salles\" value=\""+ SonNom + "\">" + SonNom + "</option>");
             }
 
         } catch (SQLException sqlex) {
@@ -648,7 +648,7 @@ public class baseServlet extends HttpServlet {
                 stmNS.execute();
                 rest = (ResultSet) stmNS.getObject(1);
             } else if (NomArtiste != null && NomArtiste.length() > 0) {
-                CallableStatement stmNA = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParArtiste(?)}",
+                CallableStatement stmNA = oracleConne.prepareCall("{? = call TPF_BD_JAVA.TrouverSpectacleParArtiste(?)}",
                         ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 stmNA.registerOutParameter(1, OracleTypes.CURSOR);
                 stmNA.registerOutParameter(2, OracleTypes.VARCHAR);
