@@ -134,19 +134,19 @@ public class baseServlet extends HttpServlet {
             stmCombo.execute();
 
             rest = (ResultSet) stmCombo.getObject(1);
-            out.println("<BR><HR><BR>Salle <div> <form><select>");
+            out.println("<BR><HR><BR>Salle <div> <form><select name=\"Salles\">");
 
             while (rest.next()) {
                 String SonNom = rest.getString("NOMSALLE"); // on poigne le nom de la salle
                 
-                out.println("<option value=\""+ SonNom + "\">" + SonNom + " </option>");
+                out.println("<option name=\"Salles\" value=\""+ SonNom + "\">" + SonNom + " </option>");
             }
 
         } catch (SQLException sqlex) {
             System.out.println(sqlex.getMessage());
         }
         
-        out.println(" </select> <br><br> <button>Chercher</button> <form></div> ");
+        out.println(" </select> <br><br> <input type=\"submit\" name=\"Salles\" value=\"Chercher par Salle\"> <form></div> ");
         
         out.println("<BR><HR><BR>Artiste <div> <form><input type=\"text\"/> <button>Chercher</button>  </div> ");
         
