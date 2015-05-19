@@ -46,10 +46,10 @@ public class baseServlet extends HttpServlet {
     private String password = "ORACLE2";
     
     //methode pour créer les pages webs    
-    public void acceuil(PrintWriter out, String[] categorie) {
+    public void acceuil(PrintWriter out, String[] categorie, String NomSalle, String NomArtiste) {
         out.println("<table class=\"acceuil\" width=\"100%\" height=auto cellpadding=\"15px\" style=\"background-color:rgb(175,175,175)\">\n");
         out.println("<tr> <td colspan=\"2\" style=\"text-align:center; background-color:grey; border-radius:10px; border:1px white solid; font-size:17px;\"> Vous êtes à l'acceuil </td></tr> <tr><td rowspan=4>" );
-                faireTableSpectacles(out, categorie) ;
+                faireTableSpectacles(out, categorie, NomSalle, NomArtiste) ;
                 out.println( "</td><td style=\"vertical-align:top; border:1px white solid; border-radius:10px; height:150px; width:200px;\"> Catégorie <br> <form>");
 
         out.print("<input type=\"checkbox\" name=\"categorie\" value=\"Humour\"");
@@ -110,10 +110,37 @@ public class baseServlet extends HttpServlet {
 
         // On fait la grosse cellule
         
-        out.println("<input type=\"submit\" name=\"Recherche\" value=\"SubmitCatSearch\"> <BR>");
+        out.println("<input type=\"submit\" name=\"Recherche\" value=\"SubmitCatSearch\"> </form><BR>");
 
-        out.println("<BR><HR><BR>Salle <div> <select> <option value=\"Salle1\">Salle 1 </option> </select> <br><br> <button>Chercher</button> </div> ");
-        out.println("<BR><HR><BR>Artiste <div> <input type=\"text\"/> <button>Chercher</button>  </div> ");
+        // Combo box pour les salles de spectacle
+        try 
+        {
+            Connection oracleConne = seConnecter();
+            ResultSet rest = null;
+            CallableStatement stmCombo = oracleConne.prepareCall("{? = call TPF_BD_JAVA.ListeSalles(?)}",
+                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            stmCombo.registerOutParameter(1, OracleTypes.CURSOR);
+            stmCombo.registerOutParameter(2, OracleTypes.CURSOR);
+            //execution de la procédure
+            // Caster le paramètre de retour en ResultSet
+            stmCombo.execute();
+
+            rest = (ResultSet) stmCombo.getObject(1);
+            out.println("<BR><HR><BR>Salle <div> <form><select>");
+
+            while (rest.next()) {
+                String SonNom = rest.getString("NOMSALLE"); // on poigne le nom de la salle
+                
+                out.println("<option value=\""+ SonNom + "\">" + SonNom + " </option>");
+            }
+
+        } catch (SQLException sqlex) {
+            System.out.println(sqlex.getMessage());
+        }
+        
+        out.println(" </select> <br><br> <button>Chercher</button> <form></div> ");
+        
+        out.println("<BR><HR><BR>Artiste <div> <form><input type=\"text\"/> <button>Chercher</button>  </div> ");
         
         out.println("</td> </tr> </form>");
         
@@ -237,7 +264,7 @@ public class baseServlet extends HttpServlet {
                 + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"telephone\" style=\" text-align:right;\"> Téléphone: </td> <td> <input type=\"textbox:\"> </td> </tr>"
                 + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"adresse\" style=\" text-align:right;\"> Adresse: </td> <td> <input type=\"textbox:\"> </td> </tr> \n"
                 + "<tr> <td></td> <td> " /*<button>S'inscrire...</button>*/
-                + "<input class=\"inputtext\" type=\"submit\" name=\"inscription\" value=\"S'inscrire...\"></td>"
+                + "<input class=\"inputtext\" type=\"submit\" name=\"inscription\" value=\"Enregistrer\"></td>"
                 + "</table></form>"
                 + "</div>"
                 + "</div>");
@@ -360,12 +387,18 @@ public class baseServlet extends HttpServlet {
 "                    <button>Login</button>"+"<form> <input type=\"submit\" name=\"acceuil\" value=\"S'inscrire\"></form>"+
 "                    </td> </tr> </table> </div> ");
 
-            String btnAcceuil = request.getParameter("acceuil");
+            String parametreQuiDitOuOnEst = request.getParameter("acceuil");
             boolean affacc = true;
             
-            switch (btnAcceuil) {
+            // @PHIL: Va chercher le nom de la salle dans le URL
+            String nomSalle = "NOM SALLE QUI VIENT DU FORM";
+            
+            // @PHIL: Va chercher le nom de l'artiste dans le URL
+            String nomArtiste = "NOM DE L'ARTISTE QUI VIENT DU FORM";
+            
+            switch (parametreQuiDitOuOnEst) {
                 case "Acceuil":
-                    acceuil(out, categorie);
+                    acceuil(out, categorie, nomSalle, nomArtiste);
                     affacc = false;
                     break;
                 case "Panier":
@@ -374,6 +407,10 @@ public class baseServlet extends HttpServlet {
                     break;
                 case "S'inscrire":
                     inscription(out);
+                    affacc = false;
+                    break;
+                case "Enregistrer":
+                    acceuil(out, categorie, nomSalle, nomArtiste);  // Ça c'est quand on vient de s'inscrire
                     affacc = false;
                     break;
             }
@@ -414,52 +451,52 @@ public class baseServlet extends HttpServlet {
 
 
 
-    private void faireTableSpectacles(PrintWriter out, String[] categories)
+    private void faireTableSpectacles(PrintWriter out, String[] categories, String NomSalle, String NomArtiste)
     {
         Connection oracleConne = seConnecter(); // Oracle s'tune conne
         
         try
         {
-            int cunt = 0;   // Count pour compter les categories
+            int count = 0;   // Count pour compter les categories
             int[] pileDeCat = new int[7]; // Y'a 7 catégories gros max
             for (int i = 0; categories != null  && i < categories.length && categories[i] != null; i++)
             {
                 // CatName to #
                 if (categories[i].equals("Humour"))
                 {
-                    pileDeCat[cunt] = 1;
+                    pileDeCat[count] = 1;
                 }
                 else if (categories[i].equals("Musique"))
                 {
-                    pileDeCat[cunt] = 2;
+                    pileDeCat[count] = 2;
                 }
                 else if (categories[i].equals("Enfant"))
                 {
-                    pileDeCat[cunt] = 3;
+                    pileDeCat[count] = 3;
                 }
                 else if (categories[i].equals("Illusion"))
                 {
-                    pileDeCat[cunt] = 4;
+                    pileDeCat[count] = 4;
                 }
                 else if (categories[i].equals("Danse"))
                 {
-                    pileDeCat[cunt] = 5;
+                    pileDeCat[count] = 5;
                 }
                 else if (categories[i].equals("Jeux_Video"))
                 {
-                    pileDeCat[cunt] = 6;
+                    pileDeCat[count] = 6;
                 }
                 else if (categories[i].equals("Sport"))
                 {
-                    pileDeCat[cunt] = 7;
+                    pileDeCat[count] = 7;
                 }
                 
-                cunt++;
+                count++;
             }
             
             ResultSet rest = null;
             
-            switch(cunt)
+            switch(count)
             {
                 case 0:
                     CallableStatement stm0 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat(?)}",
@@ -602,7 +639,7 @@ public class baseServlet extends HttpServlet {
 
             if (rest == null)
             {
-                System.err.println("VA CHIER TABARNAK DE POINTEUR NULL À MARDE");
+                System.err.println("POINTEUR NULL");
             }
             
            // Mettre du stoque dans la page
