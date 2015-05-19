@@ -341,9 +341,9 @@ public class baseServlet extends HttpServlet {
             out.println("<title>RéseauAdmission</title>");            
             out.println("</head>");
             out.println("<body style=\"background-color:grey;\">");
-            out.println("<table class=\"titre\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:grey; text-align:center\"> <tr> <td class=\"acceuil\"> <button name=\"acceuil\" style=\"width:100%; height:100%; background-color:grey; border:none; color:white; font-size:20px;\">Allez à l'accueil</button></td>"
+            out.println("<table class=\"titre\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:grey; text-align:center\"> <tr> <td class=\"acceuil\"> <form style=\"height:100%\"> <input type=\"submit\" name=\"acceuil\" value=\"Acceuil\" style=\"width:100%; height:100%; background-color:grey; border:none; color:white; font-size:20px;\"> </form></td>"
                      + " <td class=\"acceuil\" width=\"30%\">Bienvenu sur le site de <br/> <B style=\"font-size:175%; color:white;\">RéseauAdmission</B><BR/>Un site d'achat de billets</td>"
-                     + " <td class=\"acceuil\"> <button name=\"panier\" style=\"width:100%; height:100%; background-color:grey; border:none; color:white; font-size:20px;\"> Mon Panier </button> </td>"
+                     + " <td class=\"acceuil\"> <form> <input type=\"submit\" name=\"acceuil\" value=\"Panier\" style=\"width:100%; height:100%; background-color:grey; border:none; color:white; font-size:20px;\"> </form> </td>"
                      + " <td class=\"acceuil\">"+
 "                    Utilisateur: <BR/>\n" +
 "                    <input type=text name=utilisateur id=utilisateur><BR/>\n" +
@@ -351,10 +351,23 @@ public class baseServlet extends HttpServlet {
 "                    <input type=password name=motdepasse id=motdepasse><BR/> "+
 "                    <button>Login</button>"+"<button>S'enregistrer</button>"+
 "                    </td> </tr> </table> </div> ");
-            acceuil(out, categorie);
-            achatDeBillets(out);
-            panier(out);
-            inscription(out);
+
+            String btnAcceuil = request.getParameter("acceuil");
+            String btnPanier = request.getParameter("panier");
+            boolean affacc = true;
+            switch (btnAcceuil) {
+                case "Acceuil":
+                    acceuil(out, categorie);
+                    affacc = false;
+                    break;
+                case "Panier":
+                    panier(out);
+                    affacc = false;
+                    break;
+                case "S'inscrire":
+                    inscription(out);
+                    affacc = false;
+                    break;
 
             out.println("</body>");
             out.println("</html>");   
