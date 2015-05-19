@@ -398,11 +398,11 @@ public class baseServlet extends HttpServlet {
             String btnSpectacle = request.getParameter("spectacle");
             boolean affacc = true;
             
-            // @PHIL: Va chercher le nom de la salle dans le URL
-            String nomSalle = "NOM SALLE QUI VIENT DU FORM";
-            
-            // @PHIL: Va chercher le nom de l'artiste dans le URL
-            String nomArtiste = "NOM DE L'ARTISTE QUI VIENT DU FORM";
+            // aller chercher la salle qu'on cherche
+            String nomSalle = request.getParameter("Salles");
+         
+            // aller checher l'artiste qu'on veut avowère
+            String nomArtiste = request.getParameter("Artiste");
             
             if (parametreQuiDitOuOnEst != null) {
                 switch (parametreQuiDitOuOnEst) {
@@ -515,146 +515,173 @@ public class baseServlet extends HttpServlet {
             
             ResultSet rest = null;
             
-            switch(count)
+            if (NomSalle != null && NomSalle.length() > 0)
             {
-                case 0:
-                    CallableStatement stm0 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat(?)}",
-                            ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                    stm0.registerOutParameter(1, OracleTypes.CURSOR);
-                    stm0.registerOutParameter(2, OracleTypes.CURSOR);
+                        CallableStatement stmNS = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParNomSalle(?)}",
+                                ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                        stmNS.registerOutParameter(1, OracleTypes.CURSOR);
+                        stmNS.registerOutParameter(2, OracleTypes.VARCHAR);
+                        stmNS.setString(2, NomSalle);
                     //execution de la procédure
-                    // Caster le paramètre de retour en ResultSet
+                        // Caster le paramètre de retour en ResultSet
                       /*  ResultSet rest = stm2.executeQuery();   */
-                    stm0.execute();
-                    rest = (ResultSet) stm0.getObject(1);
-                    break;
-                    
-                case 1:
-                    CallableStatement stm1 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat1(?)}",
-                            ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                    stm1.registerOutParameter(1, OracleTypes.CURSOR);
-                    stm1.registerOutParameter(2, OracleTypes.NUMBER);
-                    stm1.setInt(2, pileDeCat[0]);
-                    //execution de la procédure
-                    // Caster le paramètre de retour en ResultSet
-                      /*  ResultSet rest = stm2.executeQuery();   */
-                    stm1.execute();
-                    rest = (ResultSet) stm1.getObject(1);
-                    break;
-                case 2:
-                    CallableStatement stm2 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat2(?,?)}",
-                            ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                    stm2.registerOutParameter(1, OracleTypes.CURSOR);
-                    stm2.registerOutParameter(2, OracleTypes.NUMBER);
-                    stm2.registerOutParameter(3, OracleTypes.NUMBER);
-                    stm2.setInt(2, pileDeCat[0]);
-                    stm2.setInt(3, pileDeCat[1]);
-                    //execution de la procédure
-                    // Caster le paramètre de retour en ResultSet
-                      /*  ResultSet rest = stm2.executeQuery();   */
-                    stm2.execute();
-                    rest = (ResultSet) stm2.getObject(1);
-                    break;
-                case 3:
-                    CallableStatement stm3 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat3(?,?,?)}",
-                            ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                    stm3.registerOutParameter(1, OracleTypes.CURSOR);
-                    stm3.registerOutParameter(2, OracleTypes.NUMBER);
-                    stm3.registerOutParameter(3, OracleTypes.NUMBER);
-                    stm3.registerOutParameter(4, OracleTypes.NUMBER);
-                    stm3.setInt(2, pileDeCat[0]);
-                    stm3.setInt(3, pileDeCat[1]);
-                    stm3.setInt(4, pileDeCat[2]);
-                    //execution de la procédure
-                    // Caster le paramètre de retour en ResultSet
-                      /*  ResultSet rest = stm2.executeQuery();   */
-                    stm3.execute();
-                    rest = (ResultSet) stm3.getObject(1);
-                    break;
-                case 4:
-                    CallableStatement stm4 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat4(?,?,?,?)}",
-                            ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                    stm4.registerOutParameter(1, OracleTypes.CURSOR);
-                    stm4.registerOutParameter(2, OracleTypes.NUMBER);
-                    stm4.registerOutParameter(3, OracleTypes.NUMBER);
-                    stm4.registerOutParameter(4, OracleTypes.NUMBER);
-                    stm4.registerOutParameter(5, OracleTypes.NUMBER);
-                    stm4.setInt(2, pileDeCat[0]);
-                    stm4.setInt(3, pileDeCat[1]);
-                    stm4.setInt(4, pileDeCat[2]);
-                    stm4.setInt(5, pileDeCat[3]);
-                    //execution de la procédure
-                    // Caster le paramètre de retour en ResultSet
-                      /*  ResultSet rest = stm2.executeQuery();   */
-                    stm4.execute();
-                    rest = (ResultSet) stm4.getObject(1);
-                    break;
-                case 5:
-                    CallableStatement stm5 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat5(?,?,?,?,?)}",
-                            ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                    stm5.registerOutParameter(1, OracleTypes.CURSOR);
-                    stm5.registerOutParameter(2, OracleTypes.NUMBER);
-                    stm5.registerOutParameter(3, OracleTypes.NUMBER);
-                    stm5.registerOutParameter(4, OracleTypes.NUMBER);
-                    stm5.registerOutParameter(5, OracleTypes.NUMBER);
-                    stm5.registerOutParameter(6, OracleTypes.NUMBER);
-                    stm5.setInt(2, pileDeCat[0]);
-                    stm5.setInt(3, pileDeCat[1]);
-                    stm5.setInt(4, pileDeCat[2]);
-                    stm5.setInt(5, pileDeCat[3]);
-                    stm5.setInt(6, pileDeCat[4]);
-                    //execution de la procédure
-                    // Caster le paramètre de retour en ResultSet
-                      /*  ResultSet rest = stm2.executeQuery();   */
-                    stm5.execute();
-                    rest = (ResultSet) stm5.getObject(1);
-                    break;
-                case 6:
-                    CallableStatement stm6 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat6(?,?,?,?,?,?)}",
-                            ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                    stm6.registerOutParameter(1, OracleTypes.CURSOR);
-                    stm6.registerOutParameter(2, OracleTypes.NUMBER);
-                    stm6.registerOutParameter(3, OracleTypes.NUMBER);
-                    stm6.registerOutParameter(4, OracleTypes.NUMBER);
-                    stm6.registerOutParameter(5, OracleTypes.NUMBER);
-                    stm6.registerOutParameter(6, OracleTypes.NUMBER);
-                    stm6.registerOutParameter(7, OracleTypes.NUMBER);
-                    stm6.setInt(2, pileDeCat[0]);
-                    stm6.setInt(3, pileDeCat[1]);
-                    stm6.setInt(4, pileDeCat[2]);
-                    stm6.setInt(5, pileDeCat[3]);
-                    stm6.setInt(6, pileDeCat[4]);
-                    stm6.setInt(7, pileDeCat[6]);
-                    //execution de la procédure
-                    // Caster le paramètre de retour en ResultSet
-                      /*  ResultSet rest = stm2.executeQuery();   */
-                    stm6.execute();
-                    rest = (ResultSet) stm6.getObject(1);
-                    break;
-                case 7:
-                    CallableStatement stm7 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat(?)}",
-                            ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                    stm7.registerOutParameter(1, OracleTypes.CURSOR);
-                    stm7.registerOutParameter(2, OracleTypes.CURSOR);
-                    //execution de la procédure
-                    // Caster le paramètre de retour en ResultSet
-                      /*  ResultSet rest = stm2.executeQuery();   */
-                    stm7.execute();
-                    rest = (ResultSet) stm7.getObject(1);
-                    break;
-                default:
-                    System.err.println("Nombre invalide de catégories sélectionnées. Vérifiez 'pileDeCat'.");
-                    CallableStatement stmD = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat(?)}",
-                            ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                    stmD.registerOutParameter(1, OracleTypes.CURSOR);
-                    stmD.registerOutParameter(2, OracleTypes.CURSOR);
-                    //execution de la procédure
-                    // Caster le paramètre de retour en ResultSet
-                      /*  ResultSet rest = stm2.executeQuery();   */
-                    stmD.execute();
-                    rest = (ResultSet) stmD.getObject(1);
-                    break;
+                        stmNS.execute();
+                        rest = (ResultSet) stmNS.getObject(1);
             }
+            else if (NomArtiste != null && NomArtiste.length() > 0)
+            {
+                        CallableStatement stmNA = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParArtiste(?)}",
+                                ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                        stmNA.registerOutParameter(1, OracleTypes.CURSOR);
+                        stmNA.registerOutParameter(2, OracleTypes.VARCHAR);
+                        stmNA.setString(2, NomArtiste);
+                    //execution de la procédure
+                        // Caster le paramètre de retour en ResultSet
+                      /*  ResultSet rest = stm2.executeQuery();   */
+                        stmNA.execute();
+                        rest = (ResultSet) stmNA.getObject(1);
+            } else {
+                switch (count) {
+                    case 0:
+                        CallableStatement stm0 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat(?)}",
+                                ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                        stm0.registerOutParameter(1, OracleTypes.CURSOR);
+                        stm0.registerOutParameter(2, OracleTypes.CURSOR);
+                    //execution de la procédure
+                        // Caster le paramètre de retour en ResultSet
+                      /*  ResultSet rest = stm2.executeQuery();   */
+                        stm0.execute();
+                        rest = (ResultSet) stm0.getObject(1);
+                        break;
+
+                    case 1:
+                        CallableStatement stm1 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat1(?)}",
+                                ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                        stm1.registerOutParameter(1, OracleTypes.CURSOR);
+                        stm1.registerOutParameter(2, OracleTypes.NUMBER);
+                        stm1.setInt(2, pileDeCat[0]);
+                    //execution de la procédure
+                        // Caster le paramètre de retour en ResultSet
+                      /*  ResultSet rest = stm2.executeQuery();   */
+                        stm1.execute();
+                        rest = (ResultSet) stm1.getObject(1);
+                        break;
+                    case 2:
+                        CallableStatement stm2 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat2(?,?)}",
+                                ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                        stm2.registerOutParameter(1, OracleTypes.CURSOR);
+                        stm2.registerOutParameter(2, OracleTypes.NUMBER);
+                        stm2.registerOutParameter(3, OracleTypes.NUMBER);
+                        stm2.setInt(2, pileDeCat[0]);
+                        stm2.setInt(3, pileDeCat[1]);
+                    //execution de la procédure
+                        // Caster le paramètre de retour en ResultSet
+                      /*  ResultSet rest = stm2.executeQuery();   */
+                        stm2.execute();
+                        rest = (ResultSet) stm2.getObject(1);
+                        break;
+                    case 3:
+                        CallableStatement stm3 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat3(?,?,?)}",
+                                ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                        stm3.registerOutParameter(1, OracleTypes.CURSOR);
+                        stm3.registerOutParameter(2, OracleTypes.NUMBER);
+                        stm3.registerOutParameter(3, OracleTypes.NUMBER);
+                        stm3.registerOutParameter(4, OracleTypes.NUMBER);
+                        stm3.setInt(2, pileDeCat[0]);
+                        stm3.setInt(3, pileDeCat[1]);
+                        stm3.setInt(4, pileDeCat[2]);
+                    //execution de la procédure
+                        // Caster le paramètre de retour en ResultSet
+                      /*  ResultSet rest = stm2.executeQuery();   */
+                        stm3.execute();
+                        rest = (ResultSet) stm3.getObject(1);
+                        break;
+                    case 4:
+                        CallableStatement stm4 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat4(?,?,?,?)}",
+                                ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                        stm4.registerOutParameter(1, OracleTypes.CURSOR);
+                        stm4.registerOutParameter(2, OracleTypes.NUMBER);
+                        stm4.registerOutParameter(3, OracleTypes.NUMBER);
+                        stm4.registerOutParameter(4, OracleTypes.NUMBER);
+                        stm4.registerOutParameter(5, OracleTypes.NUMBER);
+                        stm4.setInt(2, pileDeCat[0]);
+                        stm4.setInt(3, pileDeCat[1]);
+                        stm4.setInt(4, pileDeCat[2]);
+                        stm4.setInt(5, pileDeCat[3]);
+                    //execution de la procédure
+                        // Caster le paramètre de retour en ResultSet
+                      /*  ResultSet rest = stm2.executeQuery();   */
+                        stm4.execute();
+                        rest = (ResultSet) stm4.getObject(1);
+                        break;
+                    case 5:
+                        CallableStatement stm5 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat5(?,?,?,?,?)}",
+                                ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                        stm5.registerOutParameter(1, OracleTypes.CURSOR);
+                        stm5.registerOutParameter(2, OracleTypes.NUMBER);
+                        stm5.registerOutParameter(3, OracleTypes.NUMBER);
+                        stm5.registerOutParameter(4, OracleTypes.NUMBER);
+                        stm5.registerOutParameter(5, OracleTypes.NUMBER);
+                        stm5.registerOutParameter(6, OracleTypes.NUMBER);
+                        stm5.setInt(2, pileDeCat[0]);
+                        stm5.setInt(3, pileDeCat[1]);
+                        stm5.setInt(4, pileDeCat[2]);
+                        stm5.setInt(5, pileDeCat[3]);
+                        stm5.setInt(6, pileDeCat[4]);
+                    //execution de la procédure
+                        // Caster le paramètre de retour en ResultSet
+                      /*  ResultSet rest = stm2.executeQuery();   */
+                        stm5.execute();
+                        rest = (ResultSet) stm5.getObject(1);
+                        break;
+                    case 6:
+                        CallableStatement stm6 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat6(?,?,?,?,?,?)}",
+                                ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                        stm6.registerOutParameter(1, OracleTypes.CURSOR);
+                        stm6.registerOutParameter(2, OracleTypes.NUMBER);
+                        stm6.registerOutParameter(3, OracleTypes.NUMBER);
+                        stm6.registerOutParameter(4, OracleTypes.NUMBER);
+                        stm6.registerOutParameter(5, OracleTypes.NUMBER);
+                        stm6.registerOutParameter(6, OracleTypes.NUMBER);
+                        stm6.registerOutParameter(7, OracleTypes.NUMBER);
+                        stm6.setInt(2, pileDeCat[0]);
+                        stm6.setInt(3, pileDeCat[1]);
+                        stm6.setInt(4, pileDeCat[2]);
+                        stm6.setInt(5, pileDeCat[3]);
+                        stm6.setInt(6, pileDeCat[4]);
+                        stm6.setInt(7, pileDeCat[6]);
+                    //execution de la procédure
+                        // Caster le paramètre de retour en ResultSet
+                      /*  ResultSet rest = stm2.executeQuery();   */
+                        stm6.execute();
+                        rest = (ResultSet) stm6.getObject(1);
+                        break;
+                    case 7:
+                        CallableStatement stm7 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat(?)}",
+                                ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                        stm7.registerOutParameter(1, OracleTypes.CURSOR);
+                        stm7.registerOutParameter(2, OracleTypes.CURSOR);
+                    //execution de la procédure
+                        // Caster le paramètre de retour en ResultSet
+                      /*  ResultSet rest = stm2.executeQuery();   */
+                        stm7.execute();
+                        rest = (ResultSet) stm7.getObject(1);
+                        break;
+                    default:
+                        System.err.println("Nombre invalide de catégories sélectionnées. Vérifiez 'pileDeCat'.");
+                        CallableStatement stmD = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat(?)}",
+                                ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                        stmD.registerOutParameter(1, OracleTypes.CURSOR);
+                        stmD.registerOutParameter(2, OracleTypes.CURSOR);
+                    //execution de la procédure
+                        // Caster le paramètre de retour en ResultSet
+                      /*  ResultSet rest = stm2.executeQuery();   */
+                        stmD.execute();
+                        rest = (ResultSet) stmD.getObject(1);
+                        break;
+                }
+            }
+
 
             if (rest == null)
             {
