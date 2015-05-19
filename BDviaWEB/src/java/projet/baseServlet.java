@@ -323,14 +323,44 @@ public class baseServlet extends HttpServlet {
         }
         return sectionValues;
     }
-    
+    public void RemplirPanier(PrintWriter out,int numClient)
+    {
+        Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        try {          
+            CallableStatement Callist =
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.AFFICHERPANIERPARCLIENT(?,?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.setInt(2, numClient);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+            //codespectacle,nomcat,prixdebase,artiste,nomspectacle,affiche,description           
+                while(rstlist.next())
+                {
+                    int numBillet = rstlist.getInt(1);
+                    int numClientTemp = rstlist.getInt(2);
+                    out.println("<tr style=\"text-align:center\"> <td > <label>"+numBillet+"</label></td> <td > <label>"+numClientTemp+"</label></td> </tr>\n");
+                }
+                
+                
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            }
+        catch(SQLException list)
+        {
+            System.out.println(list.getMessage());
+        }
+    }
     public void panier(PrintWriter out,int idClient)
     {
         int numClient = idClient;
         out.println("<table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
-"				<tr style=\"text-align:center\"> <td colspan=\"2\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> Mon Panier </td> </tr>\n" +
-"				<tr style=\"text-align:center\"> <td width=\"75%\" style=\"border:solidblack;\"> <label>LABEL</label> <button>Modifier les achats</button> </td> <td rowspan=\"2\" style=\"border:none;\"> <button>Confirmer l'achat</button> <br> Prix total de l'achat: <label>LABEL</label> </td> </tr>\n" +
-"			</table>");
+				"<tr style=\"text-align:center\"> <td colspan=\"2\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> Mon Panier </td> </tr>\n" +
+				"<tr style=\"text-align:center\"> <td > <label>Numéro billet</label></td> <td> <label>Numéro Client</label></td>  <td rowspan=\"2\" style=\"border:none;\"> <button>Confirmer l'achat</button> <br> Prix total de l'achat: <label>LABEL</label> </td> </tr>\n" );
+                               //<tr style=\"text-align:center\"> <td > <label>LABEL</label></td> </tr>\n"+ 
+        RemplirPanier(out,numClient);
+	out.println("</table>");
     }
     
     public void inscription(PrintWriter out)
