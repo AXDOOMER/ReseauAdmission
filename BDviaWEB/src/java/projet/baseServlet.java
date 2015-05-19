@@ -324,11 +324,12 @@ public class baseServlet extends HttpServlet {
         return sectionValues;
     }
     
-    public void panier(PrintWriter out)
+    public void panier(PrintWriter out,int idClient)
     {
+        int numClient = idClient;
         out.println("<table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
 "				<tr style=\"text-align:center\"> <td colspan=\"2\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> Mon Panier </td> </tr>\n" +
-"				<tr style=\"text-align:center\"> <td width=\"75%\" style=\"border:none;\"> <label>LABEL</label> <button>Modifier les achats</button> </td> <td rowspan=\"2\" style=\"border:none;\"> <button>Confirmer l'achat</button> <br> Prix total de l'achat: <label>LABEL</label> </td> </tr>\n" +
+"				<tr style=\"text-align:center\"> <td width=\"75%\" style=\"border:solidblack;\"> <label>LABEL</label> <button>Modifier les achats</button> </td> <td rowspan=\"2\" style=\"border:none;\"> <button>Confirmer l'achat</button> <br> Prix total de l'achat: <label>LABEL</label> </td> </tr>\n" +
 "			</table>");
     }
     
@@ -350,7 +351,7 @@ public class baseServlet extends HttpServlet {
     }
     // Sa permet de trouver le numéro de représentation
     // a partir du codeSection
-    public void AjouterBilletAvecLaSection(int codeSection)
+    public void AjouterBilletAvecLaSection(int codeSection,int idClient)
     {
         Connection oracleConne = seConnecter(); // Oracle s'tune conne
         try {          
@@ -365,7 +366,7 @@ public class baseServlet extends HttpServlet {
                 // Ici on na le code de représentation
                 int codeRep = rstlist.getInt(1);
             // Ici c'est pour ajouter un billet par le code représentation
-                InsererBillet(codeRep,oracleConne,codeSection);
+                InsererBillet(codeRep,oracleConne,codeSection,idClient);
                         
             Callist.clearParameters();
             Callist.close();
@@ -376,9 +377,9 @@ public class baseServlet extends HttpServlet {
             System.out.println(list.getMessage());
         }
     }
-    public void InsererBillet(int codeRep,Connection oracleConne,int codeSection)
+    public void InsererBillet(int codeRep,Connection oracleConne,int codeSection,int idClient)
     {
-        int numClient = 0;
+        int numClient = idClient;
         try {          
             CallableStatement Callist =
             oracleConne.prepareCall(" { call TPF_BD_JAVA.AJOUTERBILLET (?,?,?,?,?)}");
@@ -425,7 +426,9 @@ public class baseServlet extends HttpServlet {
             throws ServletException, IOException {
         String achatBillet = null;
         String [] tabAchatBillet = null;
-        
+        // A modifier, Il faut envoyer le id du client connecté
+        // temporairement a 0 ( ADMIN )
+        int idClient = 0;
         achatBillet = request.getParameter("achatbillet");
         if(achatBillet != null)
         {
@@ -434,7 +437,7 @@ public class baseServlet extends HttpServlet {
                 tabAchatBillet = request.getParameterValues("AchatParametre");
                 for (int i = 0; i < Integer.parseInt(tabAchatBillet[0]); i++)
                 {
-                    AjouterBilletAvecLaSection(Integer.parseInt(tabAchatBillet[1]));
+                    AjouterBilletAvecLaSection(Integer.parseInt(tabAchatBillet[1]),idClient);
                 }
             }
         }
@@ -569,7 +572,7 @@ public class baseServlet extends HttpServlet {
                         affacc = false;
                         break;
                     case "Panier":
-                        panier(out);
+                        panier(out,idClient);
                         affacc = false;
                         break;
                     case "S'inscrire":
