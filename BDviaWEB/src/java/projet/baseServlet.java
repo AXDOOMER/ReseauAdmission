@@ -349,7 +349,7 @@ public class baseServlet extends HttpServlet {
 "                    <input type=text name=utilisateur id=utilisateur><BR/>\n" +
 "                    Mot de passe: <BR/>\n" +
 "                    <input type=password name=motdepasse id=motdepasse><BR/> "+
-"                    <button>Login</button>"+"<button>S'enregistrer</button>"+
+"                    <button>Login</button>"+"<form> <input type=\"submit\" name=\"acceuil\" value=\"S'inscrire\"></form>"+
 "                    </td> </tr> </table> </div> ");
 
             String btnAcceuil = request.getParameter("acceuil");
