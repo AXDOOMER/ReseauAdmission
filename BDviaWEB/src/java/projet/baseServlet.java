@@ -517,28 +517,26 @@ public class baseServlet extends HttpServlet {
             
             if (NomSalle != null && NomSalle.length() > 0)
             {
-                        CallableStatement stmNS = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParNomSalle(?)}",
-                                ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                        stmNS.registerOutParameter(1, OracleTypes.CURSOR);
-                        stmNS.registerOutParameter(2, OracleTypes.VARCHAR);
-                        stmNS.setString(2, NomSalle);
+                CallableStatement stmNS = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParNomSalle(?)}",
+                        ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                stmNS.registerOutParameter(1, OracleTypes.CURSOR);
+                stmNS.registerOutParameter(2, OracleTypes.VARCHAR);
+                stmNS.setString(2, NomSalle);
                     //execution de la procédure
-                        // Caster le paramètre de retour en ResultSet
+                // Caster le paramètre de retour en ResultSet
                       /*  ResultSet rest = stm2.executeQuery();   */
-                        stmNS.execute();
-                        rest = (ResultSet) stmNS.getObject(1);
-            }
-            else if (NomArtiste != null && NomArtiste.length() > 0)
-            {
-                        CallableStatement stmNA = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParArtiste(?)}",
-                                ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                        stmNA.registerOutParameter(1, OracleTypes.CURSOR);
-                        stmNA.registerOutParameter(2, OracleTypes.VARCHAR);
-                        stmNA.setString(2, NomArtiste);
+                stmNS.execute();
+                rest = (ResultSet) stmNS.getObject(1);
+            } else if (NomArtiste != null && NomArtiste.length() > 0) {
+                CallableStatement stmNA = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParArtiste(?)}",
+                        ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                stmNA.registerOutParameter(1, OracleTypes.CURSOR);
+                stmNA.registerOutParameter(2, OracleTypes.VARCHAR);
+                stmNA.setString(2, NomArtiste);
                     //execution de la procédure
-                        // Caster le paramètre de retour en ResultSet
+                // Caster le paramètre de retour en ResultSet
                       /*  ResultSet rest = stm2.executeQuery();   */
-                        stmNA.execute();
+                stmNA.execute();
                         rest = (ResultSet) stmNA.getObject(1);
             } else {
                 switch (count) {
