@@ -138,7 +138,8 @@ public class baseServlet extends HttpServlet {
             System.out.println(sqlex.getMessage());
         }
         
-         out.println(" </select> <br><br> <button>Chercher</button> <form></div> ");
+        out.println(" </select> <br><br> <button>Chercher</button> <form></div> ");
+        
         out.println("<BR><HR><BR>Artiste <div> <form><input type=\"text\"/> <button>Chercher</button>  </div> ");
         
         out.println("</td> </tr> </form>");
