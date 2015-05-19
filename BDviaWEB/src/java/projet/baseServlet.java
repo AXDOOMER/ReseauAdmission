@@ -403,31 +403,28 @@ public class baseServlet extends HttpServlet {
             // @PHIL: Va chercher le nom de l'artiste dans le URL
             String nomArtiste = "NOM DE L'ARTISTE QUI VIENT DU FORM";
             
-            if(parametreQuiDitOuOnEst != null)
-            {
-                            switch (parametreQuiDitOuOnEst) {
-                case "Acceuil":
-                    acceuil(out, categorie, nomSalle, nomArtiste, null);
-                    affacc = false;
-                    break;
-                case "Panier":
-                    panier(out);
-                    affacc = false;
-                    break;
-                case "S'inscrire":
-                    inscription(out);
-                    affacc = false;
-                    break;
-                case "Enregistrer":
-                    acceuil(out, categorie, nomSalle, nomArtiste, null);  // Ça c'est quand on vient de s'inscrire
-                    affacc = false;
-                    break;
-            }
-            
-            }
-            else
-            {
-                acceuil(out, categorie, nomSalle, nomArtiste);
+            if (parametreQuiDitOuOnEst != null) {
+                switch (parametreQuiDitOuOnEst) {
+                    case "Acceuil":
+                        acceuil(out, categorie, nomSalle, nomArtiste, null);
+                        affacc = false;
+                        break;
+                    case "Panier":
+                        panier(out);
+                        affacc = false;
+                        break;
+                    case "S'inscrire":
+                        inscription(out);
+                        affacc = false;
+                        break;
+                    case "Enregistrer":
+                        acceuil(out, categorie, nomSalle, nomArtiste, null);  // Ça c'est quand on vient de s'inscrire
+                        affacc = false;
+                        break;
+                }
+
+            } else {
+                acceuil(out, categorie, nomSalle, nomArtiste, null);
             }
 
              String btnSpectacle = request.getParameter("spectacle");
