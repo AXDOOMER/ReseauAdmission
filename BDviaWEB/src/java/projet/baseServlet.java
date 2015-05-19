@@ -537,7 +537,7 @@ public class baseServlet extends HttpServlet {
          
             // aller checher l'artiste qu'on veut avowère
             String nomArtiste = request.getParameter("Artiste");
-            
+
             if (parametreQuiDitOuOnEst != null) {
                 switch (parametreQuiDitOuOnEst) {
                     case "Acceuil":
@@ -553,18 +553,62 @@ public class baseServlet extends HttpServlet {
                         affacc = false;
                         break;
                     case "Enregistrer":
-                        acceuil(out, categorie, nomSalle, nomArtiste, null);  // Ça c'est quand on vient de s'inscrire
-                        affacc = false;
-                        break;
+                        String nouveauMessage = null;
+
+                        String iNom = request.getParameter("nom");
+                        String iPrenom = request.getParameter("prenom");
+                        String iUsername = request.getParameter("username");
+                        String iMotpasse = request.getParameter("motpasse");
+                        String iTelephone = request.getParameter("telephone");
+                        String iAdresse = request.getParameter("adresse");
+
+                        // Checker pour les erreurs
+                        if (iNom == null && iNom.length() == 0) {
+                            nouveauMessage = "Nom invalide.";
+                        } else if (iPrenom == null && iPrenom.length() == 0) {
+                            nouveauMessage = "Prenom invalide.";
+                        } else if (iUsername == null && iUsername.length() == 0) {
+                            nouveauMessage = "Nom d'utilisateur invalide.";
+                        } else if (iMotpasse == null && iMotpasse.length() == 0) {
+                            nouveauMessage = "Mot de passe invalide.";
+                        } else if (iTelephone == null && iTelephone.length() == 0) {
+                            nouveauMessage = "Numero de telephone invalide.";
+                        } else if (iAdresse == null && iAdresse.length() == 0) {
+                            nouveauMessage = "Adresse invalide.";
+                        } else {
+                        // Inscire l'usager dans la BD
+                        /*CallableStatement Callist
+                             = oracleConne.prepareCall(" { call TPF_BD_JAVA.InscrireClient(?,?)}");
+                             Callist.registerOutParameter(1, OracleTypes.CURSOR);
+                             Callist.setString(2, nomSpectacle);
+                             Callist.execute();
+                             ResultSet rstlist = (ResultSet) Callist.getObject(1);
+
+                             //codespectacle,nomcat,prixdebase,artiste,nomspectacle,affiche,description           
+                             rstlist.next();
+
+                             int codespectacle = rstlist.getInt(1);
+                             String nomcat = rstlist.getString(2);
+                             int prixdebase = rstlist.getInt(3);
+                             String artiste = rstlist.getString(4);
+                             String nomspectacle = rstlist.getString(5);
+                             String affiche = rstlist.getString(6);
+                             String description = rstlist.getString(7);
+
+                             Callist.clearParameters();
+                             Callist.close();
+                             rstlist.close();
+                             }
+
+                             acceuil(out, categorie, nomSalle, nomArtiste, nouveauMessage);  // Ça c'est quand on vient de s'inscrire
+                             affacc = false;
+                             break;*/
+                        }
                 }
 
-            }
-            else if(btnSpectacle != null)
-            {
+            } else if (btnSpectacle != null) {
                 achatDeBillets(out, btnSpectacle);
-            }
-            else
-            {
+            } else {
                 acceuil(out, categorie, nomSalle, nomArtiste, null);
             }
             out.println(tabAchatBillet[1]);
