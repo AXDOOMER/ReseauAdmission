@@ -551,17 +551,17 @@ public class baseServlet extends HttpServlet {
 "                    <input type=password name=motdepasse id=motdepasse><BR/> "+
 "                    <button>Login</button>"+"<form> <input type=\"submit\" name=\"acceuil\" value=\"S'inscrire\"></form>"+
 "                    </td> </tr> </table> </div> ");
-            
+
             String parametreQuiDitOuOnEst = request.getParameter("acceuil");
             String btnSpectacle = request.getParameter("spectacle");
             boolean affacc = true;
-            
+
             // aller chercher la salle qu'on cherche
             String nomSalle = request.getParameter("Salles");
-         
+
             // aller checher l'artiste qu'on veut avowère
             String nomArtiste = request.getParameter("Artiste");
-            
+
             if (parametreQuiDitOuOnEst != null) {
                 switch (parametreQuiDitOuOnEst) {
                     case "Acceuil":
@@ -577,18 +577,90 @@ public class baseServlet extends HttpServlet {
                         affacc = false;
                         break;
                     case "Enregistrer":
-                        acceuil(out, categorie, nomSalle, nomArtiste, null);  // Ça c'est quand on vient de s'inscrire
-                        affacc = false;
-                        break;
+                        String nouveauMessage = null;
+
+                        String iNom = request.getParameter("nom");
+                        String iPrenom = request.getParameter("prenom");
+                        String iUsername = request.getParameter("username");
+                        String iMotpasse = request.getParameter("motpasse");
+                        String iTelephone = request.getParameter("telephone");
+                        String iAdresse = request.getParameter("adresse");
+
+                        // savoir s'il est déjà là.
+                        boolean userNameDejaLa = false;
+                        
+                        try {
+                            Connection oracleConn = seConnecter(); 
+                            CallableStatement stmCheckUser = oracleConn.prepareCall("{? = call TPF_BD_JAVA.CheckForUsername(?)}",
+                                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                            stmCheckUser.registerOutParameter(1, OracleTypes.CURSOR);
+                            stmCheckUser.registerOutParameter(2, OracleTypes.VARCHAR);
+                            //execution de la procédure
+                            // Caster le paramètre de retour en ResultSet
+                            /*  ResultSet rest = stm2.executeQuery();   */
+                            stmCheckUser.execute();
+                            ResultSet rest = (ResultSet) stmCheckUser.getObject(1);
+                            
+                            if (rest.next())
+                            {
+                                // Si y'a de quoi dedans
+                                userNameDejaLa = true;
+                            }
+                            
+                            deconnexion(oracleConn);
+                            
+                        } catch (SQLException list) {
+                            System.out.println(list.getMessage());
+                        }
+
+                        // Checker pour les erreurs
+                        if (iNom == null || iNom.length() == 0) {
+                            nouveauMessage = "Nom invalide.";
+                        } else if (iPrenom == null || iPrenom.length() == 0) {
+                            nouveauMessage = "Prenom invalide.";
+                        } else if (iUsername == null || iUsername.length() == 0 || userNameDejaLa) {
+                            nouveauMessage = "Nom d'utilisateur invalide.";
+                            if (userNameDejaLa)
+                            {
+                                nouveauMessage = nouveauMessage +  " Il y en a déjà un qui porte ce nom.";
+                            }
+                        } else if (iMotpasse == null || iMotpasse.length() == 0) {
+                            nouveauMessage = "Mot de passe invalide.";
+                        } else if (iTelephone == null || iTelephone.length() == 0) {
+                            nouveauMessage = "Numero de telephone invalide.";
+                        } else if (iAdresse == null || iAdresse.length() == 0) {
+                            nouveauMessage = "Adresse invalide.";
+                        } else {
+                            // Inscire l'usager dans la BD
+                            try {
+                                Connection oracleConne = seConnecter();
+                                CallableStatement Callist
+                                        = oracleConne.prepareCall(" { call TPF_BD_JAVA.InscrireClient(?,?,?,?,?,?)}");
+                                Callist.setString(1, iNom);
+                                Callist.setString(2, iPrenom);
+                                Callist.setString(3, iUsername);
+                                Callist.setString(4, iMotpasse);
+                                Callist.setString(5, iTelephone);
+                                Callist.setString(6, iAdresse);
+                                
+                                Callist.execute();
+
+                                Callist.clearParameters();
+                                Callist.close();
+
+                                acceuil(out, categorie, nomSalle, nomArtiste, nouveauMessage);  // Ça c'est quand on vient de s'inscrire
+                                affacc = false;
+                                deconnexion(oracleConne);
+                                break;
+                            } catch (SQLException sqlex) {
+                                System.out.println(sqlex.getMessage());
+                            }
+                        }
                 }
 
-            }
-            else if(btnSpectacle != null)
-            {
+            } else if (btnSpectacle != null) {
                 achatDeBillets(out, btnSpectacle);
-            }
-            else
-            {
+            } else {
                 acceuil(out, categorie, nomSalle, nomArtiste, null);
             }
             out.println(tabAchatBillet[1]);
@@ -615,14 +687,14 @@ public class baseServlet extends HttpServlet {
          return conn;
     }
     
-    private void deconnexion(Connection conne)
+    private void deconnexion(Connection deconne)
     {
         // C'est une bitch blonde
         try {
-            conne.close();
+            deconne.close();
         } catch (SQLException se) {
             System.out.println("La conne ne s'est pas fermée");
-            conne = null;
+            deconne = null;
         }
     }
 
@@ -630,7 +702,7 @@ public class baseServlet extends HttpServlet {
 
     private void faireTableSpectacles(PrintWriter out, String[] categories, String NomSalle, String NomArtiste)
     {
-        Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        Connection oracleConne = seConnecter(); 
         
         try
         {
