@@ -378,19 +378,43 @@ public class baseServlet extends HttpServlet {
     }
     public void InsererBillet(int codeRep,Connection oracleConne,int codeSection)
     {
+        int numClient = 0;
         try {          
             CallableStatement Callist =
-            oracleConne.prepareCall(" { call TPF_BD_JAVA.AJOUTERBILLET (?,?,?,?)}");
-            Callist.setDate(1, null); // La date est null
-            Callist.setInt(2, 0); // Imprimer est a 0
-            Callist.setInt(3, codeRep); // C'est la le codeReprésentation           
-            Callist.setInt(4, codeSection); // Ici, c'est le codeSection
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.AJOUTERBILLET (?,?,?,?,?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.setDate(2, null); // La date est null
+            Callist.setInt(3, 0); // Imprimer est a 0
+            Callist.setInt(4, codeRep); // C'est la le codeReprésentation           
+            Callist.setInt(5, codeSection); // Ici, c'est le codeSection
             Callist.executeUpdate();
-            Callist.clearParameters();
-            Callist.close();                     
-          
-            Callist.clearParameters();
-            Callist.close();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+            
+            // On recupère la valeur du billet courrant ajouter
+            rstlist.next();
+            int numBillet = rstlist.getInt("NumBillet");
+            
+            LinkBilletAuClient(numBillet,oracleConne,numClient); 
+            Callist.clearParameters();          
+            Callist.close();                               
+            }
+        catch(SQLException list)
+        {
+            System.out.println(list.getMessage());
+        }
+    }
+    public void LinkBilletAuClient(int numBillet,Connection oracleConne, int numClient)
+    {
+        try {          
+            CallableStatement Callist =
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.AJOUTERPANIER (?,?,?)}");
+            Callist.setInt(1, numBillet); // Imprimer est a 0
+            Callist.setInt(2, numClient); // C'est la le codeReprésentation           
+            Callist.setInt(3,0); // Ici, c'est le codeSection
+            Callist.executeUpdate();
+                    
+            Callist.clearParameters();          
+            Callist.close();                               
             }
         catch(SQLException list)
         {
