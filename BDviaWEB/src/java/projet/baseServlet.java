@@ -46,11 +46,19 @@ public class baseServlet extends HttpServlet {
     private String password = "ORACLE2";
     
     //methode pour créer les pages webs    
-    public void acceuil(PrintWriter out, String[] categorie, String NomSalle, String NomArtiste) {
+    public void acceuil(PrintWriter out, String[] categorie, String NomSalle, String NomArtiste, String message) {
         out.println("<table class=\"acceuil\" width=\"100%\" height=auto cellpadding=\"15px\" style=\"background-color:rgb(175,175,175)\">\n");
-        out.println("<tr> <td colspan=\"2\" style=\"text-align:center; background-color:grey; border-radius:10px; border:1px white solid; font-size:17px;\"> Vous êtes à l'acceuil </td></tr> <tr><td rowspan=4>" );
-                faireTableSpectacles(out, categorie, NomSalle, NomArtiste) ;
-                out.println( "</td><td style=\"vertical-align:top; border:1px white solid; border-radius:10px; height:150px; width:200px;\"> Catégorie <br> <form>");
+        out.println("<tr> <td colspan=\"2\" style=\"text-align:center; background-color:grey; border-radius:10px; border:1px white solid; font-size:17px;\">");
+
+        if (message == null || message.equals("")) {
+            out.println("Vous êtes à l'acceuil");
+        } else {
+            out.println("Message: " + message);
+        }
+
+        out.println("</td></tr> <tr><td rowspan=4>");
+        faireTableSpectacles(out, categorie, NomSalle, NomArtiste);
+        out.println("</td><td style=\"vertical-align:top; border:1px white solid; border-radius:10px; height:150px; width:200px;\"> Catégorie <br> <form>");
 
         out.print("<input type=\"checkbox\" name=\"categorie\" value=\"Humour\"");
         for (int i = 0; categorie != null && i < categorie.length; i++) {
@@ -390,7 +398,7 @@ public class baseServlet extends HttpServlet {
             
             switch (parametreQuiDitOuOnEst) {
                 case "Acceuil":
-                    acceuil(out, categorie, nomSalle, nomArtiste);
+                    acceuil(out, categorie, nomSalle, nomArtiste, null);
                     affacc = false;
                     break;
                 case "Panier":
@@ -402,7 +410,7 @@ public class baseServlet extends HttpServlet {
                     affacc = false;
                     break;
                 case "Enregistrer":
-                    acceuil(out, categorie, nomSalle, nomArtiste);  // Ça c'est quand on vient de s'inscrire
+                    acceuil(out, categorie, nomSalle, nomArtiste, null);  // Ça c'est quand on vient de s'inscrire
                     affacc = false;
                     break;
             }
