@@ -201,12 +201,12 @@ public class baseServlet extends HttpServlet {
 			" <tr> <td> Artiste : <label name=\"AchatArtiste\">" + artiste + "</label> </td> </tr>"+ 
 			" <tr> <td> Nom Spectacle : <label name=\"AchatNomSpectacle\">"+nomspectacle+"</label> </td> </tr>"+
 			" <tr> <td> Prix de base : <label name=\"AchatPrixBase\">"+prixdebase+"</label> </td> </tr>"+
-                        " <tr> <td> Representation : <select name=\"AchatRepresentation\" id=\"AchatRepresentation\" onchange=\"myFunction()\">"+RepValues+"</select> </td> </tr>"+              
-                        " <tr> <td> Salle : <select name=\"AchatSalle\" id=\"AchatSalle\" onchange=\"onChangeSalle()\"> "+ SalleValues +" </select> </td> </tr>"+
+                        " <tr> <td> Representation : <label>(A modifier)</label><select name=\"AchatRepresentation\" id=\"AchatRepresentation\" onchange=\"myFunction()\">"+RepValues+"</select> </td> </tr>"+              
+                        " <tr> <td> Salle : <label>(A modifier)</label><select name=\"AchatSalle\" id=\"AchatSalle\" onchange=\"onChangeSalle()\"> "+ SalleValues +" </select> </td> </tr>"+
 			" <tr> <td> Section : <select name=\"AchatParametre\"> "+SectionValues+" </select> </td> </tr>"+
-			" <tr> <td> Prix : "+prixdebase+" + Prix de section <label>LABEL</label> </td> </tr>"+
-			" <tr> <td> Nombre de billet restant pour la section: <label>LABEL</label>  </td> </tr>"+
-			" <tr> <td> Nb de billet restant total <label>LABEL</label> </td> </tr>"+
+			" <tr> <td> Prix : <label>(A modifier)</label>"+prixdebase+" + Prix de section <label>LABEL</label> </td> </tr>"+
+			" <tr> <td> Nombre de billet restant pour la section: <label>(A modifier)</label><label>LABEL</label>  </td> </tr>"+
+			" <tr> <td> Nb de billet restant total<label>(A modifier)</label> <label>LABEL</label> </td> </tr>"+
 			" <tr>  </tr>"+
                         "<p id=\"demo\"></p>"+
                    "</table> </form>");
@@ -364,23 +364,33 @@ public class baseServlet extends HttpServlet {
                 rstlist.next();
                 // Ici on na le code de représentation
                 int codeRep = rstlist.getInt(1);
-            
             // Ici c'est pour ajouter un billet par le code représentation
-
-                CallableStatement Callins =
-                oracleConne.prepareCall(" { call TPF_BD_JAVA.AJOUTERBILLET (?,?,?,?)}");
-                Callins.setDate(1, null); // La date est null
-                Callins.setInt(2, 0); // Imprimer est a 0
-                Callins.setInt(3, codeRep); // C'est la le codeReprésentation
-                Callins.setInt(4, codeSection); // Ici, c'est le codeSection
-                Callins.executeUpdate();
-                Callins.clearParameters();
-                Callins.close();
-            
-             
+                InsererBillet(codeRep,oracleConne,codeSection);
+                        
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
+            }
+        catch(SQLException list)
+        {
+            System.out.println(list.getMessage());
+        }
+    }
+    public void InsererBillet(int codeRep,Connection oracleConne,int codeSection)
+    {
+        try {          
+            CallableStatement Callist =
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.AJOUTERBILLET (?,?,?,?)}");
+            Callist.setDate(1, null); // La date est null
+            Callist.setInt(2, 0); // Imprimer est a 0
+            Callist.setInt(3, codeRep); // C'est la le codeReprésentation           
+            Callist.setInt(4, codeSection); // Ici, c'est le codeSection
+            Callist.executeUpdate();
+            Callist.clearParameters();
+            Callist.close();                     
+          
+            Callist.clearParameters();
+            Callist.close();
             }
         catch(SQLException list)
         {
@@ -398,10 +408,10 @@ public class baseServlet extends HttpServlet {
             if(achatBillet.equals("Ajouter au Panier"))
             {
                 tabAchatBillet = request.getParameterValues("AchatParametre");
-                //for (int i = 0; i < Integer.parseInt(tabAchatBillet[0]); i++)
-                //{
+                for (int i = 0; i < Integer.parseInt(tabAchatBillet[0]); i++)
+                {
                     AjouterBilletAvecLaSection(Integer.parseInt(tabAchatBillet[1]));
-                //}
+                }
             }
         }
         response.setContentType("text/html;charset=UTF-8");
