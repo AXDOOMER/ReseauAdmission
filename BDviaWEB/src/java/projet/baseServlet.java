@@ -112,6 +112,24 @@ public class baseServlet extends HttpServlet {
         
         out.println("<input type=\"submit\" name=\"Recherche\" value=\"SubmitCatSearch\"> <BR>");
 
+        // Combo box pour les salles de spectacle
+        try 
+        {
+            Connection oracleConne = seConnecter();
+            ResultSet rest = null;
+            CallableStatement stmCombo = oracleConne.prepareCall("{? = call TPF_BD_JAVA.ListeSalles(?)}",
+                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            stmCombo.registerOutParameter(1, OracleTypes.CURSOR);
+            stmCombo.registerOutParameter(2, OracleTypes.CURSOR);
+            //execution de la procédure
+            // Caster le paramètre de retour en ResultSet
+            stmCombo.execute();
+
+            rest = (ResultSet) stmCombo.getObject(1);
+        } catch (SQLException sqlex) {
+            System.out.println(sqlex.getMessage());
+        }
+        
         out.println("<BR><HR><BR>Salle <div> <select> <option value=\"Salle1\">Salle 1 </option> </select> <br><br> <button>Chercher</button> </div> ");
         out.println("<BR><HR><BR>Artiste <div> <input type=\"text\"/> <button>Chercher</button>  </div> ");
         
@@ -412,46 +430,46 @@ public class baseServlet extends HttpServlet {
         
         try
         {
-            int cunt = 0;   // Count pour compter les categories
+            int count = 0;   // Count pour compter les categories
             int[] pileDeCat = new int[7]; // Y'a 7 catégories gros max
             for (int i = 0; categories != null  && i < categories.length && categories[i] != null; i++)
             {
                 // CatName to #
                 if (categories[i].equals("Humour"))
                 {
-                    pileDeCat[cunt] = 1;
+                    pileDeCat[count] = 1;
                 }
                 else if (categories[i].equals("Musique"))
                 {
-                    pileDeCat[cunt] = 2;
+                    pileDeCat[count] = 2;
                 }
                 else if (categories[i].equals("Enfant"))
                 {
-                    pileDeCat[cunt] = 3;
+                    pileDeCat[count] = 3;
                 }
                 else if (categories[i].equals("Illusion"))
                 {
-                    pileDeCat[cunt] = 4;
+                    pileDeCat[count] = 4;
                 }
                 else if (categories[i].equals("Danse"))
                 {
-                    pileDeCat[cunt] = 5;
+                    pileDeCat[count] = 5;
                 }
                 else if (categories[i].equals("Jeux_Video"))
                 {
-                    pileDeCat[cunt] = 6;
+                    pileDeCat[count] = 6;
                 }
                 else if (categories[i].equals("Sport"))
                 {
-                    pileDeCat[cunt] = 7;
+                    pileDeCat[count] = 7;
                 }
                 
-                cunt++;
+                count++;
             }
             
             ResultSet rest = null;
             
-            switch(cunt)
+            switch(count)
             {
                 case 0:
                     CallableStatement stm0 = oracleConne.prepareCall("{? = call TPF_BD_JAVA.GetSpectacleParCat(?)}",
@@ -594,7 +612,7 @@ public class baseServlet extends HttpServlet {
 
             if (rest == null)
             {
-                System.err.println("VA CHIER TABARNAK DE POINTEUR NULL À MARDE");
+                System.err.println("POINTEUR NULL");
             }
             
            // Mettre du stoque dans la page
