@@ -166,7 +166,8 @@ public class baseServlet extends HttpServlet {
     public void achatDeBillets(PrintWriter out, String nomSpectacle)
     {
         String RepValues = TrouverRepValues(nomSpectacle);
-        //String SalleValues = TrouverRepValues("Match de hokcey");
+        String SalleValues = TrouverSalleValues(nomSpectacle);
+        String SectionValues = TrouverSectionValues(nomSpectacle);
         Connection oracleConne = seConnecter(); // Oracle s'tune conne
         try {          
             CallableStatement Callist =
@@ -191,31 +192,34 @@ public class baseServlet extends HttpServlet {
             Callist.close();
             rstlist.close();
  
-        out.println("<table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\">"+
+        out.println("<form ><table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\">"+
 			" <tr> <td rowspan=\"3\" colspan=\"13\" style=\"text-align:center; border-radius:10px; border:1px white solid; background-color:grey;\"> Achats de Billets  </tr> "+
                         " <tr> </tr> "+
                         " <tr> </tr> "+
 			" <tr> <td rowspan=\"10\" colspan=\"5\" width=\"50%\"> <img src=\"affiches/" + affiche + "\" width=\"250px\" height=\"300px\" " + "> </td> <td> Catégorie <label>"+ nomcat +"</label> </td> "+ 
-			" <td rowspan=\"8\" colspan=\"13\" style=\"text-align:center;\" width=\"20%\"> Nb de billet voulu:  <input type=\"textbox\" name=\"billetvoulu\"> <br> Total: <input type=\"textbox\" name=\"total\"> <br> <button> Ajouter au Panier </button> </td></tr>"+
+                        " <td rowspan=\"8\" colspan=\"13\" style=\"text-align:center;\" width=\"20%\"> Nb de billet voulu:  <input type=\"textbox\" name=\"AchatParametre\"> <br> Total: <label name=\"AchatTotal\">Le Total </label><br> <input type=\"submit\" name=\"achatbillet\" value=\"Ajouter au Panier\"> </td></tr>"+
 			" <tr> <td> Artiste : <label name=\"AchatArtiste\">" + artiste + "</label> </td> </tr>"+ 
 			" <tr> <td> Nom Spectacle : <label name=\"AchatNomSpectacle\">"+nomspectacle+"</label> </td> </tr>"+
 			" <tr> <td> Prix de base : <label name=\"AchatPrixBase\">"+prixdebase+"</label> </td> </tr>"+
                         " <tr> <td> Representation : <select name=\"AchatRepresentation\" id=\"AchatRepresentation\" onchange=\"myFunction()\">"+RepValues+"</select> </td> </tr>"+              
-                        " <tr> <td> Salle : <select name=\"AchatSalle\"> <option value=\"salle\">salle</option> </select> </td> </tr>"+
-			" <tr> <td> Section : <select name=\"AchatSection\"> <option value=\"section\">section</option> </select> </td> </tr>"+
+                        " <tr> <td> Salle : <select name=\"AchatSalle\" id=\"AchatSalle\" onchange=\"onChangeSalle()\"> "+ SalleValues +" </select> </td> </tr>"+
+			" <tr> <td> Section : <select name=\"AchatParametre\"> "+SectionValues+" </select> </td> </tr>"+
 			" <tr> <td> Prix : "+prixdebase+" + Prix de section <label>LABEL</label> </td> </tr>"+
 			" <tr> <td> Nombre de billet restant pour la section: <label>LABEL</label>  </td> </tr>"+
 			" <tr> <td> Nb de billet restant total <label>LABEL</label> </td> </tr>"+
 			" <tr>  </tr>"+
                         "<p id=\"demo\"></p>"+
-                   "</table>");
+                   "</table> </form>");
         out.println("<script>"+
                     "function myFunction() {"+
-                    "var x = document.getElementById(\"AchatRepresentation\").value;" +
-                    "document.getElementById(\"demo\").innerHTML = \"You selected: \" + x;"+
+                    "var nomSpectacle = document.getElementById(\"AchatNomSpectacle\").value;" +
+                    "document.getElementById(\"demo\").innerHTML = \"You selected: \" + nomSpectacle;"+
+                    "}"+
+                    "function onChangeSalle() {"+
+                    "var codeSalle = document.getElementById(\"AchatSalle\").value;" +
+                    "document.getElementById(\"AchatSection\").innerHTML = \"You selected: \" + nomSpectacle;"+
                     "}"+
                     "</script>");
-
             }
         catch(SQLException list)
         {
@@ -253,6 +257,69 @@ public class baseServlet extends HttpServlet {
         }
         return repValues;
     }
+    public String TrouverSalleValues(String nomSpectacle)
+    {
+        String salleValues = "";
+                Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        try {          
+            CallableStatement Callist =
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.AfficherSalleParReprParNomSpec(?,?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.setString(2, nomSpectacle);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+            //codespectacle,nomcat,prixdebase,artiste,nomspectacle,affiche,description           
+                while(rstlist.next())
+                {
+                    int codeRep = rstlist.getInt(1);
+                    
+                    salleValues = salleValues + "<option value=\""+Integer.toString(codeRep)+"\" >" + Integer.toString(codeRep) + "</option>";
+                }
+                
+                
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            }
+        catch(SQLException list)
+        {
+            System.out.println(list.getMessage());
+        }
+        
+        return salleValues;
+    }
+    public String TrouverSectionValues(String nomSpectacle)
+    {
+        String sectionValues = "";
+        Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        try {          
+            CallableStatement Callist =
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.AfficherSectionParRep(?,?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.setString(2, nomSpectacle);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+            //codespectacle,nomcat,prixdebase,artiste,nomspectacle,affiche,description           
+                while(rstlist.next())
+                {
+                    int codeSection = rstlist.getInt(1);
+                    
+                    sectionValues = sectionValues + "<option value=\""+Integer.toString(codeSection)+"\" >" + Integer.toString(codeSection) + "</option>";
+                }
+                
+                
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            }
+        catch(SQLException list)
+        {
+            System.out.println(list.getMessage());
+        }
+        return sectionValues;
+    }
     public void panier(PrintWriter out)
     {
         out.println("<table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
@@ -277,9 +344,62 @@ public class baseServlet extends HttpServlet {
                 + "</div>"
                 + "</div>");
     }
-    
+    // Sa permet de trouver le numéro de représentation
+    // a partir du codeSection
+    public void AjouterBilletAvecLaSection(int codeSection)
+    {
+        Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        try {          
+            CallableStatement Callist =
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.AfficherRepParSection(?,?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.setInt(2, codeSection);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                                  
+                rstlist.next();
+                // Ici on na le code de représentation
+                int codeRep = rstlist.getInt(1);
+            
+            // Ici c'est pour ajouter un billet par le code représentation
+
+                CallableStatement Callins =
+                oracleConne.prepareCall(" { call TPF_BD_JAVA.AJOUTERBILLET (?,?,?,?)}");
+                Callins.setDate(1, null); // La date est null
+                Callins.setInt(2, 0); // Imprimer est a 0
+                Callins.setInt(3, codeRep); // C'est la le codeReprésentation
+                Callins.setInt(4, codeSection); // Ici, c'est le codeSection
+                Callins.executeUpdate();
+                Callins.clearParameters();
+                Callins.close();
+            
+             
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            }
+        catch(SQLException list)
+        {
+            System.out.println(list.getMessage());
+        }
+    }
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String achatBillet = null;
+        String [] tabAchatBillet = null;
+        
+        achatBillet = request.getParameter("achatbillet");
+        if(achatBillet != null)
+        {
+            if(achatBillet.equals("Ajouter au Panier"))
+            {
+                tabAchatBillet = request.getParameterValues("AchatParametre");
+                //for (int i = 0; i < Integer.parseInt(tabAchatBillet[0]); i++)
+                //{
+                    AjouterBilletAvecLaSection(Integer.parseInt(tabAchatBillet[1]));
+                //}
+            }
+        }
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
@@ -393,7 +513,7 @@ public class baseServlet extends HttpServlet {
 "                    <input type=password name=motdepasse id=motdepasse><BR/> "+
 "                    <button>Login</button>"+"<form> <input type=\"submit\" name=\"acceuil\" value=\"S'inscrire\"></form>"+
 "                    </td> </tr> </table> </div> ");
-
+            
             String parametreQuiDitOuOnEst = request.getParameter("acceuil");
             String btnSpectacle = request.getParameter("spectacle");
             boolean affacc = true;
@@ -433,7 +553,7 @@ public class baseServlet extends HttpServlet {
             {
                 acceuil(out, categorie, nomSalle, nomArtiste, null);
             }
-
+            out.println(tabAchatBillet[1]);
             out.println("</body>");
             out.println("</html>");   
                     
