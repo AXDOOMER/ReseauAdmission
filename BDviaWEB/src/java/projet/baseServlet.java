@@ -130,25 +130,86 @@ public class baseServlet extends HttpServlet {
     
     public void achatDeBillets(PrintWriter out)
     {
-       out.println("<table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\">"+
+        String RepValues = TrouverRepValues("Match de hokcey");
+        //String SalleValues = TrouverRepValues("Match de hokcey");
+        Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        try {          
+            CallableStatement Callist =
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.AfficherSpectacleParNom(?,?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.setString(2,"Match de hokcey");
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+            //codespectacle,nomcat,prixdebase,artiste,nomspectacle,affiche,description           
+                rstlist.next();
+                
+                int codespectacle = rstlist.getInt(1);
+                String nomcat = rstlist.getString(2);
+                int prixdebase = rstlist.getInt(3);                
+                String artiste = rstlist.getString(4);
+                String nomspectacle = rstlist.getString(5);
+                String affiche = rstlist.getString(6);
+                String description = rstlist.getString(7);
+                
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+ 
+        out.println("<table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\">"+
 			" <tr> <td rowspan=\"3\" colspan=\"13\" style=\"text-align:center; border-radius:10px; border:1px white solid; background-color:grey;\"> Achats de Billets  </tr> "+
                         " <tr> </tr> "+
                         " <tr> </tr> "+
-			" <tr> <td rowspan=\"8\" colspan=\"5\" width=\"50%\"> Affiche </td> <td> Catégorie <label>LABEL</label> </td> "+ 
+			" <tr> <td rowspan=\"10\" colspan=\"5\" width=\"50%\"> <img src=\"affiches/" + affiche + "\" width=\"250px\" height=\"300px\" " + "> </td> <td> Catégorie <label>"+ nomcat +"</label> </td> "+ 
 			" <td rowspan=\"8\" colspan=\"13\" style=\"text-align:center;\" width=\"20%\"> Nb de billet voulu:  <input type=\"textbox\" name=\"billetvoulu\"> <br> Total: <input type=\"textbox\" name=\"total\"> <br> <button> Ajouter au Panier </button> </td></tr>"+
-			" <tr> <td> Artiste <label>LABEL</label> </td> </tr>"+ 
-			" <tr> <td> Nom Spectacle <label>LABEL</label> </td> </tr>"+
-			" <tr> <td> Prix de base <label>LABEL</label> </td> </tr>"+
-                        " <tr> <td> Representation <select> <option value=\"representation\">representation</option> </select> </td> </tr>"+              
-                        " <tr> <td> Salle <select> <option value=\"salle\">salle</option> </select> </td> </tr>"+
-			" <tr> <td> Section <select> <option value=\"section\">section</option> </select> </td> </tr>"+
-			" <tr> <td> Prix: Prix de base + Prix de section <label>LABEL</label> </td> </tr>"+
+			" <tr> <td> Artiste : <label name=\"AchatArtiste\">" + artiste + "</label> </td> </tr>"+ 
+			" <tr> <td> Nom Spectacle : <label name=\"AchatNomSpectacle\">"+nomspectacle+"</label> </td> </tr>"+
+			" <tr> <td> Prix de base : <label name=\"AchatPrixBase\">"+prixdebase+"</label> </td> </tr>"+
+                        " <tr> <td> Representation : <select name=\"AchatRepresentation\">"+RepValues+"</select> </td> </tr>"+              
+                        " <tr> <td> Salle : <select name=\"AchatSalle\"> <option value=\"salle\">salle</option> </select> </td> </tr>"+
+			" <tr> <td> Section : <select name=\"AchatSection\"> <option value=\"section\">section</option> </select> </td> </tr>"+
+			" <tr> <td> Prix : "+prixdebase+" + Prix de section <label>LABEL</label> </td> </tr>"+
 			" <tr> <td> Nombre de billet restant pour la section: <label>LABEL</label>  </td> </tr>"+
 			" <tr> <td> Nb de billet restant total <label>LABEL</label> </td> </tr>"+
 			" <tr>  </tr>"+
                    "</table>");
+            }
+        catch(SQLException list)
+        {
+            System.out.println(list.getMessage());
+        }     
     }
-    
+    public String TrouverRepValues(String nomSpectacle)
+    {
+        String repValues = "";
+        Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        try {          
+            CallableStatement Callist =
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.AfficherReprParNomSpec(?,?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.setString(2,"Match de hokcey");
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+            //codespectacle,nomcat,prixdebase,artiste,nomspectacle,affiche,description           
+                while(rstlist.next())
+                {
+                    int codeRep = rstlist.getInt(1);
+                    
+                    repValues = repValues + "<option value=\""+Integer.toString(codeRep)+"\" >" + Integer.toString(codeRep) + "</option>";
+                }
+                
+                
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            }
+        catch(SQLException list)
+        {
+            System.out.println(list.getMessage());
+        }
+        return repValues;
+    }
     public void panier(PrintWriter out)
     {
         out.println("<table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
