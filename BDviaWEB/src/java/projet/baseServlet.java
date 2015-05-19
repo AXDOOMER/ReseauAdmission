@@ -165,14 +165,22 @@ public class baseServlet extends HttpServlet {
 			" <tr> <td> Artiste : <label name=\"AchatArtiste\">" + artiste + "</label> </td> </tr>"+ 
 			" <tr> <td> Nom Spectacle : <label name=\"AchatNomSpectacle\">"+nomspectacle+"</label> </td> </tr>"+
 			" <tr> <td> Prix de base : <label name=\"AchatPrixBase\">"+prixdebase+"</label> </td> </tr>"+
-                        " <tr> <td> Representation : <select name=\"AchatRepresentation\">"+RepValues+"</select> </td> </tr>"+              
+                        " <tr> <td> Representation : <select name=\"AchatRepresentation\" id=\"AchatRepresentation\" onchange=\"myFunction()\">"+RepValues+"</select> </td> </tr>"+              
                         " <tr> <td> Salle : <select name=\"AchatSalle\"> <option value=\"salle\">salle</option> </select> </td> </tr>"+
 			" <tr> <td> Section : <select name=\"AchatSection\"> <option value=\"section\">section</option> </select> </td> </tr>"+
 			" <tr> <td> Prix : "+prixdebase+" + Prix de section <label>LABEL</label> </td> </tr>"+
 			" <tr> <td> Nombre de billet restant pour la section: <label>LABEL</label>  </td> </tr>"+
 			" <tr> <td> Nb de billet restant total <label>LABEL</label> </td> </tr>"+
 			" <tr>  </tr>"+
+                        "<p id=\"demo\"></p>"+
                    "</table>");
+        out.println("<script>"+
+                    "function myFunction() {"+
+                    "var x = document.getElementById(\"AchatRepresentation\").value;" +
+                    "document.getElementById(\"demo\").innerHTML = \"You selected: \" + x;"+
+                    "}"+
+                    "</script>");
+
             }
         catch(SQLException list)
         {
@@ -369,7 +377,7 @@ public class baseServlet extends HttpServlet {
                     affacc = false;
                     break;
             }
-                    
+            
             out.println("</body>");
             out.println("</html>");   
                     
