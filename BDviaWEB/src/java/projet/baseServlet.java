@@ -226,6 +226,7 @@ public class baseServlet extends HttpServlet {
             System.out.println(list.getMessage());
         }     
     }
+    
     public String TrouverRepValues(String nomSpectacle)
     {
         String repValues = "";
@@ -257,6 +258,7 @@ public class baseServlet extends HttpServlet {
         }
         return repValues;
     }
+    
     public String TrouverSalleValues(String nomSpectacle)
     {
         String salleValues = "";
@@ -289,6 +291,7 @@ public class baseServlet extends HttpServlet {
         
         return salleValues;
     }
+    
     public String TrouverSectionValues(String nomSpectacle)
     {
         String sectionValues = "";
@@ -320,6 +323,7 @@ public class baseServlet extends HttpServlet {
         }
         return sectionValues;
     }
+    
     public void panier(PrintWriter out)
     {
         out.println("<table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
@@ -332,12 +336,12 @@ public class baseServlet extends HttpServlet {
     {
         out.println("<form><table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\"> "
                 + "<tr> <td style=\"text-align:center; background-color:grey; border:1px white solid; border-radius:10px;\"colspan=\"2\"> Veuillez remplir les champs suivants </td> </tr> "
-                + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"nom\" style=\"height:20%; text-align:right;\"> Nom: </td> <td> <input type=\"textbox\"> </td> </tr>"
-                + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"prenom\" style=\"height:20%; text-align:right;\"> Prénom: </td> <td> <input type=\"textbox\"> </td> </tr>"
-                + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"username\" style=\" text-align:right;\"> Nom d'utilisateur: </td> <td> <input type=\"textbox\"> </td> </tr>"
-                + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"motpasse\" style=\" text-align:right;\"> Mot de passe: </td> <td> <input type=\"textbox:\"> </td> </tr>"
-                + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"telephone\" style=\" text-align:right;\"> Téléphone: </td> <td> <input type=\"textbox:\"> </td> </tr>"
-                + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"adresse\" style=\" text-align:right;\"> Adresse: </td> <td> <input type=\"textbox:\"> </td> </tr> \n"
+                + "<tr> <td class=\"inputtext\" style=\"height:20%; text-align:right;\"> Nom: </td> <td> <input type=\"textbox\" name=\"nom\"> </td> </tr>"
+                + "<tr> <td class=\"inputtext\" style=\"height:20%; text-align:right;\"> Prénom: </td> <td> <input type=\"textbox\" name=\"prenom\"> </td> </tr>"
+                + "<tr> <td class=\"inputtext\" style=\"text-align:right;\"> Nom d'utilisateur: </td> <td> <input type=\"textbox\" name=\"username\"> </td> </tr>"
+                + "<tr> <td class=\"inputtext\" style=\"text-align:right;\"> Mot de passe: </td> <td> <input type=\"textbox:\" name=\"motpasse\"> </td> </tr>"
+                + "<tr> <td class=\"inputtext\" style=\"text-align:right;\"> Téléphone: </td> <td> <input type=\"textbox:\" name=\"telephone\"> </td> </tr>"
+                + "<tr> <td class=\"inputtext\" style=\" text-align:right;\"> Adresse: </td> <td> <input type=\"textbox:\" name=\"adresse\"> </td> </tr> \n"
                 + "<tr> <td></td> <td> " /*<button>S'inscrire...</button>*/
                 + "<input class=\"inputtext\" type=\"submit\" name=\"inscription\" value=\"Enregistrer\"></td>"
                 + "</table></form>"
