@@ -256,7 +256,7 @@ public class baseServlet extends HttpServlet {
                 + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"telephone\" style=\" text-align:right;\"> Téléphone: </td> <td> <input type=\"textbox:\"> </td> </tr>"
                 + "<tr> <td class=\"inputtext\" name=\"inscription\" value=\"adresse\" style=\" text-align:right;\"> Adresse: </td> <td> <input type=\"textbox:\"> </td> </tr> \n"
                 + "<tr> <td></td> <td> " /*<button>S'inscrire...</button>*/
-                + "<input class=\"inputtext\" type=\"submit\" name=\"inscription\" value=\"S'inscrire...\"></td>"
+                + "<input class=\"inputtext\" type=\"submit\" name=\"inscription\" value=\"Enregistrer\"></td>"
                 + "</table></form>"
                 + "</div>"
                 + "</div>");
@@ -399,6 +399,10 @@ public class baseServlet extends HttpServlet {
                     break;
                 case "S'inscrire":
                     inscription(out);
+                    affacc = false;
+                    break;
+                case "Enregistrer":
+                    acceuil(out, categorie, nomSalle, nomArtiste);  // Ça c'est quand on vient de s'inscrire
                     affacc = false;
                     break;
             }
