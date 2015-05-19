@@ -680,9 +680,8 @@ public class baseServlet extends HttpServlet {
                 String Image = rest.getString("AFFICHE");
                 System.out.print(Nom + " par " +Artiste + " de " + Categorie + " pour " + Prix + "$");
                 out.println("<CENTER><img src=\"affiches/" + Image + "\" width=\"180px\" height=\"200px\" " + ">");
-                out.println("<BR/>" + Nom);
-                out.println("<BR/>" + Artiste);
                 out.println("<br> <form> <input type=\"submit\" name=\"spectacle\" value=\"" + Nom + "\"> </form>");
+                out.println(Artiste);
                 
                 switch( Integer.parseInt(Categorie))
                 {
