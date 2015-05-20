@@ -190,7 +190,7 @@ public class baseServlet extends HttpServlet {
             Callist.close();
             rstlist.close();
  
-        out.println("<form ><table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\">"+
+        out.println("<form> <table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\">"+
 			" <tr> <td rowspan=\"3\" colspan=\"13\" style=\"text-align:center; border-radius:10px; border:1px white solid; background-color:grey;\"> Achats de Billets  </tr> "+
                         " <tr> </tr> "+
                         " <tr> </tr> "+
@@ -364,7 +364,7 @@ public class baseServlet extends HttpServlet {
     public void panier(PrintWriter out,int idClient)
     {
         int numClient = idClient;
-        out.println("<form><<table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
+        out.println("<form><table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
 				"<tr style=\"text-align:center\"> <td colspan=\"6\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> Mon Panier </td> </tr>\n" +
 				"<tr style=\"text-align:center\"> <td > <label>Numéro billet</label></td> <td> <label>Code Rep</label></td> <td > <label>Début</label></td> <td> <label>nom salle</label></td><td > <label>Nom Spectacle</label></td> <td> <label>Section</label></td> <td rowspan=\"2\" style=\"border:none;\"> <input type=\"submit\" name=\"ConfirmerAchat\" value=\"Confirmer l'achat\"> <br> Prix total de l'achat: <label>LABEL</label> </td> </tr>\n" );
                                //<tr style=\"text-align:center\"> <td > <label>LABEL</label></td> </tr>\n"+
@@ -378,12 +378,12 @@ public class baseServlet extends HttpServlet {
     {
         out.println("<form><table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\"> "
                 + "<tr> <td style=\"text-align:center; background-color:grey; border:1px white solid; border-radius:10px;\"colspan=\"2\"> Veuillez remplir les champs suivants </td> </tr> "
-                + "<tr> <td class=\"inputtext\" style=\"height:20%; text-align:right;\"> Nom: </td> <td> <input type=\"textbox\" name=\"nom\"> </td> </tr>"
-                + "<tr> <td class=\"inputtext\" style=\"height:20%; text-align:right;\"> Prénom: </td> <td> <input type=\"textbox\" name=\"prenom\"> </td> </tr>"
-                + "<tr> <td class=\"inputtext\" style=\"text-align:right;\"> Nom d'utilisateur: </td> <td> <input type=\"textbox\" name=\"username\"> </td> </tr>"
-                + "<tr> <td class=\"inputtext\" style=\"text-align:right;\"> Mot de passe: </td> <td> <input type=\"textbox:\" name=\"motpasse\"> </td> </tr>"
-                + "<tr> <td class=\"inputtext\" style=\"text-align:right;\"> Téléphone: </td> <td> <input type=\"textbox:\" name=\"telephone\"> </td> </tr>"
-                + "<tr> <td class=\"inputtext\" style=\" text-align:right;\"> Adresse: </td> <td> <input type=\"textbox:\" name=\"adresse\"> </td> </tr> \n"
+                + "<tr> <td class=\"inputtext\" style=\"height:20%; text-align:right;\"> Nom: </td> <td> <input type=\"textbox\" name=\"nom\" id=\"nom\"> </td> </tr>"
+                + "<tr> <td class=\"inputtext\" style=\"height:20%; text-align:right;\"> Prénom: </td> <td> <input type=\"textbox\" name=\"prenom\" id=\"prenom\"> </td> </tr>"
+                + "<tr> <td class=\"inputtext\" style=\"text-align:right;\"> Nom d'utilisateur: </td> <td> <input type=\"textbox\" name=\"username\" id=\"username\"> </td> </tr>"
+                + "<tr> <td class=\"inputtext\" style=\"text-align:right;\"> Mot de passe: </td> <td> <input type=\"textbox:\" name=\"motpasse\" id=\"motpasse\"> </td> </tr>"
+                + "<tr> <td class=\"inputtext\" style=\"text-align:right;\"> Téléphone: </td> <td> <input type=\"textbox:\" name=\"telephone\" id=\"telephone\"> </td> </tr>"
+                + "<tr> <td class=\"inputtext\" style=\" text-align:right;\"> Adresse: </td> <td> <input type=\"textbox:\" name=\"adresse\" id=\"adresse\"> </td> </tr> \n"
                 + "<tr> <td></td> <td> " /*<button>S'inscrire...</button>*/
                 + "<input class=\"inputtext\" type=\"submit\" name=\"inscription\" value=\"Enregistrer\"></td>"
                 + "</table></form>"
@@ -567,14 +567,30 @@ public class baseServlet extends HttpServlet {
             int unMois = 30 * 24 * 60 * 60;
             String cookiecatrecu = "";
             String catselec = "";
-
+            String artisteCookie = "";
+            String salleCookie = "";
+            int idClientCookie = -1;
+            
             Cookie[] tabcookies = request.getCookies();
             for(Cookie c : tabcookies)
             {
-                if(c.getName().equals("categorie"))
+                if( c.getName().equals("categorie"))
                 {
                     cookiecatrecu = c.getValue();
                 }
+                if( c.getName().equals("artiste"));
+                {
+                    artisteCookie = c.getValue();
+                }
+                if( c.getName().equals("salle"))
+                {
+                    salleCookie = c.getValue();
+                }
+                if( c.getName().equals("id"))
+                {
+                    idClientCookie = Integer.parseInt(c.getValue());
+                }
+                
             }
             
             if(!cookiecatrecu.equals(""))
@@ -667,9 +683,9 @@ public class baseServlet extends HttpServlet {
                      + " <td class=\"acceuil\"> <form> <input type=\"submit\" name=\"acceuil\" value=\"Panier\" style=\"width:100%; height:100%; background-color:grey; border:none; color:white; font-size:20px;\"> </form> </td>"
                      + " <td class=\"acceuil\">"+
 "                    Utilisateur: <BR/>\n" +
-"                    <input type=text name=utilisateur id=utilisateur><BR/>\n" +
+"                    <input type=\"text\" name=\"utilisateur\" id=\"utilisateur\"><BR/>\n" +
 "                    Mot de passe: <BR/>\n" +
-"                    <input type=password name=motdepasse id=motdepasse><BR/> "+
+"                    <input type=\"password\" name=\"motdepasse\" id=\"motdepasse\"><BR/> "+
 "                    <input type=\"submit\" name=\"acceuil\" value=\"Login\"></form>"+"<form> <input type=\"submit\" name=\"acceuil\" value=\"S'inscrire\"></form>"+
 "                    </td> </tr> </table> </div> ");
 
@@ -682,6 +698,21 @@ public class baseServlet extends HttpServlet {
 
             // aller checher l'artiste qu'on veut avowère
             String nomArtiste = request.getParameter("Artiste");
+            
+            if(nomSalle != null && salleCookie != null)
+            {
+                nomSalle = salleCookie;
+            }
+            if(nomArtiste != null && artisteCookie != null)
+            {
+                nomArtiste = artisteCookie;
+            }
+            if(idClientCookie != -1 && idClient != 0) 
+            {
+                idClient = idClientCookie;
+            }
+            
+            
 
             if (parametreQuiDitOuOnEst != null) {
                 switch (parametreQuiDitOuOnEst) {
@@ -690,8 +721,16 @@ public class baseServlet extends HttpServlet {
                         affacc = false;
                         break;
                     case "Panier":
-                        panier(out,idClient);
-                        affacc = false;
+                        if (idClientCookie == -1)
+                        {
+                            panier(out,idClient);
+                            affacc = false;
+                        }
+                        else
+                        {
+                            acceuil(out, categorie, nomSalle, nomArtiste, "Erreur. Vous ne vous êtes pas login.");
+                        }
+
                         break;
                     case "S'inscrire":
                         inscription(out);
@@ -706,8 +745,8 @@ public class baseServlet extends HttpServlet {
                             CallableStatement stmCheckUser = oracleConn.prepareCall("{? = call TPF_BD_JAVA.Login(?,?)}",
                                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
                             stmCheckUser.registerOutParameter(1, OracleTypes.CURSOR);
-                            stmCheckUser.registerOutParameter(2, OracleTypes.VARCHAR);  //username
-                            stmCheckUser.registerOutParameter(3, OracleTypes.VARCHAR);  //password
+                            stmCheckUser.setString(2, request.getParameter("utilisateur"));  //username
+                            stmCheckUser.setString(3, request.getParameter("motdepasse"));  //password
                             //execution de la procédure
                             // Caster le paramètre de retour en ResultSet
                             /*  ResultSet rest = stm2.executeQuery();   */
@@ -717,6 +756,7 @@ public class baseServlet extends HttpServlet {
                             if (rest.next())
                             {
                                 Username = rest.getString("pseudo");
+                                idClientCookie = rest.getInt("numclient");
                            
                                 // Si y'a de quoi dedans
                                 seLogin = true; // il est là
@@ -731,17 +771,18 @@ public class baseServlet extends HttpServlet {
                         if (seLogin)
                         {
                             // C'est bin la place pour mettre des cookies icitte
-                            acceuil(out, categorie, nomSalle, nomArtiste, "Bienvenu " + Username);
+                            
+                            acceuil(out, categorie, nomSalle, nomArtiste, "Bienvenue " + Username);
                         }
                         else
                         {
-                            acceuil(out, categorie, nomSalle, nomArtiste, "Erreur. Vous ne vous êtres pas login.");
+                            acceuil(out, categorie, nomSalle, nomArtiste, "Erreur. Vous ne vous êtes pas login.");
                         }
                         
                         affacc = false;
                         break;
                     case "Enregistrer":
-                        String nouveauMessage = null;
+                        String nouveauMessage = "";
 
                         String iNom = request.getParameter("nom");
                         String iPrenom = request.getParameter("prenom");
@@ -756,7 +797,7 @@ public class baseServlet extends HttpServlet {
                         try {
                             Connection oracleConn = seConnecter(); 
                             CallableStatement stmCheckUser = oracleConn.prepareCall("{? = call TPF_BD_JAVA.CheckForUsername(?)}",
-                                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                            ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
                             stmCheckUser.registerOutParameter(1, OracleTypes.CURSOR);
                             stmCheckUser.registerOutParameter(2, OracleTypes.VARCHAR);
                             //execution de la procédure
@@ -799,7 +840,7 @@ public class baseServlet extends HttpServlet {
                             try {
                                 Connection oracleConne = seConnecter();
                                 CallableStatement Callist
-                                        = oracleConne.prepareCall(" { call TPF_BD_JAVA.InscrireClient(?,?,?,?,?,?)}");
+                                        = oracleConne.prepareCall(" { call TPF_BD_JAVA.AJOUTERCLIENT(?,?,?,?,?,?)}");
                                 Callist.setString(1, iNom);
                                 Callist.setString(2, iPrenom);
                                 Callist.setString(3, iUsername);
@@ -807,11 +848,12 @@ public class baseServlet extends HttpServlet {
                                 Callist.setString(5, iTelephone);
                                 Callist.setString(6, iAdresse);
                                 
-                                Callist.execute();
+                                Callist.executeUpdate();
 
                                 Callist.clearParameters();
                                 Callist.close();
 
+                                nouveauMessage = "Vous vous êtes inscrits";
                                 acceuil(out, categorie, nomSalle, nomArtiste, nouveauMessage);  // Ça c'est quand on vient de s'inscrire
                                 affacc = false;
                                 deconnexion(oracleConne);
@@ -823,11 +865,19 @@ public class baseServlet extends HttpServlet {
                 }
 
             } else if (btnSpectacle != null) {
-                achatDeBillets(out, btnSpectacle);
+                if(idClientCookie != -1)
+                {
+                    achatDeBillets(out, btnSpectacle);
+                }
+                else
+                {
+                    acceuil(out, categorie, nomSalle, nomArtiste, "Veuillez vous connectez pour acheter un billet");
+                }
+
             } else {
                 acceuil(out, categorie, nomSalle, nomArtiste, null);
             }
-            out.println(tabAchatBillet[1]);
+            //out.println(tabAchatBillet[1]);
             out.println("</body>");
             out.println("</html>");   
                     
