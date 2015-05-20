@@ -408,12 +408,12 @@ public class baseServlet extends HttpServlet {
         int numClient = idClient;
         out.println("<form><table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
 				"<tr style=\"text-align:center\"> <td colspan=\"9\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> Mon Panier </td> </tr>\n" +
-				"<tr style=\"text-align:center\"> <td > <label>Numéro billet</label></td> <td> <label>Code Rep</label></td> <td > <label>Début</label></td> <td> <label>nom salle</label></td><td > <label>Nom Spectacle</label></td> <td> <label>Section</label></td><td > <label>Prix du spectacle</label></td><td > <label>Prix section</label></td> <td > <label>Prix billet</label></td> <td rowspan=\"2\" style=\"border:none;\"> <input type=\"submit\" name=\"ConfirmerAchat\" value=\"Confirmer l'achat\"> <br> Prix total de l'achat: <label>LABEL</label> </td> </tr>\n" );
+				"<tr style=\"text-align:center\"> <td > <label>Numéro billet</label></td> <td> <label>Code Rep</label></td> <td > <label>Début</label></td> <td> <label>nom salle</label></td><td > <label>Nom Spectacle</label></td> <td> <label>Section</label></td><td > <label>Prix du spectacle</label></td><td > <label>Prix section</label></td> <td > <label>Prix billet</label></td> <td rowspan=\"2\" style=\"border:none;\"> <input type=\"submit\" name=\"ConfirmerAchat\" value=\"Confirmer l'achat\"> </td> </tr>\n" );
                                //<tr style=\"text-align:center\"> <td > <label>LABEL</label></td> </tr>\n"+
         // Sa remplie le panier de billet non acheter ( avec un date d'achat null )
         // par rapport au numClient (idClient)
         int prixTotale = RemplirPanier(out,numClient);
-        out.println("<td > <label>Prix totale: "+prixTotale+"</label></td> <td>");
+        out.println("<td > <label>Prix total: "+prixTotale+" $</label></td> <td>");
 	out.println("</table></form>");
     }
     
@@ -817,7 +817,6 @@ public class baseServlet extends HttpServlet {
                         if (seLogin)
                         {
                             // C'est bin la place pour mettre des cookies icitte
-                            
                             acceuil(out, categorie, nomSalle, nomArtiste, "Bienvenue " + Username);
                         }
                         else
@@ -845,7 +844,7 @@ public class baseServlet extends HttpServlet {
                             CallableStatement stmCheckUser = oracleConn.prepareCall("{? = call TPF_BD_JAVA.CheckForUsername(?)}",
                             ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
                             stmCheckUser.registerOutParameter(1, OracleTypes.CURSOR);
-                            stmCheckUser.registerOutParameter(2, OracleTypes.VARCHAR);
+                            stmCheckUser.setString(2, iUsername);
                             //execution de la procédure
                             // Caster le paramètre de retour en ResultSet
                             /*  ResultSet rest = stm2.executeQuery();   */
@@ -877,7 +876,7 @@ public class baseServlet extends HttpServlet {
                             }
                         } else if (iMotpasse == null || iMotpasse.length() == 0) {
                             nouveauMessage = "Mot de passe invalide.";
-                        } else if (iTelephone == null || iTelephone.length() == 0) {
+                        } else if (iTelephone == null || iTelephone.length() == 0 || iTelephone.length() > 10) {
                             nouveauMessage = "Numero de telephone invalide.";
                         } else if (iAdresse == null || iAdresse.length() == 0) {
                             nouveauMessage = "Adresse invalide.";
@@ -900,14 +899,17 @@ public class baseServlet extends HttpServlet {
                                 Callist.close();
 
                                 nouveauMessage = "Vous vous êtes inscrits";
-                                acceuil(out, categorie, nomSalle, nomArtiste, nouveauMessage);  // Ça c'est quand on vient de s'inscrire
+                                //----
                                 affacc = false;
                                 deconnexion(oracleConne);
-                                break;
+                                
                             } catch (SQLException sqlex) {
                                 System.out.println(sqlex.getMessage());
                             }
                         }
+                    acceuil(out, categorie, nomSalle, nomArtiste, nouveauMessage);  // Ça c'est quand on vient de s'inscrire
+                    break;
+                        
                 }
 
             } else if (btnSpectacle != null) {
@@ -925,15 +927,14 @@ public class baseServlet extends HttpServlet {
             }
             //out.println(tabAchatBillet[1]);
             out.println("</body>");
-            out.println("</html>");   
-                    
+            out.println("</html>");
+
         }
-        }
-    
-    private Connection seConnecter()
-    {
+    }
+
+    private Connection seConnecter() {
         Connection conn = null;
-        
+
         try {
             OracleDataSource ods = new OracleDataSource();
             ods.setURL(urlBD);
