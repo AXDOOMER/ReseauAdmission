@@ -199,8 +199,8 @@ public class baseServlet extends HttpServlet {
 			" <tr> <td> Artiste : <label name=\"AchatArtiste\">" + artiste + "</label> </td> </tr>"+ 
 			" <tr> <td> Nom Spectacle : <label name=\"AchatNomSpectacle\">"+nomspectacle+"</label> </td> </tr>"+
 			" <tr> <td> Prix de base : <label name=\"AchatPrixBase\">"+prixdebase+"</label> </td> </tr>"+
-                        " <tr> <td> Representation : <label>(A modifier)</label><select name=\"AchatRepresentation\" id=\"AchatRepresentation\" onchange=\"myFunction()\">"+RepValues+"</select> </td> </tr>"+              
-                        " <tr> <td> Salle : <label>(A modifier)</label><select name=\"AchatSalle\" id=\"AchatSalle\" onchange=\"onChangeSalle()\"> "+ SalleValues +" </select> </td> </tr>"+
+                        /*" <tr> <td> Representation : <label>(A modifier)</label><select name=\"AchatRepresentation\" id=\"AchatRepresentation\" onchange=\"myFunction()\">"+RepValues+"</select> </td> </tr>"+*/        
+                        /*" <tr> <td> Salle : <label>(A modifier)</label><select name=\"AchatSalle\" id=\"AchatSalle\" onchange=\"onChangeSalle()\"> "+ SalleValues +" </select> </td> </tr>"+*/
 			" <tr> <td> Section : <select name=\"AchatParametre\"> "+SectionValues+" </select> </td> </tr>"+
 			" <tr> <td> Prix : <label>(A modifier)</label>"+prixdebase+" + Prix de section <label>LABEL</label> </td> </tr>"+
 			" <tr> <td> Nombre de billet restant pour la section: <label>(A modifier)</label><label>LABEL</label>  </td> </tr>"+
