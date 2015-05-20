@@ -189,7 +189,7 @@ public class baseServlet extends HttpServlet {
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
-            oracleConne.close();
+ 
         out.println("<form> <table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\">"+
 			" <tr> <td rowspan=\"3\" colspan=\"13\" style=\"text-align:center; border-radius:10px; border:1px white solid; background-color:grey;\"> Achats de Billets  </tr> "+
                         " <tr> </tr> "+
@@ -249,7 +249,6 @@ public class baseServlet extends HttpServlet {
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
-            oracleConne.close();
             }
         catch(SQLException list)
         {
@@ -282,7 +281,6 @@ public class baseServlet extends HttpServlet {
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
-            oracleConne.close();
             }
         catch(SQLException list)
         {
@@ -316,7 +314,6 @@ public class baseServlet extends HttpServlet {
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
-            oracleConne.close();
             }
         catch(SQLException list)
         {
@@ -342,7 +339,7 @@ public class baseServlet extends HttpServlet {
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
-            oracleConne.close();
+            
             
             }
         catch(SQLException list)
@@ -393,7 +390,6 @@ public class baseServlet extends HttpServlet {
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
-            oracleConne.close();
             }
         catch(SQLException list)
         {
@@ -451,7 +447,6 @@ public class baseServlet extends HttpServlet {
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
-            oracleConne.close();
             }
         catch(SQLException list)
         {
@@ -515,7 +510,6 @@ public class baseServlet extends HttpServlet {
             
             Callist.clearParameters();
             Callist.close();
-            oracleConne.close();
             }
         catch(SQLException list)
         {
@@ -534,7 +528,6 @@ public class baseServlet extends HttpServlet {
             
             Callist.clearParameters();
             Callist.close();
-            oracleConne.close();
             }
         catch(SQLException list)
         {
@@ -566,7 +559,6 @@ public class baseServlet extends HttpServlet {
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
-            oracleConne.close();
             }
         catch(SQLException list)
         {
@@ -749,6 +741,11 @@ public class baseServlet extends HttpServlet {
             {
                 nomArtiste = artisteCookie;
             }       
+<<<<<<< HEAD
+
+=======
+            
+>>>>>>> origin/master
             Cookie artcookie = new Cookie("artiste", nomArtiste);
             artcookie.setMaxAge(unMois);
             response.addCookie(artcookie);
