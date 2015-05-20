@@ -721,7 +721,7 @@ public class baseServlet extends HttpServlet {
                         affacc = false;
                         break;
                     case "Panier":
-                        if (idClientCookie == -1)
+                        if (idClientCookie != -1)
                         {
                             panier(out,idClient);
                             affacc = false;
