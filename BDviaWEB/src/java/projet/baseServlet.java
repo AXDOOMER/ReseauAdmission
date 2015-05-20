@@ -423,8 +423,7 @@ public class baseServlet extends HttpServlet {
                 + "<tr> <td class=\"inputtext\" style=\"text-align:right;\"> Téléphone: </td> <td> <input type=\"textbox:\" name=\"telephone\" id=\"telephone\"> </td> </tr>"
                 + "<tr> <td class=\"inputtext\" style=\" text-align:right;\"> Adresse: </td> <td> <input type=\"textbox:\" name=\"adresse\" id=\"adresse\"> </td> </tr> \n"
                 + "<tr> <td></td> <td> " /*<button>S'inscrire...</button>*/
-                + "<input class=\"inputtext\" type=\"submit\" name=\"acceuil\" value=\"Créer compte\"></td>"
-                + "</form></table>");
+                + "<input class=\"inputtext\" type=\"submit\" name=\"acceuil\" value=\"Creer compte\"> </td> </form> </table>");
     }
     // Sa permet de trouver le numéro de représentation
     // a partir du codeSection
@@ -742,7 +741,11 @@ public class baseServlet extends HttpServlet {
             {
                 nomArtiste = artisteCookie;
             }       
+<<<<<<< HEAD
+
+=======
             
+>>>>>>> origin/master
             Cookie artcookie = new Cookie("artiste", nomArtiste);
             artcookie.setMaxAge(unMois);
             response.addCookie(artcookie);
@@ -816,8 +819,9 @@ public class baseServlet extends HttpServlet {
                         
                         affacc = false;
                         break;
-                    case "Créer compte":
-                        String nouveauMessage = "Message: allo? tu est ici";
+                    case "Creer compte":
+                        String nouveauMessage = null;
+
                         String iNom = request.getParameter("nom");
                         String iPrenom = request.getParameter("prenom");
                         String iUsername = request.getParameter("username");
