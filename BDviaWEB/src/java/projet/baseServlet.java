@@ -39,9 +39,9 @@ public class baseServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     
-    private String urlBD = "jdbc:oracle:thin:@mercure.clg.qc.ca:1521:orcl";
-    private String userName = "Labontel";
-    private String password = "ORACLE2";
+    private final String urlBD = "jdbc:oracle:thin:@mercure.clg.qc.ca:1521:orcl";
+    private final String userName = "Labontel";
+    private final String password = "ORACLE2";
     
     //methode pour créer les pages webs    
     public void acceuil(PrintWriter out, String[] categorie, String NomSalle, String NomArtiste, String message) {
@@ -536,38 +536,10 @@ public class baseServlet extends HttpServlet {
     }
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String achatBillet = null;
-        String [] tabAchatBillet = null;
-        // A modifier, Il faut envoyer le id du client connecté
-        // temporairement a 0 ( ADMIN )
-        int idClient = 0;
-        achatBillet = request.getParameter("achatbillet");
-        if(achatBillet != null)
-        {
-            if(achatBillet.equals("Ajouter au Panier"))
-            {
-                tabAchatBillet = request.getParameterValues("AchatParametre");
-                for (int i = 0; i < Integer.parseInt(tabAchatBillet[0]); i++)
-                {
-                    AjouterBilletAvecLaSection(Integer.parseInt(tabAchatBillet[1]),idClient);
-                }
-            }
-        }
-        String confirmerAchat = null;
-        String [] tabConfirmerAchat = null;
-        confirmerAchat = request.getParameter("ConfirmerAchat");
-        if(confirmerAchat != null)
-        {
-            if(confirmerAchat.equals("Confirmer l'achat"))
-            {
-                ConfirmerAchatDesBillets(idClient);
-            }
-        }
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+            //Phil: on mets les biscuits dans le four... sa va etre pret dans +-30min            
             String[] categorie = null; /* On va mettre les categories sélectionnées icitte */
-            //Phil: on mets les biscuits dans le four... sa va etre pret dans +-30min
             int unMois = 30 * 24 * 60 * 60;
             String cookiecatrecu = "";
             String catselec = "";
@@ -596,6 +568,33 @@ public class baseServlet extends HttpServlet {
                 }
                 
             }
+            
+                    String achatBillet = null;
+            String [] tabAchatBillet = null;
+        
+             achatBillet = request.getParameter("achatbillet");
+            if(achatBillet != null)
+            {
+                if(achatBillet.equals("Ajouter au Panier"))
+                {
+                    tabAchatBillet = request.getParameterValues("AchatParametre");
+                    for (int i = 0; i < Integer.parseInt(tabAchatBillet[0]); i++)
+                    {
+                        AjouterBilletAvecLaSection(Integer.parseInt(tabAchatBillet[1]),idClientCookie);
+                    }
+                }
+            }
+            String confirmerAchat = null;
+            String [] tabConfirmerAchat = null;
+            confirmerAchat = request.getParameter("ConfirmerAchat");
+            if(confirmerAchat != null)
+            {
+                if(confirmerAchat.equals("Confirmer l'achat"))
+                {
+                   ConfirmerAchatDesBillets(idClientCookie);
+                }
+            }
+            
             
             if(!cookiecatrecu.equals(""))
             {
@@ -710,13 +709,7 @@ public class baseServlet extends HttpServlet {
             if(nomArtiste != null && artisteCookie != null)
             {
                 nomArtiste = artisteCookie;
-            }
-            if(idClientCookie != -1 && idClient != 0) 
-            {
-                idClient = idClientCookie;
-            }
-            
-            
+            }       
 
             if (parametreQuiDitOuOnEst != null) {
                 switch (parametreQuiDitOuOnEst) {
@@ -727,7 +720,7 @@ public class baseServlet extends HttpServlet {
                     case "Panier":
                         if (idClientCookie != -1)
                         {
-                            panier(out,idClient);
+                            panier(out,idClientCookie);
                             affacc = false;
                         }
                         else
