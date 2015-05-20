@@ -741,11 +741,7 @@ public class baseServlet extends HttpServlet {
             {
                 nomArtiste = artisteCookie;
             }       
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> origin/master
             Cookie artcookie = new Cookie("artiste", nomArtiste);
             artcookie.setMaxAge(unMois);
             response.addCookie(artcookie);
@@ -878,7 +874,7 @@ public class baseServlet extends HttpServlet {
                             try {
                                 Connection oracleConne = seConnecter();
                                 CallableStatement Callist
-                                        = oracleConne.prepareCall(" { call TPF_BD_JAVA.AJOUTERCLIENT(?,?,?,?,?,?)}");
+                                        = oracleConne.prepareCall(" { call TPF_BD_JAVA.InscrireClient(?,?,?,?,?,?)}");
                                 Callist.setString(1, iNom);
                                 Callist.setString(2, iPrenom);
                                 Callist.setString(3, iUsername);
@@ -886,7 +882,7 @@ public class baseServlet extends HttpServlet {
                                 Callist.setString(5, iTelephone);
                                 Callist.setString(6, iAdresse);
                                 
-                                Callist.executeUpdate();
+                                Callist.execute();
 
                                 Callist.clearParameters();
                                 Callist.close();
