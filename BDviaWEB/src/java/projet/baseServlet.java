@@ -757,6 +757,8 @@ public class baseServlet extends HttpServlet {
                             {
                                 Username = rest.getString("pseudo");
                                 idClientCookie = rest.getInt("numclient");
+                                Cookie cookieId = new Cookie( "id", Integer.toString(idClientCookie));
+                                response.addCookie(cookieId);
                            
                                 // Si y'a de quoi dedans
                                 seLogin = true; // il est là
