@@ -323,6 +323,7 @@ public class baseServlet extends HttpServlet {
     }
     public int TrouverPrixSection(int codeSection)
     {
+        int prix = 0;
          Connection oracleConne = seConnecter(); // Oracle s'tune conne
         try {          
             CallableStatement Callist =
@@ -334,17 +335,18 @@ public class baseServlet extends HttpServlet {
                                  
             rstlist.next();
 
-            int prix = rstlist.getInt("Prix");                            
+            prix = rstlist.getInt("Prix");                            
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
             
-            return prix;
+            
             }
         catch(SQLException list)
         {
             System.out.println(list.getMessage());
         }
+        return prix;
     }
     // Sa remplie le panier de billet non acheter ( avec un date d'achat null )
     // par rapport au numClient (idClient)
@@ -735,16 +737,10 @@ public class baseServlet extends HttpServlet {
             {
                 nomArtiste = artisteCookie;
             }       
-<<<<<<< HEAD
-            
-            
             
             Cookie artcookie = new Cookie("artiste", nomArtiste);
             artcookie.setMaxAge(unMois);
             response.addCookie(artcookie);
-            
-=======
->>>>>>> origin/master
 
             if (parametreQuiDitOuOnEst != null) {
                 switch (parametreQuiDitOuOnEst) {
