@@ -139,8 +139,9 @@ public class baseServlet extends HttpServlet {
                 
                 out.println("<option name=\"Salles\" value=\""+ SonNom + "\">" + SonNom + "</option>");
             }
-
-        } catch (SQLException sqlex) {
+            deconnexion(oracleConne);
+        }
+        catch (SQLException sqlex) {
             System.out.println(sqlex.getMessage());
         }
         
@@ -189,7 +190,7 @@ public class baseServlet extends HttpServlet {
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
- 
+            deconnexion(oracleConne);
         out.println("<form> <table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\">"+
 			" <tr> <td rowspan=\"3\" colspan=\"13\" style=\"text-align:center; border-radius:10px; border:1px white solid; background-color:grey;\"> Achats de Billets  </tr> "+
                         " <tr> </tr> "+
@@ -249,6 +250,7 @@ public class baseServlet extends HttpServlet {
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
+            deconnexion(oracleConne);
             }
         catch(SQLException list)
         {
@@ -281,6 +283,7 @@ public class baseServlet extends HttpServlet {
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
+            deconnexion(oracleConne);
             }
         catch(SQLException list)
         {
@@ -314,6 +317,7 @@ public class baseServlet extends HttpServlet {
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
+            deconnexion(oracleConne);
             }
         catch(SQLException list)
         {
@@ -339,7 +343,7 @@ public class baseServlet extends HttpServlet {
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
-            
+            deconnexion(oracleConne);
             
             }
         catch(SQLException list)
@@ -390,6 +394,7 @@ public class baseServlet extends HttpServlet {
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
+            deconnexion(oracleConne);
             }
         catch(SQLException list)
         {
@@ -447,6 +452,8 @@ public class baseServlet extends HttpServlet {
             Callist.clearParameters();
             Callist.close();
             rstlist.close();
+            deconnexion(oracleConne);
+            
             }
         catch(SQLException list)
         {
@@ -510,6 +517,7 @@ public class baseServlet extends HttpServlet {
             
             Callist.clearParameters();
             Callist.close();
+            deconnexion(oracleConne);
             }
         catch(SQLException list)
         {
@@ -530,6 +538,7 @@ public class baseServlet extends HttpServlet {
             
             Callist.clearParameters();
             Callist.close();
+            deconnexion(oracleConne);
             }
         catch(SQLException list)
         {
