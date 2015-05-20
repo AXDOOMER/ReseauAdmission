@@ -710,6 +710,11 @@ public class baseServlet extends HttpServlet {
             {
                 nomArtiste = artisteCookie;
             }       
+            
+            Cookie artcookie = new Cookie("artiste", nomArtiste);
+            artcookie.setMaxAge(unMois);
+            response.addCookie(artcookie);
+            
 
             if (parametreQuiDitOuOnEst != null) {
                 switch (parametreQuiDitOuOnEst) {
