@@ -350,8 +350,9 @@ public class baseServlet extends HttpServlet {
     }
     // Sa remplie le panier de billet non acheter ( avec un date d'achat null )
     // par rapport au numClient (idClient)
-    public void RemplirPanier(PrintWriter out,int numClient)
+    public int RemplirPanier(PrintWriter out,int numClient)
     {
+        int prixTotale = 0;
         Connection oracleConne = seConnecter(); // Oracle s'tune conne
         try {          
             CallableStatement Callist =
@@ -372,7 +373,8 @@ public class baseServlet extends HttpServlet {
                     int codeSection = rstlist.getInt(6);
                     int prixSpectacle = rstlist.getInt(7);
                     int prixSection = TrouverPrixSection(codeSection);
-                    int total = prixSpectacle + prixSection;
+                    int prixBillet = prixSpectacle + prixSection;
+                    prixTotale = prixTotale + prixBillet;
                     out.println("<tr style=\"text-align:center\">   <td > <label>"+numBillet+"</label></td>"
                                                                 + "<td > <label>"+codeRep+"</label></td>\n"
                                                                 + "<td > <label>"+debut+"</label></td>\n"
@@ -381,7 +383,7 @@ public class baseServlet extends HttpServlet {
                                                                 + "<td > <label>"+codeSection+"</label></td>\n"
                                                                 + "<td > <label>"+prixSpectacle+"</label></td>\n"
                                                                 + "<td > <label>"+prixSection+"</label></td>\n"
-                                                                + "<td > <label>"+total+"</label></td>\n");
+                                                                + "<td > <label>"+prixBillet+"</label></td>\n");
                 }
                 
                 
@@ -393,17 +395,20 @@ public class baseServlet extends HttpServlet {
         {
             System.out.println(list.getMessage());
         }
+        return prixTotale;
     }
     public void panier(PrintWriter out,int idClient)
     {
+
         int numClient = idClient;
         out.println("<form><table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
-				"<tr style=\"text-align:center\"> <td colspan=\"8\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> Mon Panier </td> </tr>\n" +
-				"<tr style=\"text-align:center\"> <td > <label>Numéro billet</label></td> <td> <label>Code Rep</label></td> <td > <label>Début</label></td> <td> <label>nom salle</label></td><td > <label>Nom Spectacle</label></td> <td> <label>Section</label></td><td > <label>Prix du spectacle</label></td> <td > <label>Prix total</label></td> <td rowspan=\"2\" style=\"border:none;\"> <input type=\"submit\" name=\"ConfirmerAchat\" value=\"Confirmer l'achat\"> <br> Prix total de l'achat: <label>LABEL</label> </td> </tr>\n" );
+				"<tr style=\"text-align:center\"> <td colspan=\"9\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> Mon Panier </td> </tr>\n" +
+				"<tr style=\"text-align:center\"> <td > <label>Numéro billet</label></td> <td> <label>Code Rep</label></td> <td > <label>Début</label></td> <td> <label>nom salle</label></td><td > <label>Nom Spectacle</label></td> <td> <label>Section</label></td><td > <label>Prix du spectacle</label></td><td > <label>Prix section</label></td> <td > <label>Prix billet</label></td> <td rowspan=\"2\" style=\"border:none;\"> <input type=\"submit\" name=\"ConfirmerAchat\" value=\"Confirmer l'achat\"> <br> Prix total de l'achat: <label>LABEL</label> </td> </tr>\n" );
                                //<tr style=\"text-align:center\"> <td > <label>LABEL</label></td> </tr>\n"+
         // Sa remplie le panier de billet non acheter ( avec un date d'achat null )
         // par rapport au numClient (idClient)
-        RemplirPanier(out,numClient);
+        int prixTotale = RemplirPanier(out,numClient);
+        out.println("<td > <label>Prix totale: "+prixTotale+"</label></td> <td>");
 	out.println("</table></form>");
     }
     
