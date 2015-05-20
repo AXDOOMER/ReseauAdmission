@@ -732,15 +732,11 @@ public class baseServlet extends HttpServlet {
             {
                 nomSalle = salleCookie;
             }
-            if(nomArtiste == null && artisteCookie != null)
+            if(nomArtiste == null && artisteCookie == null)
             {
                 nomArtiste = artisteCookie;
             }       
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> origin/master
             Cookie artcookie = new Cookie("artiste", nomArtiste);
             artcookie.setMaxAge(unMois);
             response.addCookie(artcookie);
