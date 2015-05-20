@@ -199,7 +199,7 @@ public class baseServlet extends HttpServlet {
 			" <tr> <td> Artiste : <label name=\"AchatArtiste\">" + artiste + "</label> </td> </tr>"+ 
 			" <tr> <td> Nom Spectacle : <label name=\"AchatNomSpectacle\">"+nomspectacle+"</label> </td> </tr>"+
 			" <tr> <td> Prix de base : <label name=\"AchatPrixBase\">"+prixdebase+"</label> </td> </tr>"+
-                        /*" <tr> <td> Representation : <label>(A modifier)</label><select name=\"AchatRepresentation\" id=\"AchatRepresentation\" onchange=\"myFunction()\">"+RepValues+"</select> </td> </tr>"+*/        
+                        /*"<tr> <td> Imprimer : <input type=\"checkbox\" name=\"AchatParametre\" value=\"Imprimer\"> </td> </tr>"+     */   
                         /*" <tr> <td> Salle : <label>(A modifier)</label><select name=\"AchatSalle\" id=\"AchatSalle\" onchange=\"onChangeSalle()\"> "+ SalleValues +" </select> </td> </tr>"+*/
 			" <tr> <td> Section : <select name=\"AchatParametre\"> "+SectionValues+" </select> </td> </tr>"+
 			" <tr> <td> Prix : <label>(A modifier)</label>"+prixdebase+" + Prix de section <label>LABEL</label> </td> </tr>"+
@@ -321,6 +321,33 @@ public class baseServlet extends HttpServlet {
         }
         return sectionValues;
     }
+    public int TrouverPrixSection(int codeSection)
+    {
+        int prix = 0;
+         Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        try {          
+            CallableStatement Callist =
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.AfficherSectionParCodeSection(?,?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.setInt(2, codeSection);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                                 
+            rstlist.next();
+
+            prix = rstlist.getInt("Prix");                            
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            
+            
+            }
+        catch(SQLException list)
+        {
+            System.out.println(list.getMessage());
+        }
+        return prix;
+    }
     // Sa remplie le panier de billet non acheter ( avec un date d'achat null )
     // par rapport au numClient (idClient)
     public void RemplirPanier(PrintWriter out,int numClient)
@@ -344,7 +371,8 @@ public class baseServlet extends HttpServlet {
                     String nomSpectacle = rstlist.getString(5);
                     int codeSection = rstlist.getInt(6);
                     int prixSpectacle = rstlist.getInt(7);
-                    int total = prixSpectacle;
+                    int prixSection = TrouverPrixSection(codeSection);
+                    int total = prixSpectacle + prixSection;
                     out.println("<tr style=\"text-align:center\">   <td > <label>"+numBillet+"</label></td>"
                                                                 + "<td > <label>"+codeRep+"</label></td>\n"
                                                                 + "<td > <label>"+debut+"</label></td>\n"
@@ -352,6 +380,7 @@ public class baseServlet extends HttpServlet {
                                                                 + "<td > <label>"+nomSpectacle+"</label></td>\n"
                                                                 + "<td > <label>"+codeSection+"</label></td>\n"
                                                                 + "<td > <label>"+prixSpectacle+"</label></td>\n"
+                                                                + "<td > <label>"+prixSection+"</label></td>\n"
                                                                 + "<td > <label>"+total+"</label></td>\n");
                 }
                 
@@ -707,7 +736,11 @@ public class baseServlet extends HttpServlet {
             {
                 nomArtiste = artisteCookie;
             }       
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/master
             Cookie artcookie = new Cookie("artiste", nomArtiste);
             artcookie.setMaxAge(unMois);
             response.addCookie(artcookie);
