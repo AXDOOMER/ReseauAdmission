@@ -517,13 +517,15 @@ public class baseServlet extends HttpServlet {
         }
     }
     // Fonction utile pour ConfirmerAchatDesBillets
-    public void AcheterBiller(int numBillet)
+    public void AcheterBiller(int numBillet,int uniqueId)
     {
+        int numfacture = uniqueId;
         Connection oracleConne = seConnecter(); // Oracle s'tune conne
         try {          
             CallableStatement Callist =
-            oracleConne.prepareCall(" { call TPF_BD_JAVA.CONFIRMERACHATBILLET(?)}");
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.CONFIRMERACHATBILLET(?,?)}");
             Callist.setInt(1, numBillet);
+            Callist.setInt(2, numfacture);
             Callist.executeUpdate(); 
             
             Callist.clearParameters();
@@ -547,6 +549,7 @@ public class baseServlet extends HttpServlet {
             ResultSet rstlist = (ResultSet)Callist.getObject(1);
                 // On execute une procédure qui sert a incrémenter un numéro
                 // unique pour le numéro de facture
+                int uniqueId = (int) (System.currentTimeMillis() & 0xfffffff);
                 IncrementerNumFacture();
                 while(rstlist.next())
                 {
@@ -554,7 +557,7 @@ public class baseServlet extends HttpServlet {
                     int numBillet = rstlist.getInt(1);
                     // On modifie la date du billet courrant dans la boucle
                     // C'est comme sa qu'on sais si le billet est acheter ou non
-                    AcheterBiller(numBillet);
+                    AcheterBiller(numBillet,uniqueId);
                 }   
             Callist.clearParameters();
             Callist.close();
