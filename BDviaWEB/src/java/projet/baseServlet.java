@@ -321,6 +321,31 @@ public class baseServlet extends HttpServlet {
         }
         return sectionValues;
     }
+    public int TrouverPrixSection(int codeSection)
+    {
+         Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        try {          
+            CallableStatement Callist =
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.AfficherSectionParCodeSection(?,?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.setInt(2, codeSection);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                                 
+            rstlist.next();
+
+            int prix = rstlist.getInt("Prix");                            
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            
+            return prix;
+            }
+        catch(SQLException list)
+        {
+            System.out.println(list.getMessage());
+        }
+    }
     // Sa remplie le panier de billet non acheter ( avec un date d'achat null )
     // par rapport au numClient (idClient)
     public void RemplirPanier(PrintWriter out,int numClient)
@@ -344,7 +369,8 @@ public class baseServlet extends HttpServlet {
                     String nomSpectacle = rstlist.getString(5);
                     int codeSection = rstlist.getInt(6);
                     int prixSpectacle = rstlist.getInt(7);
-                    int total = prixSpectacle;
+                    int prixSection = TrouverPrixSection(codeSection);
+                    int total = prixSpectacle + prixSection;
                     out.println("<tr style=\"text-align:center\">   <td > <label>"+numBillet+"</label></td>"
                                                                 + "<td > <label>"+codeRep+"</label></td>\n"
                                                                 + "<td > <label>"+debut+"</label></td>\n"
@@ -352,6 +378,7 @@ public class baseServlet extends HttpServlet {
                                                                 + "<td > <label>"+nomSpectacle+"</label></td>\n"
                                                                 + "<td > <label>"+codeSection+"</label></td>\n"
                                                                 + "<td > <label>"+prixSpectacle+"</label></td>\n"
+                                                                + "<td > <label>"+prixSection+"</label></td>\n"
                                                                 + "<td > <label>"+total+"</label></td>\n");
                 }
                 
