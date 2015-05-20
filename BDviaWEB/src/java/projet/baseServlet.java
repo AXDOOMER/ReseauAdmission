@@ -380,8 +380,8 @@ public class baseServlet extends HttpServlet {
     
     public void inscription(PrintWriter out)
     {
-        out.println("<form><table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\"> "
-                + "<tr> <td style=\"text-align:center; background-color:grey; border:1px white solid; border-radius:10px;\"colspan=\"2\"> Veuillez remplir les champs suivants </td> </tr> "
+        out.println("<table class=\"acceuil\" cellpadding=\"10px\" width=\"100%\" style=\"border:1px white solid; background-color:rgb(175,175,175); height:80%; border-radius:10px;\"> "
+                + "<form> <tr> <td style=\"text-align:center; background-color:grey; border:1px white solid; border-radius:10px;\"colspan=\"2\"> Veuillez remplir les champs suivants </td> </tr> "
                 + "<tr> <td class=\"inputtext\" style=\"height:20%; text-align:right;\"> Nom: </td> <td> <input type=\"textbox\" name=\"nom\" id=\"nom\"> </td> </tr>"
                 + "<tr> <td class=\"inputtext\" style=\"height:20%; text-align:right;\"> Prénom: </td> <td> <input type=\"textbox\" name=\"prenom\" id=\"prenom\"> </td> </tr>"
                 + "<tr> <td class=\"inputtext\" style=\"text-align:right;\"> Nom d'utilisateur: </td> <td> <input type=\"textbox\" name=\"username\" id=\"username\"> </td> </tr>"
@@ -389,10 +389,8 @@ public class baseServlet extends HttpServlet {
                 + "<tr> <td class=\"inputtext\" style=\"text-align:right;\"> Téléphone: </td> <td> <input type=\"textbox:\" name=\"telephone\" id=\"telephone\"> </td> </tr>"
                 + "<tr> <td class=\"inputtext\" style=\" text-align:right;\"> Adresse: </td> <td> <input type=\"textbox:\" name=\"adresse\" id=\"adresse\"> </td> </tr> \n"
                 + "<tr> <td></td> <td> " /*<button>S'inscrire...</button>*/
-                + "<input class=\"inputtext\" type=\"submit\" name=\"inscription\" value=\"Enregistrer\"></td>"
-                + "</table></form>"
-                + "</div>"
-                + "</div>");
+                + "<input class=\"inputtext\" type=\"submit\" name=\"acceuil\" value=\"Créer compte\"></td>"
+                + "</form></table>");
     }
     // Sa permet de trouver le numéro de représentation
     // a partir du codeSection
@@ -711,6 +709,8 @@ public class baseServlet extends HttpServlet {
                 nomArtiste = artisteCookie;
             }       
             
+            
+            
             Cookie artcookie = new Cookie("artiste", nomArtiste);
             artcookie.setMaxAge(unMois);
             response.addCookie(artcookie);
@@ -785,9 +785,8 @@ public class baseServlet extends HttpServlet {
                         
                         affacc = false;
                         break;
-                    case "Enregistrer":
-                        String nouveauMessage = "";
-
+                    case "Créer compte":
+                        String nouveauMessage = "Message: allo? tu est ici";
                         String iNom = request.getParameter("nom");
                         String iPrenom = request.getParameter("prenom");
                         String iUsername = request.getParameter("username");
