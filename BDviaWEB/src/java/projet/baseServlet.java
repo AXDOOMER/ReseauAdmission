@@ -702,11 +702,11 @@ public class baseServlet extends HttpServlet {
             // aller checher l'artiste qu'on veut avowère
             String nomArtiste = request.getParameter("Artiste");
             
-            if(nomSalle != null && salleCookie != null)
+            if(nomSalle == null && salleCookie != null)
             {
                 nomSalle = salleCookie;
             }
-            if(nomArtiste != null && artisteCookie != null)
+            if(nomArtiste == null && artisteCookie != null)
             {
                 nomArtiste = artisteCookie;
             }       
