@@ -84,7 +84,7 @@ public class Client extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(TBL_Spectacle);
 
-        CBX_Select.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "La table Spectacle", "La table Client", "La table Représentation", "La table Salle", "La table Catégorie", "La table Billet", "La table Panier", "La table Sections", "Info sur la livraison des billets", "Habitude des clients", "Liste des clients fidèles", "Liste des spectacles disponibles" }));
+        CBX_Select.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "La table Spectacle", "La table Client", "La table Représentation", "La table Salle", "La table Catégorie", "La table Billet", "La table Panier", "La table Sections", "Info sur la livraison des billets", "Habitude des clients", "Liste des clients fidèles" }));
         CBX_Select.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CBX_SelectActionPerformed(evt);
@@ -339,7 +339,7 @@ public class Client extends javax.swing.JFrame {
         }
         else if(CBX_Select.getSelectedItem().toString().equals("Liste des clients fidèles"))
         {
-            System.out.println("Liste des clients fidèles");
+            AfficherClientFidele();
         }
         else if(CBX_Select.getSelectedItem().toString().equals("Liste des spectacles disponibles"))
         {
@@ -716,9 +716,37 @@ public class Client extends javax.swing.JFrame {
         }  
     }
     
-    public static void AfficherClientFidèle()
+    public static void AfficherClientFidele()
     {
-        
+        try {         
+            DefaultTableModel model = (DefaultTableModel) TBL_Spectacle.getModel();  
+            model.setColumnIdentifiers(new Object[]{"Nombre billet acheté","Numéro client","Nom client","Prénom client","Pseudo client"});
+            model.setRowCount(0);
+            CallableStatement Callist =
+            oracleConnexion.getConnection().prepareCall(" { call TPF_BD_JAVA.CLIENTFIDELES(?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+                       
+            while(rstlist.next())
+            {             
+                int NbBillet = rstlist.getInt(1);
+                int NumClient = rstlist.getInt(2);
+                String NomClient = rstlist.getString(3);                
+                String PrenomClient = rstlist.getString(4);
+                String PseudoClient = rstlist.getString(5);
+                model.addRow(new Object[]{Integer.toString(NbBillet),Integer.toString(NumClient),NomClient,PrenomClient,PseudoClient});
+            }
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            System.out.println("affichage");
+        }
+        catch(SQLException list)
+        {
+        System.out.println(list.getMessage());
+        }  
     }
     
     public static void AfficherSpectacleDisponible()

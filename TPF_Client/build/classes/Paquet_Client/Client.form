@@ -118,7 +118,7 @@
         <Component class="javax.swing.JComboBox" name="CBX_Select">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="12">
+              <StringArray count="11">
                 <StringItem index="0" value="La table Spectacle"/>
                 <StringItem index="1" value="La table Client"/>
                 <StringItem index="2" value="La table Repr&#xe9;sentation"/>
@@ -130,7 +130,6 @@
                 <StringItem index="8" value="Info sur la livraison des billets"/>
                 <StringItem index="9" value="Habitude des clients"/>
                 <StringItem index="10" value="Liste des clients fid&#xe8;les"/>
-                <StringItem index="11" value="Liste des spectacles disponibles"/>
               </StringArray>
             </Property>
           </Properties>
