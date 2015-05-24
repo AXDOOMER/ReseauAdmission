@@ -402,9 +402,111 @@ public class baseServlet extends HttpServlet {
         }
         return prixTotale;
     }
+    // Méthode utile pour la méthode facture
+    public void AfficherNumFacture(PrintWriter out,int idClient)
+    {
+        Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        try {          
+            CallableStatement Callist =
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.AfficherNumFactureParClient(?,?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.setInt(2, idClient);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+            //codespectacle,nomcat,prixdebase,artiste,nomspectacle,affiche,description           
+                while(rstlist.next())
+                {
+                    int numClient = rstlist.getInt(1);
+                    int numFacture = rstlist.getInt(2);
+                    out.println("<tr style=\"text-align:center\">   <td > <label>"+numClient+"</label></td>"
+                                                                + "<td > <input type=\"submit\" name=\"facture\" value=\""+numFacture+"\"></td>\n");
+                }               
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            deconnexion(oracleConne);
+            }
+        catch(SQLException list)
+        {
+            System.out.println(list.getMessage());
+        }
+    }
+    // Méthode utile pour la méthode AfficherLaFacture
+    public int RemplirInfoFacture (PrintWriter out,int numClient,int numFacture)
+    {
+        int prixTotale = 0;
+        Connection oracleConne = seConnecter(); // Oracle s'tune conne
+        try {          
+            CallableStatement Callist =
+            oracleConne.prepareCall(" { call TPF_BD_JAVA.AfficherInfoFacture(?,?)}");
+            Callist.registerOutParameter(1,OracleTypes.CURSOR);
+            Callist.setInt(2, numFacture);
+            Callist.execute();
+            ResultSet rstlist = (ResultSet)Callist.getObject(1);
+                        
+            //codespectacle,nomcat,prixdebase,artiste,nomspectacle,affiche,description           
+                while(rstlist.next())
+                {
+                    int numBillet = rstlist.getInt(1);
+                    int codeRep = rstlist.getInt(2);
+                    Date debut = rstlist.getDate(3);
+                    String nomSalle = rstlist.getString(4);
+                    String nomSpectacle = rstlist.getString(5);
+                    int codeSection = rstlist.getInt(6);
+                    int prixSpectacle = rstlist.getInt(7);
+                    int prixSection = TrouverPrixSection(codeSection);
+                    int prixBillet = prixSpectacle + prixSection;
+                    prixTotale = prixTotale + prixBillet;
+                    out.println("<tr style=\"text-align:center\">   <td > <label>"+numBillet+"</label></td>"
+                                                                + "<td > <label>"+codeRep+"</label></td>\n"
+                                                                + "<td > <label>"+debut+"</label></td>\n"
+                                                                + "<td > <label>"+nomSalle+"</label></td>\n"
+                                                                + "<td > <label>"+nomSpectacle+"</label></td>\n"
+                                                                + "<td > <label>"+codeSection+"</label></td>\n"
+                                                                + "<td > <label>"+prixSpectacle+"</label></td>\n"
+                                                                + "<td > <label>"+prixSection+"</label></td>\n"
+                                                                + "<td > <label>"+prixBillet+"</label></td>\n");
+                }
+                
+                
+            Callist.clearParameters();
+            Callist.close();
+            rstlist.close();
+            deconnexion(oracleConne);
+            }
+        catch(SQLException list)
+        {
+            System.out.println(list.getMessage());
+        }
+        return prixTotale;
+    }
+    // Après avoir cliqué sur le numéro de facture, on affiche toutes les billets
+    // de cette facture ( Même allure que le panier )
+    public void AfficherLaFacture (PrintWriter out,int idClient, int numFacture)
+    {
+        int numClient = idClient;
+        out.println("<form><table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
+				"<tr style=\"text-align:center\"> <td colspan=\"9\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> La facture numéro "+numFacture+" </td> </tr>\n" +
+				"<tr style=\"text-align:center\"> <td > <label>Numéro billet</label></td> <td> <label>Code Rep</label></td> <td > <label>Début</label></td> <td> <label>nom salle</label></td><td > <label>Nom Spectacle</label></td> <td> <label>Section</label></td><td > <label>Prix du spectacle</label></td><td > <label>Prix section</label></td> <td > <label>Prix billet</label></td> </tr>\n" );
+        // Sa remplie le panier de billet non acheter ( avec un date d'achat null )
+        // par rapport au numClient (idClient)
+        int prixTotale = RemplirInfoFacture(out,numClient,numFacture);
+        out.println("<td > <label>Prix total: "+prixTotale+" $</label></td> <td>");
+	out.println("</table></form>");
+    }
+    // Dans la fond, la facture est comme le panier 
+    public void facture (PrintWriter out,int idClient)
+    {
+        int numClient = idClient;
+        out.println("<form><table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
+				"<tr style=\"text-align:center\"> <td colspan=\"9\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> Les factures </td> </tr>\n" +
+				"<tr style=\"text-align:center\"> <td > <label>Numéro du client</label></td> <td > <label>Numéro de facture</label></td>\n" );
+        AfficherNumFacture(out,idClient);                       
+	out.println("</table></form>");
+    }
     public void panier(PrintWriter out,int idClient)
     {
-
         int numClient = idClient;
         out.println("<form><table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
 				"<tr style=\"text-align:center\"> <td colspan=\"9\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> Mon Panier </td> </tr>\n" +
@@ -559,6 +661,7 @@ public class baseServlet extends HttpServlet {
                 // On execute une procédure qui sert a incrémenter un numéro
                 // unique pour le numéro de facture
                 int uniqueId = (int) (System.currentTimeMillis() & 0xfffffff);
+                // Finalement, j'utilise le temps pour me générer un numéro unique
                 IncrementerNumFacture();
                 while(rstlist.next())
                 {
@@ -612,10 +715,10 @@ public class baseServlet extends HttpServlet {
                 
             }
             
-                    String achatBillet = null;
+            // Ajouter des billets de spectacle au panier
+            String achatBillet = null;
             String [] tabAchatBillet = null;
-        
-             achatBillet = request.getParameter("achatbillet");
+            achatBillet = request.getParameter("achatbillet");
             if(achatBillet != null)
             {
                 if(achatBillet.equals("Ajouter au Panier"))
@@ -627,6 +730,8 @@ public class baseServlet extends HttpServlet {
                     }
                 }
             }
+            
+            // Dans le panier, confirmer l'achat
             String confirmerAchat = null;
             String [] tabConfirmerAchat = null;
             confirmerAchat = request.getParameter("ConfirmerAchat");
@@ -637,8 +742,7 @@ public class baseServlet extends HttpServlet {
                    ConfirmerAchatDesBillets(idClientCookie);
                 }
             }
-            
-            
+                      
             if(!cookiecatrecu.equals(""))
             {
                 categorie = cookiecatrecu.split(",");
@@ -733,6 +837,7 @@ public class baseServlet extends HttpServlet {
 "                    Mot de passe: <BR/>\n" +
 "                    <input type=\"password\" name=\"motdepasse\" id=\"motdepasse\"><BR/> "+
 "                    <input type=\"submit\" name=\"acceuil\" value=\"Login\"></form>"+"<form> <input type=\"submit\" name=\"acceuil\" value=\"S'inscrire\"></form>"+
+"                    <form> <input type=\"submit\" name=\"acceuil\" value=\"Facture\"></form>"+                    
 "                    </td> </tr> </table> </div> ");
 
             String parametreQuiDitOuOnEst = request.getParameter("acceuil");
@@ -757,7 +862,19 @@ public class baseServlet extends HttpServlet {
             Cookie artcookie = new Cookie("artiste", nomArtiste);
             artcookie.setMaxAge(unMois);
             response.addCookie(artcookie);
-
+            
+            // Dans les numéro de factures, afficher la facture
+            String facture = null;
+            String [] tabFacture = null;
+            facture = request.getParameter("facture");
+            if(facture != null)
+            {
+                AfficherLaFacture(out,idClientCookie,Integer.parseInt(facture));
+                affacc = false;
+            }
+            else
+                {
+            
             if (parametreQuiDitOuOnEst != null) {
                 switch (parametreQuiDitOuOnEst) {
                     case "Acceuil":
@@ -775,6 +892,17 @@ public class baseServlet extends HttpServlet {
                             acceuil(out, categorie, nomSalle, nomArtiste, "Erreur. Vous ne vous êtes pas login.");
                         }
 
+                        break;
+                    case "Facture":
+                        if (idClientCookie != -1)
+                        {
+                            facture(out,idClientCookie);
+                            affacc = false;
+                        }
+                        else
+                        {
+                            acceuil(out, categorie, nomSalle, nomArtiste, "Erreur. Vous ne vous êtes pas login.");
+                        }
                         break;
                     case "S'inscrire":
                         inscription(out);
@@ -925,6 +1053,7 @@ public class baseServlet extends HttpServlet {
             } else {
                 acceuil(out, categorie, nomSalle, nomArtiste, null);
             }
+        }
             //out.println(tabAchatBillet[1]);
             out.println("</body>");
             out.println("</html>");
