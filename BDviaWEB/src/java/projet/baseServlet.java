@@ -200,7 +200,7 @@ public class baseServlet extends HttpServlet {
 			" <tr> <td> Artiste : <label name=\"AchatArtiste\">" + artiste + "</label> </td> </tr>"+ 
 			" <tr> <td> Nom Spectacle : <label name=\"AchatNomSpectacle\">"+nomspectacle+"</label> </td> </tr>"+
 			" <tr> <td> Prix de base : <label name=\"AchatPrixBase\">"+prixdebase+"</label> </td> </tr>"+
-                        /*"<tr> <td> Imprimer : <input type=\"checkbox\" name=\"AchatParametre\" value=\"Imprimer\"> </td> </tr>"+     */   
+                        "<tr> <td> Imprimer : <select name=\"AchatParametre\"> <option value=\"Oui\">Oui</option><option value=\"Non\">Non</option> </select>  </td> </tr>"+      
                         /*" <tr> <td> Salle : <label>(A modifier)</label><select name=\"AchatSalle\" id=\"AchatSalle\" onchange=\"onChangeSalle()\"> "+ SalleValues +" </select> </td> </tr>"+*/
 			" <tr> <td> Section : <select name=\"AchatParametre\"> "+SectionValues+" </select> </td> </tr>"+
 			" <tr> <td> Prix : <label>(A modifier)</label>"+prixdebase+" + Prix de section <label>LABEL</label> </td> </tr>"+
@@ -375,7 +375,11 @@ public class baseServlet extends HttpServlet {
                     String nomSalle = rstlist.getString(4);
                     String nomSpectacle = rstlist.getString(5);
                     int codeSection = rstlist.getInt(6);
-                    int prixSpectacle = rstlist.getInt(7);
+                    int imprimer = rstlist.getInt(7);
+                    String imprimerS = "Non";
+                    if (imprimer == 1)
+                        imprimerS = "Oui";
+                    int prixSpectacle = rstlist.getInt(8);
                     int prixSection = TrouverPrixSection(codeSection);
                     int prixBillet = prixSpectacle + prixSection;
                     prixTotale = prixTotale + prixBillet;
@@ -385,6 +389,7 @@ public class baseServlet extends HttpServlet {
                                                                 + "<td > <label>"+nomSalle+"</label></td>\n"
                                                                 + "<td > <label>"+nomSpectacle+"</label></td>\n"
                                                                 + "<td > <label>"+codeSection+"</label></td>\n"
+                                                                + "<td > <label>"+imprimerS+"</label></td>\n"
                                                                 + "<td > <label>"+prixSpectacle+"</label></td>\n"
                                                                 + "<td > <label>"+prixSection+"</label></td>\n"
                                                                 + "<td > <label>"+prixBillet+"</label></td>\n");
@@ -509,8 +514,8 @@ public class baseServlet extends HttpServlet {
     {
         int numClient = idClient;
         out.println("<form><table border=\"1px\" cellpadding=\"10px\" width=\"100%\" style=\"background-color:rgb(175,175,175); border-radius:10px; border:1px white solid; height:80%; color:white;\">\n" +
-				"<tr style=\"text-align:center\"> <td colspan=\"9\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> Mon Panier </td> </tr>\n" +
-				"<tr style=\"text-align:center\"> <td > <label>Numéro billet</label></td> <td> <label>Code Rep</label></td> <td > <label>Début</label></td> <td> <label>nom salle</label></td><td > <label>Nom Spectacle</label></td> <td> <label>Section</label></td><td > <label>Prix du spectacle</label></td><td > <label>Prix section</label></td> <td > <label>Prix billet</label></td> <td rowspan=\"2\" style=\"border:none;\"> <input type=\"submit\" name=\"ConfirmerAchat\" value=\"Confirmer l'achat\"> </td> </tr>\n" );
+				"<tr style=\"text-align:center\"> <td colspan=\"10\" height=\"70%\" style=\"background-color:grey; border-radius:10px; border:1px white solid;\"> Mon Panier </td> </tr>\n" +
+				"<tr style=\"text-align:center\"> <td > <label>Numéro billet</label></td> <td> <label>Code Rep</label></td> <td > <label>Début</label></td> <td> <label>nom salle</label></td><td > <label>Nom Spectacle</label></td> <td> <label>Section</label></td><td> <label>Imprimer</label></td><td > <label>Prix du spectacle</label></td><td > <label>Prix section</label></td> <td > <label>Prix billet</label></td> <td rowspan=\"2\" style=\"border:none;\"> <input type=\"submit\" name=\"ConfirmerAchat\" value=\"Confirmer l'achat\"> </td> </tr>\n" );
                                //<tr style=\"text-align:center\"> <td > <label>LABEL</label></td> </tr>\n"+
         // Sa remplie le panier de billet non acheter ( avec un date d'achat null )
         // par rapport au numClient (idClient)
@@ -534,7 +539,7 @@ public class baseServlet extends HttpServlet {
     }
     // Sa permet de trouver le numéro de représentation
     // a partir du codeSection
-    public void AjouterBilletAvecLaSection(int codeSection,int idClient)
+    public void AjouterBilletAvecLaSection(int codeSection,int idClient,int imprimer)
     {
         Connection oracleConne = seConnecter(); // Oracle s'tune conne
         try {          
@@ -549,7 +554,7 @@ public class baseServlet extends HttpServlet {
                 // Ici on na le code de représentation
                 int codeRep = rstlist.getInt(1);
             // Ici c'est pour ajouter un billet par le code représentation
-                InsererBillet(codeRep,oracleConne,codeSection,idClient);
+                InsererBillet(codeRep,oracleConne,codeSection,idClient,imprimer);
                         
             Callist.clearParameters();
             Callist.close();
@@ -562,15 +567,17 @@ public class baseServlet extends HttpServlet {
             System.out.println(list.getMessage());
         }
     }
-    public void InsererBillet(int codeRep,Connection oracleConne,int codeSection,int idClient)
+    public void InsererBillet(int codeRep,Connection oracleConne,int codeSection,int idClient,int imprimer)
     {
+        //imprimer: 0 non
+        //          1 oui
         int numClient = idClient;
         try {          
             CallableStatement Callist =
             oracleConne.prepareCall(" { call TPF_BD_JAVA.AJOUTERBILLET (?,?,?,?,?)}");
             Callist.registerOutParameter(1,OracleTypes.CURSOR);
             Callist.setDate(2, null); // La date est null
-            Callist.setInt(3, 0); // Imprimer est a 0
+            Callist.setInt(3, imprimer); // Imprimer est a 0
             Callist.setInt(4, codeRep); // C'est la le codeReprésentation           
             Callist.setInt(5, codeSection); // Ici, c'est le codeSection
             Callist.executeUpdate();
@@ -718,15 +725,21 @@ public class baseServlet extends HttpServlet {
             // Ajouter des billets de spectacle au panier
             String achatBillet = null;
             String [] tabAchatBillet = null;
+            int imprimer = 0;// L'initialiser a non
             achatBillet = request.getParameter("achatbillet");
             if(achatBillet != null)
             {
                 if(achatBillet.equals("Ajouter au Panier"))
                 {
                     tabAchatBillet = request.getParameterValues("AchatParametre");
+                    // Voir si imprimer est a Oui ou Non
+                    if(tabAchatBillet[1].equals("Oui"))
+                    {
+                        imprimer = 1;
+                    }
                     for (int i = 0; i < Integer.parseInt(tabAchatBillet[0]); i++)
                     {
-                        AjouterBilletAvecLaSection(Integer.parseInt(tabAchatBillet[1]),idClientCookie);
+                        AjouterBilletAvecLaSection(Integer.parseInt(tabAchatBillet[2]),idClientCookie,imprimer);
                     }
                 }
             }
